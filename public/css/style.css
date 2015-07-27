@@ -1,0 +1,26 @@
+html, body {
+    height: 100%;
+}
+
+.full-height {
+    height: 100%;
+}
+
+h1 {
+    font-size: 35px;
+}
+
+.static-side-nav-col {
+    /* Override Materialize.css column */
+    padding: 0 !important;
+}
+.static-side-nav {
+    margin: 0;
+}
+.static-side-nav a li {
+    padding: 20px 10px;
+    font-size: 14px;
+}
+.static-side-nav a li:hover, .static-side-nav-active {
+    background-color: #e3f2fd;
+}
