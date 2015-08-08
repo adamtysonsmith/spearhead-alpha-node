@@ -6,6 +6,10 @@ html, body {
     height: 100vh;
 }
 
+.full-width {
+    width
+}
+
 h1 {
     font-size: 35px;
 }
@@ -26,6 +30,6 @@ h1 {
     background-color: #e3f2fd;
 }
 
-.day-calendar, .week-calendar, .task-queue {
+.db-day-calendar, .db-week-calendar, .db-task-queue, .db-quick-add {
     height: 300px;
 }
