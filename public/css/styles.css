@@ -29,7 +29,6 @@ html, body {
 h1 {
     font-size: 35px;
 }
-
 .static-side-nav-col {
     /* Override Materialize.css column */
     padding: 0 !important;
