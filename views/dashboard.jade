@@ -1,39 +1,41 @@
 extends layout
 
 block content
-    h1 Welcome to the Dashboard
-    div.full-height
-        div.row
-            div.col.s4
-                h5 Today's Calendar
-                div.db-day-calendar.grey.lighten-3
-            div.col.s4
-                h5 Task Queue
-                div.db-task-queue.grey.lighten-3
-            div.col.s4
-                h5 Quick Add
-                div.db-quick-add.grey.lighten-3
-                    form
-                        div.input-field.col.s12
-                            input(type="text" name="quick-task" id="quick-task").validate
-                            label(for="quick-task") Add Task
-                        div.input-field.col.s12
-                            textarea(name="quick-task" id="quick-task").materialize-textarea
-                            label(for="quick-note") Add Notes for this Task
-                        div.input-field.col.s12
-                            button(type="submit" width="100%").btn.waves-effect.waves-light Save Task
+    include nav
+        block main
+            h1 Welcome to the Dashboard
+            div.full-height
+                div.row
+                    div.col.s4
+                        h5 Today's Calendar
+                        div.db-day-calendar.grey.lighten-3
+                    div.col.s4
+                        h5 Task Queue
+                        div.db-task-queue.grey.lighten-3
+                    div.col.s4
+                        h5 Quick Add
+                        div.db-quick-add.grey.lighten-3
+                            form
+                                div.input-field.col.s12
+                                    input(type="text" name="quick-task" id="quick-task").validate
+                                    label(for="quick-task") Add Task
+                                div.input-field.col.s12
+                                    textarea(name="quick-task" id="quick-task").materialize-textarea
+                                    label(for="quick-note") Add Notes for this Task
+                                div.input-field.col.s12
+                                    button(type="submit" width="100%").btn.waves-effect.waves-light Save Task
 
-        div.row
-            div.col.s12
-                h5 Weekly Calendar
-                div.db-week-calendar.grey.lighten-3
-        
-            select#change-color.browser-default
-                option(value="teal") Teal
-                option(value="indigo") Indigo
-                option(value="blue") Blue
-                option(value="cyan") Cyan
-                option(value="green") Green
-                option(value="light-green") Light Green
-                option(value="amber") Amber
-                option(value="deep-orange") Deep Orange
+                div.row
+                    div.col.s12
+                        h5 Weekly Calendar
+                        div.db-week-calendar.grey.lighten-3
+
+                    select#change-color.browser-default
+                        option(value="teal") Teal
+                        option(value="indigo") Indigo
+                        option(value="blue") Blue
+                        option(value="cyan") Cyan
+                        option(value="green") Green
+                        option(value="light-green") Light Green
+                        option(value="amber") Amber
+                        option(value="deep-orange") Deep Orange

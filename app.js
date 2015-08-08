@@ -14,8 +14,8 @@ app.get('/', indexController.index);
 app.get('/dashboard', dashboardController.index);
 app.get('/projects', projectsController.index);
 
-// Heroku or local port
-var port = process.env.PORT || 3000;
+
+var port = 2800;
 
 var server = app.listen(port, function() {
     console.log('Express server listening on port:', port);

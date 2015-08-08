@@ -1,51 +1,29 @@
 doctype html
-html(lang='en')
+html(lang='en' ng-app="spearhead")
     head
         meta(charset="utf-8")
         title Spearhead | Project Management Simplified
-        link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css")
-        link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
-        link(rel="stylesheet" href="/css/style.css")
-
-    body.grey.lighten-4
-        div.navbar-fixed
-            nav
-                div.nav-wrapper.teal.accent-4
-                    a(href="#").brand-logo Spearhead
-                    a(href="#" data-activates="nav-mobile").button-collapse
-                        i.material-icons menu
-                    ul#nav-desktop.right.hide-on-med-and-down
-                        li
-                            a(href="/about") About Spearhead
-                        li
-                            a(href="/account") Account
-                        li
-                            a(href="/logout") Logout
-
-                    ul#nav-mobile.side-nav.teal.lighten-5
-                        li
-                            a(href="/about") About Spearhead
-                        li
-                            a(href="/account") Account
-                        li
-                            a(href="/logout") Logout
-
-        div.row.full-height
-            div.col.s1.static-side-nav-col.hide-on-small-only.full-height.teal.lighten-5
-                ul.static-side-nav
-                    a(href="/dashboard")
-                        li Dashboard
-                    a(href="/projects")
-                        li Projects
-
-            div.col.s11.offset-s1
-                // Main Content Block
-                block content
-                
-        block modals
         
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js")
+        // Styles
+        // link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/css/materialize.min.css")
+        // link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
+        
+        // Gulp Styles and Scripts
+        link(rel="stylesheet" href="/css/styles.css")
+        script(src="/js/scripts.js")
+        
+        // Load jQuery first, then Angular Scripts
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js")
+        // script(src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js")
+        // script(src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-resource.min.js")
+        // script(src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-route.min.js")
+        
+        // Load Angular Application
+        // script(src="/js/app.js")
+    block content
+    block modals
+    
+    // script(src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js")
     script(src="/js/materialize-nav.js")
     // Need to include d3 scripts?

@@ -1,0 +1,19 @@
+{
+  "name": "spearhead-alpha-node",
+  "version": "0.0.0",
+  "homepage": "https://github.com/adamtysonsmith/spearhead-alpha-node",
+  "authors": [
+    "adam@adamtsmith.info"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-materialize": "*"
+  }
+}
