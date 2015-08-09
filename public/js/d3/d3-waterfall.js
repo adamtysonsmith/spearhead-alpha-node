@@ -2,44 +2,58 @@
 // D3 Waterfall Visualization
 ///////////////////////////////////////////////
 
-///////////////////////////////////////
-// Visualization Variables and Scales
-///////////////////////////////////////
+// Function to build our Waterfall Nav
+// Accepts data and an element for an Angular directive
+//var buildWaterfallNav = function(data, element) {
+//    
+//    var data = data;
+//    
+//    // Layout variables
+//    var width = 1200;
+//    var height = 500;
+//    var sidePadding = 0;
+//    var topPadding = 0;
+//
+//    // Create a selection for the svgContainer
+//    var svgContainer = d3.selectAll(element).append('svg')
+//        .attr('width', '100%')
+//        .attr('height', '100%')
+//        .attr('viewBox', '0 0 ' + width + ' ' + height)
+//        .attr('preserveAspectRatio','xMidYMid')
+//        .attr("class", "svg-container");
+//
+//    // Format the dates and times
+//    var dateFormat = d3.time.format('%Y-%m-%d');
+//    var timeFormat = d3.time.format('%b %e, %Y');
+//
+//    // Return minimum and maximum dates
+//    var min = d3.min(data, function(d) {
+//        return dateFormat.parse(d.startDate);
+//    });
+//    var max = d3.max(data, function(d) {
+//        return dateFormat.parse(d.dueDate);
+//    });
+//
+//    // Pass the min and max dates, create our time scale
+//    var timeScale = d3.time.scale().domain([min, max]).range([40, width - 40]);
+//
+//    // Create a color scale for our bars
+//    var colorScale = d3.scale.linear()
+//        .domain([0, data.length])
+//        .range(['#1199BF', '#12BF25'])
+//        .interpolate(d3.interpolateHcl);
+//    
+//    // Finally, draw our axis!
+//    // Function located below
+//    drawAxis(svgContainer, 0, 0, width, height, min, max, timeScale, timeFormat);
+//    
+//    // Finally, draw our bars!
+//    // Function located below
+//    // @params: data, theGap, theTopPad, theSidePad, theBarHeight, theColorScale, width, height
+//    drawBars(data, svgContainer, 50, 0, 0, 40, colorScale, timeScale, width, height);
+//}
 
-// Layout variables
-var width = 1200;
-var height = 500;
-var sidePadding = 0;
-var topPadding = 0;
 
-// Create a selection for the svgContainer
-var svgContainer = d3.selectAll('#waterfall-large').append('svg')
-    .attr('width', '100%')
-    .attr('height', '100%')
-    .attr('viewBox', '0 0 ' + width + ' ' + height)
-    .attr('preserveAspectRatio','xMidYMid')
-    .attr("class", "svg-container");
-
-// Format the dates and times
-var dateFormat = d3.time.format('%Y-%m-%d');
-var timeFormat = d3.time.format('%b %e, %Y');
-
-// Return minimum and maximum dates
-var min = d3.min(allProjects, function(d) {
-    return dateFormat.parse(d.startDate);
-});
-var max = d3.max(allProjects, function(d) {
-    return dateFormat.parse(d.dueDate);
-});
-
-// Pass the min and max dates, create our time scale
-var timeScale = d3.time.scale().domain([min, max]).range([40, width - 40]);
-
-// Create a color scale for our bars
-var colorScale = d3.scale.linear()
-    .domain([0, allProjects.length])
-    .range(['#1199BF', '#12BF25'])
-    .interpolate(d3.interpolateHcl);
 
 
 ///////////////////////////////////////
@@ -47,7 +61,7 @@ var colorScale = d3.scale.linear()
 ///////////////////////////////////////
 
 // Function to draw the timeline axis and gridlines
-var drawAxis = function(sidePadding, topPadding, width, height) {
+var drawAxis = function(svgContainer, sidePadding, topPadding, width, height, min, max, timeScale, timeFormat) {
 
     var interval = d3.time.day;
     var tickWidth = 100; // Set maximum tick width
@@ -79,7 +93,7 @@ var drawAxis = function(sidePadding, topPadding, width, height) {
 
 
 // Function to draw the bars and labels
-function drawBars(data, theGap, theTopPad, theSidePad, theBarHeight, theColorScale, w, h) {
+function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeight, theColorScale, timeScale, dateFormat, w, h) {
     
     // Append our bars
     var barGroup = svgContainer.append('g')
@@ -162,14 +176,3 @@ function drawBars(data, theGap, theTopPad, theSidePad, theBarHeight, theColorSca
     });
     
 } // End drawBars()
-
-
-// Function to build our Waterfall Nav
-var buildWaterfallNav = function(data) {
-    // Finally, draw our axis!
-    drawAxis(0, 0, width, height);
-    
-    // Finally, draw our bars!
-    // @params: data, theGap, theTopPad, theSidePad, theBarHeight, theColorScale, width, height
-    drawBars(data, 50, 0, 0, 40, colorScale, width, height);
-}

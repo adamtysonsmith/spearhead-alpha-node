@@ -1,0 +1,6 @@
+.db-week-calendar {
+    height: 150px;
+}
+.db-day-calendar, .db-quick-add {
+    height: 300px;
+}

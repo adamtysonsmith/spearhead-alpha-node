@@ -1,0 +1,19 @@
+/* D3 Waterfall Visualization Styles */
+.grid .tick {
+    stroke: lightgrey;
+    opacity: 0.3;
+    shape-rendering: crispEdges;
+}
+.grid path {
+      stroke-width: 0;
+}
+.waterfall-title {
+    margin-bottom: 50px;
+}
+.waterfall-date-range {
+    margin-top: 80px;
+}
+.date-toast {
+    background-color: darkslategray;
+    margin-top: 20px;
+}

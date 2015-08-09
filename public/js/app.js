@@ -1,1 +1,0 @@
-var spearhead = angular.module('spearhead', ['ngResource', 'ngRoute']);

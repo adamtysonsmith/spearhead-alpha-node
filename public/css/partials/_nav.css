@@ -13,7 +13,3 @@
 .static-side-nav a li:hover, .static-side-nav-active {
     background-color: #e3f2fd;
 }
-
-.db-day-calendar, .db-week-calendar, .db-task-queue, .db-quick-add {
-    height: 300px;
-}
