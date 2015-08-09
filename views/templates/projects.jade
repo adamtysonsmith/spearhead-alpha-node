@@ -1,0 +1,35 @@
+div(ng-controller="projectsController")
+    div.waterfall-title.row
+        div.col.s7
+            h1 Your Projects
+            a(href="#addProjectModal").btn.modal-trigger Add Project
+        div.input-field.waterfall-date-range.col.s2
+            //input(type="date" )#start.datepicker
+            span Month Beginning
+            br
+            input(type="month" ng-model="start")#start
+        div.input-field.waterfall-date-range.col.s2
+            //input(type="date" ng-model="end")#end.datepicker
+            span Month Ending
+            br
+            input(type="month" ng-model="end")#end
+
+    // Angular Directive for D3 Timeline
+    project-timeline(data="{{projects}}" start="{{start}}" end="{{end}}")
+
+block modals
+    div#addProjectModal.modal
+        div.modal-content
+            h5 Add a Project
+            div.input-field
+                input(type="text")#project-name.validate
+                label(for="project-name") Project Name
+            div.input-field
+                input(type="date")#start-date.datepicker
+                label(for="start-date") Start Date
+            div.input-field
+                input(type="date")#end-date.datepicker
+                label(for="end-date") Completion Date
+        div.modal-footer
+            a(href="#!").modal-action.modal-close.btn-flat Cancel
+            a(href="#!").modal-action.modal-close.btn-flat Save

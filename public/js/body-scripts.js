@@ -10478,64 +10478,6 @@ var initPipeline = function() {
 // D3 Waterfall Visualization
 ///////////////////////////////////////////////
 
-// Function to build our Waterfall Nav
-// Accepts data and an element for an Angular directive
-//var buildWaterfallNav = function(data, element) {
-//    
-//    var data = data;
-//    
-//    // Layout variables
-//    var width = 1200;
-//    var height = 500;
-//    var sidePadding = 0;
-//    var topPadding = 0;
-//
-//    // Create a selection for the svgContainer
-//    var svgContainer = d3.selectAll(element).append('svg')
-//        .attr('width', '100%')
-//        .attr('height', '100%')
-//        .attr('viewBox', '0 0 ' + width + ' ' + height)
-//        .attr('preserveAspectRatio','xMidYMid')
-//        .attr("class", "svg-container");
-//
-//    // Format the dates and times
-//    var dateFormat = d3.time.format('%Y-%m-%d');
-//    var timeFormat = d3.time.format('%b %e, %Y');
-//
-//    // Return minimum and maximum dates
-//    var min = d3.min(data, function(d) {
-//        return dateFormat.parse(d.startDate);
-//    });
-//    var max = d3.max(data, function(d) {
-//        return dateFormat.parse(d.dueDate);
-//    });
-//
-//    // Pass the min and max dates, create our time scale
-//    var timeScale = d3.time.scale().domain([min, max]).range([40, width - 40]);
-//
-//    // Create a color scale for our bars
-//    var colorScale = d3.scale.linear()
-//        .domain([0, data.length])
-//        .range(['#1199BF', '#12BF25'])
-//        .interpolate(d3.interpolateHcl);
-//    
-//    // Finally, draw our axis!
-//    // Function located below
-//    drawAxis(svgContainer, 0, 0, width, height, min, max, timeScale, timeFormat);
-//    
-//    // Finally, draw our bars!
-//    // Function located below
-//    // @params: data, theGap, theTopPad, theSidePad, theBarHeight, theColorScale, width, height
-//    drawBars(data, svgContainer, 50, 0, 0, 40, colorScale, timeScale, width, height);
-//}
-
-
-
-
-///////////////////////////////////////
-// Visualization Functions
-///////////////////////////////////////
-
 // Function to draw the timeline axis and gridlines
 var drawAxis = function(svgContainer, sidePadding, topPadding, width, height, min, max, timeScale, timeFormat) {
 
@@ -10653,6 +10595,32 @@ function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeigh
     
 } // End drawBars()
 var spearhead = angular.module('spearhead', ['ngResource', 'ngRoute']);
+
+
+///////////////////////////////////////////////
+// Routes
+///////////////////////////////////////////////
+
+spearhead.config(function($routeProvider){
+	$routeProvider.when('/dashboard', {
+			templateUrl : '/templates/dashboard',
+			controller  : 'dashboardController'
+		})
+		.when('/projects', {
+			templateUrl : '/templates/projects',
+			controller  : 'projectsController'
+		})
+		.when('/projects/:id', {
+			templateUrl : '/templates/project-details',
+			controller  : 'projectDetailsController'
+		});
+});
+
+
+
+///////////////////////////////////////////////
+// Directives
+///////////////////////////////////////////////
 
 // Project Waterfall Navigation
 spearhead.directive('projectTimeline', function(){
@@ -10780,6 +10748,7 @@ spearhead.controller('projectsController', function($scope){
         }
     ];
     
+    // Defaults to show the current month in datepicker
     $scope.start = new Date();
     $scope.end = new Date();
     

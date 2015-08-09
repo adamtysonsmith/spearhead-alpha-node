@@ -1,18 +1,17 @@
 var express             = require('express');
 var bodyParser          = require('body-parser');
 var indexController     = require('./controllers/index.js');
-var dashboardController = require('./controllers/dashboard.js');
-var projectsController  = require('./controllers/projects.js');
+var templateController  = require('./controllers/templates.js');
 
 var app = express();
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get('/', indexController.index);
-app.get('/dashboard', dashboardController.index);
-app.get('/projects', projectsController.index);
+app.get('/templates/:templateName', templateController.index);
 
 
 var port = 2800;

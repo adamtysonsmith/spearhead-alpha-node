@@ -1,5 +1,31 @@
 var spearhead = angular.module('spearhead', ['ngResource', 'ngRoute']);
 
+
+///////////////////////////////////////////////
+// Routes
+///////////////////////////////////////////////
+
+spearhead.config(function($routeProvider){
+	$routeProvider.when('/dashboard', {
+			templateUrl : '/templates/dashboard',
+			controller  : 'dashboardController'
+		})
+		.when('/projects', {
+			templateUrl : '/templates/projects',
+			controller  : 'projectsController'
+		})
+		.when('/projects/:id', {
+			templateUrl : '/templates/project-details',
+			controller  : 'projectDetailsController'
+		});
+});
+
+
+
+///////////////////////////////////////////////
+// Directives
+///////////////////////////////////////////////
+
 // Project Waterfall Navigation
 spearhead.directive('projectTimeline', function(){
     
@@ -126,6 +152,7 @@ spearhead.controller('projectsController', function($scope){
         }
     ];
     
+    // Defaults to show the current month in datepicker
     $scope.start = new Date();
     $scope.end = new Date();
     
