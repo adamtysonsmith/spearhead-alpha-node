@@ -1,28 +1,54 @@
 extends layout
 
 block content
+    body
+        div.navbar-fixed
+            nav
+                div.nav-wrapper.blue-grey.darken-2
+                    a(href="#").brand-logo Spearhead
+                    a(href="#" data-activates="nav-mobile").button-collapse
+                        i.material-icons menu
+                    ul#nav-desktop.right.hide-on-med-and-down
+                        li
+                            a(href="/about") About Spearhead
+                        li
+                            a(href="/account") Account
+                        li
+                            a(href="/logout") Logout
+
+                    ul#nav-mobile.side-nav
+                        li
+                            a(href="/about") About Spearhead
+                        li
+                            a(href="/account") Account
+                        li
+                            a(href="/logout") Logout
+                            
     div.container
         div.row
-            form.col.s6
+            form(action="/auth/login" method="POST").col.s6
                 h4.login-title Login to Spearhead
                 div.row
                     div.input-field.col.s10
-                        input#login-email(type="email").validate
-                        label(for="login-email" data-error="Not a Valid Email Address" data-success="Looks good!") Email
+                        input#login-username(type="text" name="username")
+                        label(for="login-username") Username
                     div.input-field.col.s10
-                        input#login-password(type="password")
+                        input#login-password(type="password" name="password")
                         label(for="login-password") Password
                     div.input-field.col.s10
                         input(type="submit" value="Login").btn
 
-            form.col.s6
+            form(action="/auth/signup" method="POST").col.s6
                 h4.login-title Create a New Account
                 div.row
                     div.input-field.col.s10
-                        input#signup-email(type="email").validate
+                        input#signup-username(type="text" name="username")
+                        label(for="signup-username") Username
+                    div.input-field.col.s10
+                        input#signup-email(type="email" name="email").validate
                         label(for="signup-email" data-error="Not a Valid Email Address" data-success="Looks good!") Email
                     div.input-field.col.s10
-                        input#signup-password(type="password")
+                        input#signup-password(type="password" name="password")
                         label(for="signup-password") Password
                     div.input-field.col.s10
                         input(type="submit" value="Create Account").btn
