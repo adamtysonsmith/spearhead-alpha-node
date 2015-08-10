@@ -1,5 +1,5 @@
 /*
- AngularJS v1.4.3
+ AngularJS v1.4.4-build.4160+sha.0827e88
  (c) 2010-2015 Google, Inc. http://angularjs.org
  License: MIT
 */
@@ -13,7 +13,7 @@ c=l||m.template,h,e,q=m.urlParams={};r(c.split(/\W/),function(b){if("hasOwnPrope
 //# sourceMappingURL=angular-resource.min.js.map
 
 /*
- AngularJS v1.4.3
+ AngularJS v1.4.4-build.4160+sha.0827e88
  (c) 2010-2015 Google, Inc. http://angularjs.org
  License: MIT
 */
@@ -9826,7 +9826,7 @@ dashboard.config(function($routeProvider){
 	$routeProvider
         // Referring to /dashboard#/
         .when('/', {
-			templateUrl : '/templates/dashboard',
+			templateUrl : '/ng-views/dashboard',
 			controller  : 'dashboardController'
 		});
 });
@@ -9850,12 +9850,12 @@ projects.config(function($routeProvider){
 	$routeProvider
         // Referring to /projects#/
 		.when('/', {
-			templateUrl : '/templates/projects',
+			templateUrl : '/ng-views/projects',
 			controller  : 'projectsController'
 		})
          // Referring to /projects#/:id
 		.when('/:id', {
-			templateUrl : '/templates/project-details',
+			templateUrl : '/ng-views/project-details',
 			controller  : 'projectDetailsController'
 		});
 });

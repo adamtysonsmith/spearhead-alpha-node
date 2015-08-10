@@ -8,12 +8,12 @@ projects.config(function($routeProvider){
 	$routeProvider
         // Referring to /projects#/
 		.when('/', {
-			templateUrl : '/templates/projects',
+			templateUrl : '/ng-views/projects',
 			controller  : 'projectsController'
 		})
          // Referring to /projects#/:id
 		.when('/:id', {
-			templateUrl : '/templates/project-details',
+			templateUrl : '/ng-views/project-details',
 			controller  : 'projectDetailsController'
 		});
 });

@@ -8,7 +8,7 @@ dashboard.config(function($routeProvider){
 	$routeProvider
         // Referring to /dashboard#/
         .when('/', {
-			templateUrl : '/templates/dashboard',
+			templateUrl : '/ng-views/dashboard',
 			controller  : 'dashboardController'
 		});
 });
