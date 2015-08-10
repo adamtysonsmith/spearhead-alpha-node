@@ -2,13 +2,6 @@ extends layout
 
 block content
 
-    //if (pathname == '/dashboard')
-        body(ng-app="dashboard").grey.lighten-4
-    //else if (pathname == '/projects')
-        body(ng-app="projects").grey.lighten-4
-    //else
-        body.grey.lighten-4
-        
     body.grey.lighten-4
         div.navbar-fixed
             nav
@@ -41,6 +34,5 @@ block content
                         li Projects
 
             div.col.s11.offset-s1
-                // main content should be nested here
-                // block main
+                // main content in ng-view
                 div(ng-view)

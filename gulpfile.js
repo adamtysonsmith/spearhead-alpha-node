@@ -10,7 +10,7 @@ var paths = {
         './bower_components/angular-resource/angular-resource.min.js',
         './bower_components/angular-route/angular-route.min.js',
         './bower_components/materialize/dist/js/materialize.min.js',
-        './public/js/body/materialize-nav.js',
+        './public/js/init/materialize-nav.js',
         './bower_components/d3/d3.js',
         './public/js/d3/*.js',
         './public/js/angular/dashboard.js',
@@ -22,20 +22,20 @@ var paths = {
 
 gulp.task('styles', function(){
     gulp.src(paths.stylesheets)
-    .pipe(concat('styles.css'))
+    .pipe(concat('build.css'))
     .pipe(gulp.dest('./public/css'));
 });
 
 gulp.task('head-scripts', function(){
     gulp.src(paths.headScripts)
     .pipe(concat('head-scripts.js'))
-    .pipe(gulp.dest('./public/js'));
+    .pipe(gulp.dest('./public/js/build'));
 });
 
 gulp.task('body-scripts', function(){
     gulp.src(paths.bodyScripts)
     .pipe(concat('body-scripts.js'))
-    .pipe(gulp.dest('./public/js'));
+    .pipe(gulp.dest('./public/js/build'));
 });
 
 gulp.task('watch', function() {
