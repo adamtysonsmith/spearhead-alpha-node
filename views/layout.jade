@@ -1,15 +1,22 @@
 doctype html
-html(lang='en' ng-app="spearhead")
-    head
-        meta(charset="utf-8")
-        title Spearhead | Project Management Simplified
 
-        // Gulp Styles and Scripts
-        link(rel="stylesheet" href="/css/styles.css")
-        link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
-        script(src="/js/head-scripts.js")
+if (pathname == '/dashboard')
+    html(lang='en' ng-app="dashboard")
+else if (pathname == '/projects')
+    html(lang='en' ng-app="projects")
+else
+    html(lang='en')
 
-    block content
-    block modals
-    
-    script(src="/js/body-scripts.js")
+head
+    meta(charset="utf-8")
+    title Spearhead | Project Management Simplified
+
+    // Gulp Styles and Scripts
+    link(rel="stylesheet" href="/css/styles.css")
+    //link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
+    script(src="/js/head-scripts.js")
+
+block content
+block modals
+
+script(src="/js/body-scripts.js")

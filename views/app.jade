@@ -1,6 +1,14 @@
 extends layout
 
 block content
+
+    //if (pathname == '/dashboard')
+        body(ng-app="dashboard").grey.lighten-4
+    //else if (pathname == '/projects')
+        body(ng-app="projects").grey.lighten-4
+    //else
+        body.grey.lighten-4
+        
     body.grey.lighten-4
         div.navbar-fixed
             nav

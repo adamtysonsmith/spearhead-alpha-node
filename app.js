@@ -11,6 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('/', indexController.index);
+app.get('/dashboard', indexController.app);
+app.get('/projects', indexController.app);
 app.get('/templates/:templateName', templateController.index);
 
 

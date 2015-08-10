@@ -1,3 +1,33 @@
+/*
+ AngularJS v1.4.3
+ (c) 2010-2015 Google, Inc. http://angularjs.org
+ License: MIT
+*/
+(function(I,d,B){'use strict';function D(f,q){q=q||{};d.forEach(q,function(d,h){delete q[h]});for(var h in f)!f.hasOwnProperty(h)||"$"===h.charAt(0)&&"$"===h.charAt(1)||(q[h]=f[h]);return q}var x=d.$$minErr("$resource"),C=/^(\.[a-zA-Z_$@][0-9a-zA-Z_$@]*)+$/;d.module("ngResource",["ng"]).provider("$resource",function(){var f=this;this.defaults={stripTrailingSlashes:!0,actions:{get:{method:"GET"},save:{method:"POST"},query:{method:"GET",isArray:!0},remove:{method:"DELETE"},"delete":{method:"DELETE"}}};
+this.$get=["$http","$q",function(q,h){function u(d,g){this.template=d;this.defaults=s({},f.defaults,g);this.urlParams={}}function w(y,g,l,m){function c(b,k){var c={};k=s({},g,k);r(k,function(a,k){v(a)&&(a=a());var d;if(a&&a.charAt&&"@"==a.charAt(0)){d=b;var e=a.substr(1);if(null==e||""===e||"hasOwnProperty"===e||!C.test("."+e))throw x("badmember",e);for(var e=e.split("."),n=0,g=e.length;n<g&&d!==B;n++){var h=e[n];d=null!==d?d[h]:B}}else d=a;c[k]=d});return c}function F(b){return b.resource}function e(b){D(b||
+{},this)}var G=new u(y,m);l=s({},f.defaults.actions,l);e.prototype.toJSON=function(){var b=s({},this);delete b.$promise;delete b.$resolved;return b};r(l,function(b,k){var g=/^(POST|PUT|PATCH)$/i.test(b.method);e[k]=function(a,z,m,y){var n={},f,l,A;switch(arguments.length){case 4:A=y,l=m;case 3:case 2:if(v(z)){if(v(a)){l=a;A=z;break}l=z;A=m}else{n=a;f=z;l=m;break}case 1:v(a)?l=a:g?f=a:n=a;break;case 0:break;default:throw x("badargs",arguments.length);}var u=this instanceof e,p=u?f:b.isArray?[]:new e(f),
+t={},w=b.interceptor&&b.interceptor.response||F,C=b.interceptor&&b.interceptor.responseError||B;r(b,function(b,a){"params"!=a&&"isArray"!=a&&"interceptor"!=a&&(t[a]=H(b))});g&&(t.data=f);G.setUrlParams(t,s({},c(f,b.params||{}),n),b.url);n=q(t).then(function(a){var c=a.data,g=p.$promise;if(c){if(d.isArray(c)!==!!b.isArray)throw x("badcfg",k,b.isArray?"array":"object",d.isArray(c)?"array":"object",t.method,t.url);b.isArray?(p.length=0,r(c,function(a){"object"===typeof a?p.push(new e(a)):p.push(a)})):
+(D(c,p),p.$promise=g)}p.$resolved=!0;a.resource=p;return a},function(a){p.$resolved=!0;(A||E)(a);return h.reject(a)});n=n.then(function(a){var b=w(a);(l||E)(b,a.headers);return b},C);return u?n:(p.$promise=n,p.$resolved=!1,p)};e.prototype["$"+k]=function(a,b,c){v(a)&&(c=b,b=a,a={});a=e[k].call(this,a,this,b,c);return a.$promise||a}});e.bind=function(b){return w(y,s({},g,b),l)};return e}var E=d.noop,r=d.forEach,s=d.extend,H=d.copy,v=d.isFunction;u.prototype={setUrlParams:function(f,g,l){var m=this,
+c=l||m.template,h,e,q=m.urlParams={};r(c.split(/\W/),function(b){if("hasOwnProperty"===b)throw x("badname");!/^\d+$/.test(b)&&b&&(new RegExp("(^|[^\\\\]):"+b+"(\\W|$)")).test(c)&&(q[b]=!0)});c=c.replace(/\\:/g,":");g=g||{};r(m.urlParams,function(b,k){h=g.hasOwnProperty(k)?g[k]:m.defaults[k];d.isDefined(h)&&null!==h?(e=encodeURIComponent(h).replace(/%40/gi,"@").replace(/%3A/gi,":").replace(/%24/g,"$").replace(/%2C/gi,",").replace(/%20/g,"%20").replace(/%26/gi,"&").replace(/%3D/gi,"=").replace(/%2B/gi,
+"+"),c=c.replace(new RegExp(":"+k+"(\\W|$)","g"),function(b,a){return e+a})):c=c.replace(new RegExp("(/?):"+k+"(\\W|$)","g"),function(b,a,c){return"/"==c.charAt(0)?c:a+c})});m.defaults.stripTrailingSlashes&&(c=c.replace(/\/+$/,"")||"/");c=c.replace(/\/\.(?=\w+($|\?))/,".");f.url=c.replace(/\/\\\./,"/.");r(g,function(b,c){m.urlParams[c]||(f.params=f.params||{},f.params[c]=b)})}};return w}]})})(window,window.angular);
+//# sourceMappingURL=angular-resource.min.js.map
+
+/*
+ AngularJS v1.4.3
+ (c) 2010-2015 Google, Inc. http://angularjs.org
+ License: MIT
+*/
+(function(p,c,C){'use strict';function v(r,h,g){return{restrict:"ECA",terminal:!0,priority:400,transclude:"element",link:function(a,f,b,d,y){function z(){k&&(g.cancel(k),k=null);l&&(l.$destroy(),l=null);m&&(k=g.leave(m),k.then(function(){k=null}),m=null)}function x(){var b=r.current&&r.current.locals;if(c.isDefined(b&&b.$template)){var b=a.$new(),d=r.current;m=y(b,function(b){g.enter(b,null,m||f).then(function(){!c.isDefined(t)||t&&!a.$eval(t)||h()});z()});l=d.scope=b;l.$emit("$viewContentLoaded");
+l.$eval(w)}else z()}var l,m,k,t=b.autoscroll,w=b.onload||"";a.$on("$routeChangeSuccess",x);x()}}}function A(c,h,g){return{restrict:"ECA",priority:-400,link:function(a,f){var b=g.current,d=b.locals;f.html(d.$template);var y=c(f.contents());b.controller&&(d.$scope=a,d=h(b.controller,d),b.controllerAs&&(a[b.controllerAs]=d),f.data("$ngControllerController",d),f.children().data("$ngControllerController",d));y(a)}}}p=c.module("ngRoute",["ng"]).provider("$route",function(){function r(a,f){return c.extend(Object.create(a),
+f)}function h(a,c){var b=c.caseInsensitiveMatch,d={originalPath:a,regexp:a},g=d.keys=[];a=a.replace(/([().])/g,"\\$1").replace(/(\/)?:(\w+)([\?\*])?/g,function(a,c,b,d){a="?"===d?d:null;d="*"===d?d:null;g.push({name:b,optional:!!a});c=c||"";return""+(a?"":c)+"(?:"+(a?c:"")+(d&&"(.+?)"||"([^/]+)")+(a||"")+")"+(a||"")}).replace(/([\/$\*])/g,"\\$1");d.regexp=new RegExp("^"+a+"$",b?"i":"");return d}var g={};this.when=function(a,f){var b=c.copy(f);c.isUndefined(b.reloadOnSearch)&&(b.reloadOnSearch=!0);
+c.isUndefined(b.caseInsensitiveMatch)&&(b.caseInsensitiveMatch=this.caseInsensitiveMatch);g[a]=c.extend(b,a&&h(a,b));if(a){var d="/"==a[a.length-1]?a.substr(0,a.length-1):a+"/";g[d]=c.extend({redirectTo:a},h(d,b))}return this};this.caseInsensitiveMatch=!1;this.otherwise=function(a){"string"===typeof a&&(a={redirectTo:a});this.when(null,a);return this};this.$get=["$rootScope","$location","$routeParams","$q","$injector","$templateRequest","$sce",function(a,f,b,d,h,p,x){function l(b){var e=s.current;
+(v=(n=k())&&e&&n.$$route===e.$$route&&c.equals(n.pathParams,e.pathParams)&&!n.reloadOnSearch&&!w)||!e&&!n||a.$broadcast("$routeChangeStart",n,e).defaultPrevented&&b&&b.preventDefault()}function m(){var u=s.current,e=n;if(v)u.params=e.params,c.copy(u.params,b),a.$broadcast("$routeUpdate",u);else if(e||u)w=!1,(s.current=e)&&e.redirectTo&&(c.isString(e.redirectTo)?f.path(t(e.redirectTo,e.params)).search(e.params).replace():f.url(e.redirectTo(e.pathParams,f.path(),f.search())).replace()),d.when(e).then(function(){if(e){var a=
+c.extend({},e.resolve),b,f;c.forEach(a,function(b,e){a[e]=c.isString(b)?h.get(b):h.invoke(b,null,null,e)});c.isDefined(b=e.template)?c.isFunction(b)&&(b=b(e.params)):c.isDefined(f=e.templateUrl)&&(c.isFunction(f)&&(f=f(e.params)),c.isDefined(f)&&(e.loadedTemplateUrl=x.valueOf(f),b=p(f)));c.isDefined(b)&&(a.$template=b);return d.all(a)}}).then(function(f){e==s.current&&(e&&(e.locals=f,c.copy(e.params,b)),a.$broadcast("$routeChangeSuccess",e,u))},function(b){e==s.current&&a.$broadcast("$routeChangeError",
+e,u,b)})}function k(){var a,b;c.forEach(g,function(d,g){var q;if(q=!b){var h=f.path();q=d.keys;var l={};if(d.regexp)if(h=d.regexp.exec(h)){for(var k=1,m=h.length;k<m;++k){var n=q[k-1],p=h[k];n&&p&&(l[n.name]=p)}q=l}else q=null;else q=null;q=a=q}q&&(b=r(d,{params:c.extend({},f.search(),a),pathParams:a}),b.$$route=d)});return b||g[null]&&r(g[null],{params:{},pathParams:{}})}function t(a,b){var d=[];c.forEach((a||"").split(":"),function(a,c){if(0===c)d.push(a);else{var f=a.match(/(\w+)(?:[?*])?(.*)/),
+g=f[1];d.push(b[g]);d.push(f[2]||"");delete b[g]}});return d.join("")}var w=!1,n,v,s={routes:g,reload:function(){w=!0;a.$evalAsync(function(){l();m()})},updateParams:function(a){if(this.current&&this.current.$$route)a=c.extend({},this.current.params,a),f.path(t(this.current.$$route.originalPath,a)),f.search(a);else throw B("norout");}};a.$on("$locationChangeStart",l);a.$on("$locationChangeSuccess",m);return s}]});var B=c.$$minErr("ngRoute");p.provider("$routeParams",function(){this.$get=function(){return{}}});
+p.directive("ngView",v);p.directive("ngView",A);v.$inject=["$route","$anchorScroll","$animate"];A.$inject=["$compile","$controller","$route"]})(window,window.angular);
+//# sourceMappingURL=angular-route.min.js.map
+
 /*!
  * Materialize v0.97.0 (http://materializecss.com)
  * Copyright 2014-2015 Materialize
@@ -832,8 +862,6 @@ $(document).ready(function(){
         // Reset current color
         currentColor = newColor;
     });
-    
-    
     
 });
 !function() {
@@ -10594,26 +10622,147 @@ function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeigh
     });
     
 } // End drawBars()
-var spearhead = angular.module('spearhead', ['ngResource', 'ngRoute']);
-
+var dashboard = angular.module('dashboard', ['ngResource', 'ngRoute']);
 
 ///////////////////////////////////////////////
 // Routes
 ///////////////////////////////////////////////
 
-spearhead.config(function($routeProvider){
-	$routeProvider.when('/dashboard', {
+dashboard.config(function($routeProvider){
+	$routeProvider
+        // Referring to /dashboard#/
+        .when('/', {
 			templateUrl : '/templates/dashboard',
 			controller  : 'dashboardController'
-		})
-		.when('/projects', {
+		});
+});
+
+
+///////////////////////////////////////////////
+// Controllers
+///////////////////////////////////////////////
+
+// Dashboard Controller
+dashboard.controller('dashboardController', function($scope){
+    console.log('I am the dashboard controller!!!');
+});
+var projects = angular.module('projects', ['ngResource', 'ngRoute']);
+
+///////////////////////////////////////////////
+// Routes
+///////////////////////////////////////////////
+
+projects.config(function($routeProvider){
+	$routeProvider
+        // Referring to /projects#/
+		.when('/', {
 			templateUrl : '/templates/projects',
 			controller  : 'projectsController'
 		})
-		.when('/projects/:id', {
+         // Referring to /projects#/:id
+		.when('/:id', {
 			templateUrl : '/templates/project-details',
 			controller  : 'projectDetailsController'
 		});
+});
+
+
+///////////////////////////////////////////////
+// Controllers
+///////////////////////////////////////////////
+
+// Projects Controller
+projects.controller('projectsController', function($scope){
+    console.log('I am the projects controller!!!');
+    
+    $scope.projects = [
+        {
+            dueDate: "2015-05-01",
+            duration: "The duration is XXX",
+            isAbandoned: false,
+            isActive: false,
+            isCompleted: false,
+            isDeferred: false,
+            isStarted: false,
+            name: "Move to Colorado",
+            stages: [],
+            startDate: "2015-04-20"
+        },
+        {
+            dueDate: "2015-07-16",
+            duration: "The duration is XXX",
+            isAbandoned: false,
+            isActive: false,
+            isCompleted: false,
+            isDeferred: false,
+            isStarted: false,
+            name: "Midterm Project",
+            stages: [],
+            startDate: "2015-07-01"
+        },
+        {
+            dueDate: "2015-08-30",
+            duration: "The duration is XXX",
+            isAbandoned: false,
+            isActive: false,
+            isCompleted: false,
+            isDeferred: false,
+            isStarted: false,
+            name: "Website Design for Pup n' Suds",
+            stages: [],
+            startDate: "2015-08-01"
+        },
+        {
+            dueDate: "2015-08-15",
+            duration: "The duration is XXX",
+            isAbandoned: false,
+            isActive: false,
+            isCompleted: false,
+            isDeferred: false,
+            isStarted: false,
+            name: "Final Project!",
+            stages: [],
+            startDate: "2015-07-18"
+        }
+    ];
+    
+    // Defaults to show the current month in the projects datepicker
+    $scope.start = new Date();
+    $scope.end = new Date();
+    
+    // Initialize Materialize Datepicker for modal
+    var $pickadate = $('.datepicker').pickadate({
+        selectMonths: true,
+        selectYears: 15,
+        container: 'body'
+    });
+    
+    var datepick = $pickadate.pickadate('datepick');
+    
+    
+    $scope.addProject = function() {
+        $('#addProjectModal').openModal();
+    }
+    
+    $scope.closeModal = function() {
+        $('#addProjectModal').closeModal();
+    }
+    
+    $scope.addStartDate = function() {
+        console.log('triggered add start date');
+        datepick.open();
+    }
+
+    $scope.addDueDate = function() {
+        console.log('triggered add due date');
+        datepick.open();
+    }
+    
+});
+
+// Project Details Controller
+projects.controller('projectDetailsController', function($scope){
+    console.log('I am the project details controller!!!');
 });
 
 
@@ -10623,7 +10772,7 @@ spearhead.config(function($routeProvider){
 ///////////////////////////////////////////////
 
 // Project Waterfall Navigation
-spearhead.directive('projectTimeline', function(){
+projects.directive('projectTimeline', function(){
     
     var link = function(scope, el) {
         // selection is an array of the new values
@@ -10693,63 +10842,4 @@ spearhead.directive('projectTimeline', function(){
         }
     }
     
-});
-
-// Projects Controller
-spearhead.controller('projectsController', function($scope){
-    $scope.projects = [
-        {
-            dueDate: "2015-05-01",
-            duration: "The duration is XXX",
-            isAbandoned: false,
-            isActive: false,
-            isCompleted: false,
-            isDeferred: false,
-            isStarted: false,
-            name: "Move to Colorado",
-            stages: [],
-            startDate: "2015-04-20"
-        },
-        {
-            dueDate: "2015-07-16",
-            duration: "The duration is XXX",
-            isAbandoned: false,
-            isActive: false,
-            isCompleted: false,
-            isDeferred: false,
-            isStarted: false,
-            name: "Midterm Project",
-            stages: [],
-            startDate: "2015-07-01"
-        },
-        {
-            dueDate: "2015-08-30",
-            duration: "The duration is XXX",
-            isAbandoned: false,
-            isActive: false,
-            isCompleted: false,
-            isDeferred: false,
-            isStarted: false,
-            name: "Website Design for Pup n' Suds",
-            stages: [],
-            startDate: "2015-08-01"
-        },
-        {
-            dueDate: "2015-08-15",
-            duration: "The duration is XXX",
-            isAbandoned: false,
-            isActive: false,
-            isCompleted: false,
-            isDeferred: false,
-            isStarted: false,
-            name: "Final Project!",
-            stages: [],
-            startDate: "2015-07-18"
-        }
-    ];
-    
-    // Defaults to show the current month in datepicker
-    $scope.start = new Date();
-    $scope.end = new Date();
-    
-});
+}); // End Waterfall Nav Directive
