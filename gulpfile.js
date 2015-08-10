@@ -10,9 +10,7 @@ var paths = {
         './bower_components/angular-resource/angular-resource.min.js',
         './bower_components/angular-route/angular-route.min.js',
         './bower_components/materialize/dist/js/materialize.min.js',
-        './bower_components/angular-materialize/src/angular-materialize.js',
         './public/js/body/materialize-nav.js',
-        // Load D3 and all D3 Charts
         './bower_components/d3/d3.js',
         './public/js/d3/*.js',
         './public/js/angular/dashboard.js',
