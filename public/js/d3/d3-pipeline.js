@@ -3,27 +3,20 @@
 ///////////////////////////////////////////////
 var drawPipeline;
 
-var initPipeline = function() {
+var initPipeline = function(svgPipelineContainer) {
     // Layout variables
     var width = 1000;
     var height = 100;
     //var sidePadding = 0;
     //var topPadding = 0;
 
-    // Create a selection for the svgContainer
-    var svgPipelineContainer = d3.selectAll('.pipeline-container').append('svg')
-        .attr('width', '100%')
-        .attr('height', '100%')
-        .attr('viewBox', '0 0 ' + width + ' ' + height)
-        .attr('preserveAspectRatio','xMidYMid')
-        .attr("class", "project-pipeline");
-    
     // Create a color scale
     var pipelineColorScale = d3.scale.linear()
         .domain([0, 10])
         .range(['#1199BF', '#12BF25'])
         .interpolate(d3.interpolateHcl);
     
+    // Accepts an array of Stage objects
     drawPipeline = function(data) {
         // Append our polygon groups and specify data to be entered
         var polyGroup = svgPipelineContainer.append('g')
@@ -59,9 +52,9 @@ var initPipeline = function() {
             });
             
             var polyText = polyGroup.append('text')
-                .classed('stage-text',true)
-                .attr('font-size','14')
-                .attr('fill','white')
+                .classed('stage-text', true)
+                .attr('font-size', '14')
+                .attr('fill', 'white')
                 .attr('y', 35)
                 .attr('x', function(d, i) {
                     var x = 20;

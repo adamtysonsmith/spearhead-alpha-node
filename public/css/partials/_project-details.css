@@ -1,0 +1,19 @@
+#add-stage-input {
+    margin-top: 80px;
+}
+#add-task-input, #add-note-input {
+    margin-top: 65px;
+}
+.tasks-component {
+    border-right: 1px solid #4d4d4d;
+}
+.task-name {
+    font-size: 18px;
+}
+.task {
+    padding: 30px;
+    background-color: #e3e3e3;
+}
+.task:hover {
+    background-color: aliceblue;
+}

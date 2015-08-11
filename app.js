@@ -1,13 +1,13 @@
-var express          = require('express');
-var bodyParser       = require('body-parser');
-var cookieParser     = require('cookie-parser');
-var session          = require('express-session');
-var mongoose         = require('mongoose');
-var passport         = require('passport');
-var passportConfig   = require('./config/passport');
-var indexController  = require('./controllers/index.js');
-var authController   = require('./controllers/auth.js');
-var ngviewController = require('./controllers/ngviews.js');
+var express             = require('express');
+var bodyParser          = require('body-parser');
+var cookieParser        = require('cookie-parser');
+var session             = require('express-session');
+var mongoose            = require('mongoose');
+var passport            = require('passport');
+var passportConfig      = require('./config/passport');
+var indexController     = require('./controllers/index.js');
+var authController      = require('./controllers/auth.js');
+var templateController  = require('./controllers/templates.js');
 
 
 // Connect to spearhead database
@@ -54,8 +54,8 @@ app.use(passportConfig.ensureAuthenticated);
 // Authenticated routes
 app.get('/dashboard', indexController.app);
 app.get('/projects', indexController.app);
-app.get('/ng-views/:templateName', ngviewController.index);
-
+app.get('/ng-views/:templateName', templateController.ngview);
+app.get('/partials/:partialName', templateController.partial);
 
 // Server
 var port = 2800;

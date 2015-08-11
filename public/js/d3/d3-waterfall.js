@@ -65,7 +65,7 @@ function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeigh
             return d3.rgb(theColorScale(i));
         })
         .on('click', function(d, i) {
-            console.log('clicked bar..')
+            console.log('clicked bar..', d)
             return window.location.hash = '/' + i;
         });
    

@@ -4,17 +4,18 @@ block content
     body
         div.navbar-fixed
             nav
-                div.nav-wrapper.blue-grey.darken-2
-                    a(href="#").brand-logo Spearhead
+                div.nav-wrapper
+                    a(href="#").brand-logo
+                        img(src="/img/spearhead-logo-lt.png").logo-top-nav
                     a(href="#" data-activates="nav-mobile").button-collapse
                         i.material-icons menu
                     ul#nav-desktop.right.hide-on-med-and-down
                         li
-                            a(href="/about") About Spearhead
+                            a(href="/about").nav-links About Spearhead
                         li
-                            a(href="/account") Account
+                            a(href="/account").nav-links Account
                         li
-                            a(href="/logout") Logout
+                            a(href="/logout").nav-links Logout
 
                     ul#nav-mobile.side-nav
                         li

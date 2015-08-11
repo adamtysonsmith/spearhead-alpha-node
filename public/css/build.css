@@ -35,8 +35,22 @@ html, body {
 h1 {
     font-size: 35px;
 }
+h2 {
+    font-size: 28px;
+}
 .login-title {
     margin-bottom: 30px;
+}
+.nav-wrapper {
+    background-color: #36415b;
+}
+.logo-top-nav {
+    width: 16%;
+    padding-top: 15px;
+    padding-left: 6px;
+}
+.nav-links {
+    font-weight: 100;
 }
 .static-side-nav-col {
     /* Override Materialize.css column */
@@ -54,6 +68,25 @@ h1 {
     background-color: #e3f2fd;
 }
 
+#add-stage-input {
+    margin-top: 80px;
+}
+#add-task-input, #add-note-input {
+    margin-top: 65px;
+}
+.tasks-component {
+    border-right: 1px solid #4d4d4d;
+}
+.task-name {
+    font-size: 18px;
+}
+.task {
+    padding: 30px;
+    background-color: #e3e3e3;
+}
+.task:hover {
+    background-color: aliceblue;
+}
 /* D3 Waterfall Visualization Styles */
 .grid .tick {
     stroke: lightgrey;
