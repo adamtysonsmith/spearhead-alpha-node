@@ -54,7 +54,7 @@ app.use(passportConfig.ensureAuthenticated);
 // Authenticated routes
 app.get('/dashboard', indexController.app);
 app.get('/projects', indexController.app);
-app.get('/ngviews/:templateName', ngviewController.index);
+app.get('/ng-views/:templateName', ngviewController.index);
 
 
 // Server
