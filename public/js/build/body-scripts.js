@@ -9761,6 +9761,10 @@ function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeigh
         .attr('stroke', 'none')
         .attr('fill', function(d, i){
             return d3.rgb(theColorScale(i));
+        })
+        .on('click', function(d, i) {
+            console.log('clicked bar..')
+            return window.location.hash = '/' + i;
         });
    
 
