@@ -15,10 +15,10 @@ div.row
             div.row
                 div.col.s6.tasks-component
                     div.row
-                        div.col.s3
-                            h2 Tasks
-                            button.btn(ng-click="showTaskInput()") + Add Task
-                        div#add-task-input.input-field.col.s9(ng-show="taskInput")
+                        div.col.s12
+                            h2.left Tasks
+                            button.btn-floating.add-task-btn(ng-click="showTaskInput()") +
+                        div#add-task-input.input-field.col.s12(ng-show="taskInput")
                             input#add-task(type="text" ng-model="newTask" ng-keyup="addTaskKeyup($event.keyCode)" ng-blur="addTaskBlur()")
                             label(for="add-task") Add a Task to this Stage
                     div(ng-repeat="task in project.stages[0].tasks").task
@@ -26,10 +26,10 @@ div.row
 
                 div.col.s6.notes-component
                     div.row
-                        div.col.s3
-                            h2 Notes
-                            button.btn(ng-click="showNoteInput()") + Add Note
-                        div#add-note-input.input-field.col.s9(ng-show="noteInput")
+                        div.col.s12
+                            h2.left Notes
+                            button.btn-floating.add-note-btn(ng-click="showNoteInput()") +
+                        div#add-note-input.input-field.col.s12(ng-show="noteInput")
                             input#add-note(type="text" ng-model="newNote" ng-keyup="addNoteKeyup($event.keyCode)" ng-blur="addNoteBlur()")
                             label(for="add-note") Add a Note to this Task
                     div.card-panel

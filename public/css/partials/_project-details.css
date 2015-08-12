@@ -1,9 +1,6 @@
 #add-stage-input {
     margin-top: 30px;
 }
-#add-task-input, #add-note-input {
-    margin-top: 65px;
-}
 .tasks-component {
     border-right: 1px solid #4d4d4d;
 }
@@ -24,4 +21,10 @@
 }
 .note-content {
     font-size: 14px;
+}
+.add-task-btn, .add-note-btn {
+    font-size: 25px;
+    font-weight: 300;
+    margin-top: 21px;
+    margin-left: 10px;
 }

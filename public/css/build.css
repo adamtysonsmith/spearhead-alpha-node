@@ -34,6 +34,12 @@ body {
 .full-width {
     width
 }
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
 
 h1 {
     font-size: 35px;
@@ -42,8 +48,10 @@ h2 {
     font-size: 28px;
 }
 button {
-    font-size: 12px;
+    font-size: 12px;   
 }
+
+
 .login-title {
     margin-bottom: 30px;
 }
@@ -77,9 +85,6 @@ button {
 #add-stage-input {
     margin-top: 30px;
 }
-#add-task-input, #add-note-input {
-    margin-top: 65px;
-}
 .tasks-component {
     border-right: 1px solid #4d4d4d;
 }
@@ -100,6 +105,12 @@ button {
 }
 .note-content {
     font-size: 14px;
+}
+.add-task-btn, .add-note-btn {
+    font-size: 25px;
+    font-weight: 300;
+    margin-top: 21px;
+    margin-left: 10px;
 }
 /* D3 Waterfall Visualization Styles */
 .grid .tick {
