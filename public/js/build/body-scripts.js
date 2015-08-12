@@ -10162,7 +10162,8 @@ projects.directive('task', function(){
         controller: controller,
         templateUrl: '/partials/task',
         scope: {
-            task: '=' // Specifies 2 way binding
+            task: '=', // Specifies 2 way binding
+            index: '@' // Outside In
         }
     }
 }); // End Task Directive

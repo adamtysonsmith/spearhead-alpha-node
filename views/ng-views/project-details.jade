@@ -20,7 +20,7 @@ div.row
                 input#add-task(type="text" ng-model="newTask" ng-keyup="addTaskKeyup($event.keyCode)" ng-blur="addTaskBlur()")
                 label(for="add-task") Add a Task to this Stage
         div(ng-repeat="task in project.stages[0].tasks").task
-            task(task="task")
+            task(task="task" index="{{$index}}")
             
     div.col.s6.notes-component
         div.row
@@ -30,5 +30,6 @@ div.row
             div#add-note-input.input-field.col.s9(ng-show="noteInput")
                 input#add-note(type="text" ng-model="newNote" ng-keyup="addNoteKeyup($event.keyCode)" ng-blur="addNoteBlur()")
                 label(for="add-note") Add a Note to this Task
-        div(ng-repeat="task in project.stages[0].tasks").task
-            task(task="task")
+        div.card-panel
+            p.note-date July 4, 2015
+            p.note-content Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam tempora et, ut ad? Quis totam illum veniam labore recusandae consequuntur beatae eaque, aut. Ipsum, officia alias ut reprehenderit, nostrum deserunt.

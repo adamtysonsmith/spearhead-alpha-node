@@ -53,7 +53,7 @@ var initPipeline = function(svgPipelineContainer) {
             
             var polyText = polyGroup.append('text')
                 .classed('stage-text', true)
-                .attr('font-size', '14')
+                .attr('font-size', '12')
                 .attr('fill', 'white')
                 .attr('y', 35)
                 .attr('x', function(d, i) {
