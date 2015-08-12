@@ -99,9 +99,9 @@ var initPipeline = function(svgPipelineContainer) {
                 // Add line under this polygon
                 d3.selectAll('.stage-item-group').append('line', '.stage-item-group')
                     .classed('active-stage', true)
-                    .attr('y1', '70')
-                    .attr('y2', '70')
-                    .style('stroke-width', 6)
+                    .attr('y1', '65')
+                    .attr('y2', '65')
+                    .style('stroke-width', 3)
                     .style('stroke', stroke)
                     .attr('x1', function() {
                         if (index === 0) {

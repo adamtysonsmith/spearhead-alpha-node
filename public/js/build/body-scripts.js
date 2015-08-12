@@ -41,22 +41,6 @@ $(document).ready(function(){
     // Initialize Materialize Mobile side nav and modals
     $(".button-collapse").sideNav();
     
-    /////////////////////////////////////////
-    // Materialize Color change selection
-    /////////////////////////////////////////
-    var currentColor = $('#change-color').val();
-    $('#change-color').on('change', function(){
-        // Give me the new color
-        var newColor = $(this).val();
-        
-        // Select the class of currentColor, replace with newColor
-        $('.' + currentColor + '').addClass(newColor)
-            .removeClass(currentColor);
-        
-        // Reset current color
-        currentColor = newColor;
-    });
-    
 });
 !function() {
   var d3 = {
@@ -9617,7 +9601,7 @@ var initPipeline = function(svgPipelineContainer) {
             
             var polyText = polyGroup.append('text')
                 .classed('stage-text', true)
-                .attr('font-size', '14')
+                .attr('font-size', '12')
                 .attr('fill', 'white')
                 .attr('y', 35)
                 .attr('x', function(d, i) {
@@ -9663,9 +9647,9 @@ var initPipeline = function(svgPipelineContainer) {
                 // Add line under this polygon
                 d3.selectAll('.stage-item-group').append('line', '.stage-item-group')
                     .classed('active-stage', true)
-                    .attr('y1', '70')
-                    .attr('y2', '70')
-                    .style('stroke-width', 6)
+                    .attr('y1', '65')
+                    .attr('y2', '65')
+                    .style('stroke-width', 3)
                     .style('stroke', stroke)
                     .attr('x1', function() {
                         if (index === 0) {

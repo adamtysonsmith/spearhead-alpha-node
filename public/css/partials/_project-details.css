@@ -1,5 +1,5 @@
 #add-stage-input {
-    margin-top: 80px;
+    margin-top: 30px;
 }
 #add-task-input, #add-note-input {
     margin-top: 65px;
@@ -7,15 +7,16 @@
 .tasks-component {
     border-right: 1px solid #4d4d4d;
 }
-.task-content {
+.task-content label {
     font-size: 18px;
+    color: black;
 }
 .task {
     padding: 20px;
-    background-color: #e3e3e3;
+    background-color: aliceblue;
 }
 .task:hover {
-    background-color: aliceblue;
+    background-color: #CBE0E6;
 }
 .note-date {
     font-size: 14px;
