@@ -9813,34 +9813,11 @@ function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeigh
     });
     
 } // End drawBars()
+var projects = angular.module('projects', ['ngResource', 'ngRoute']);
 var dashboard = angular.module('dashboard', ['ngResource', 'ngRoute']);
 
 ///////////////////////////////////////////////
-// Routes
-///////////////////////////////////////////////
-
-dashboard.config(function($routeProvider){
-	$routeProvider
-        // Referring to /dashboard#/
-        .when('/', {
-			templateUrl : '/ng-views/dashboard',
-			controller  : 'dashboardController'
-		});
-});
-
-
-///////////////////////////////////////////////
-// Controllers
-///////////////////////////////////////////////
-
-// Dashboard Controller
-dashboard.controller('dashboardController', function($scope){
-    console.log('I am the dashboard controller!!!');
-});
-var projects = angular.module('projects', ['ngResource', 'ngRoute']);
-
-///////////////////////////////////////////////
-// Routes
+// Project Routes
 ///////////////////////////////////////////////
 
 projects.config(function($routeProvider){
@@ -9857,9 +9834,56 @@ projects.config(function($routeProvider){
 		});
 });
 
-
 ///////////////////////////////////////////////
-// Controllers
+// Dashboard Routes
+///////////////////////////////////////////////
+
+dashboard.config(function($routeProvider){
+	$routeProvider
+        // Referring to /dashboard#/
+        .when('/', {
+			templateUrl : '/ng-views/dashboard',
+			controller  : 'dashboardController'
+		});
+});
+///////////////////////////////////////////////
+// Dashboard Controllers
+///////////////////////////////////////////////
+
+dashboard.controller('dashboardController', function($scope){
+    console.log('I am the dashboard controller!!!');
+});
+// Stage Pipeline Navigation
+projects.directive('stagePipeline', function(){
+    var link = function(scope, element){
+        // Parse the data from Angular
+        var parsedData = JSON.parse(scope.data);
+        console.log('The data..', parsedData);
+        
+        // Create a selection for the svgContainer
+        var svgPipelineContainer = d3.select(element[0]).append('svg')
+            .attr('width', '100%')
+            .attr('height', '100%')
+            .attr('viewBox', '0 0 ' + 1000 + ' ' + 100)
+            .attr('preserveAspectRatio','xMidYMid')
+            .attr("class", "project-pipeline");
+        
+        initPipeline(svgPipelineContainer); // Defined in d3-pipeline.js
+        drawPipeline(parsedData.stages); // Defined in d3-pipeline.js
+        
+        console.log('Should have drew pipeline')
+    }
+    
+    return {
+        link: link,
+        restrict: 'E',
+        scope: {
+            data: '@'
+        }
+    }
+}); // End Pipeline Directive
+///////////////////////////////////////////////
+// Project Controllers
 ///////////////////////////////////////////////
 
 // Projects Controller
@@ -9946,7 +9970,7 @@ projects.controller('projectsController', function($scope){
         datepick.open();
     }
     
-});
+}); // End Projects Controller
 
 
 // Project Details Controller
@@ -10124,16 +10148,24 @@ projects.controller('projectDetailsController', function($scope, $timeout){
         $scope.noteInput = false;
         $scope.newNote = null;
     }
-
     
-});
+}); // End Project Details Controller
 
-
-
-///////////////////////////////////////////////
-// Directives
-///////////////////////////////////////////////
-
+// Tasks Directive
+projects.directive('task', function(){
+    var controller = function($scope) {
+        console.log('Task directive data:', $scope.task);
+    }
+    
+    return {
+        restrict: 'E',
+        controller: controller,
+        templateUrl: '/partials/task',
+        scope: {
+            task: '=' // Specifies 2 way binding
+        }
+    }
+}); // End Task Directive
 // Project Waterfall Navigation
 projects.directive('projectTimeline', function(){
     
@@ -10207,51 +10239,3 @@ projects.directive('projectTimeline', function(){
     }
     
 }); // End Waterfall Nav Directive
-
-
-// Stage Pipeline Navigation
-projects.directive('stagePipeline', function(){
-    var link = function(scope, element){
-        // Parse the data from Angular
-        var parsedData = JSON.parse(scope.data);
-        console.log('The data..', parsedData);
-        
-        // Create a selection for the svgContainer
-        var svgPipelineContainer = d3.select(element[0]).append('svg')
-            .attr('width', '100%')
-            .attr('height', '100%')
-            .attr('viewBox', '0 0 ' + 1000 + ' ' + 100)
-            .attr('preserveAspectRatio','xMidYMid')
-            .attr("class", "project-pipeline");
-        
-        initPipeline(svgPipelineContainer); // Defined in d3-pipeline.js
-        drawPipeline(parsedData.stages); // Defined in d3-pipeline.js
-        
-        console.log('Should have drew pipeline')
-    }
-    
-    return {
-        link: link,
-        restrict: 'E',
-        scope: {
-            data: '@'
-        }
-    }
-}); // End Pipeline Directive
-
-
-// Tasks Directive
-projects.directive('task', function(){
-    var controller = function($scope) {
-        console.log('Task directive data:', $scope.task);
-    }
-    
-    return {
-        restrict: 'E',
-        controller: controller,
-        templateUrl: '/partials/task',
-        scope: {
-            task: '=' // Specifies 2 way binding
-        }
-    }
-}); // End Task Directive
