@@ -9839,13 +9839,23 @@ dashboard.controller('dashboardController', function($scope){
 });
 // Stage Pipeline Navigation
 projects.directive('stagePipeline', function(){
+    // Create a controller for this directive
+    // that exposes methods to be used by child directives
+    var controller = function($scope) {
+        // Expose a test method
+        this.test = function(message){
+            console.log('Parent says..', message);
+        }
+    }
+    
+    // Can we move this to a controller?
     var link = function(scope, element){
         // Parse the data from Angular
         var parsedData = JSON.parse(scope.data);
         console.log('The data..', parsedData);
         
         // Create a selection for the svgContainer
-        var svgPipelineContainer = d3.select(element[0]).append('svg')
+        var svgPipelineContainer = d3.select(element[0]).insert('svg', ':first-child')
             .attr('width', '100%')
             .attr('height', '100%')
             .attr('viewBox', '0 0 ' + 1000 + ' ' + 100)
@@ -9854,13 +9864,13 @@ projects.directive('stagePipeline', function(){
         
         initPipeline(svgPipelineContainer); // Defined in d3-pipeline.js
         drawPipeline(parsedData.stages); // Defined in d3-pipeline.js
-        
-        console.log('Should have drew pipeline')
     }
     
+    
     return {
-        link: link,
         restrict: 'E',
+        controller: controller,
+        link: link,
         scope: {
             data: '@'
         }
@@ -10137,13 +10147,23 @@ projects.controller('projectDetailsController', function($scope, $timeout){
 
 // Tasks Directive
 projects.directive('task', function(){
+    
     var controller = function($scope) {
         console.log('Task directive data:', $scope.task);
+    }
+    
+    var link = function(scope, element, attr, pipelineController){
+        // Pass in a message to our test method
+        pipelineController.test('It works!');
     }
     
     return {
         restrict: 'E',
         controller: controller,
+        link: link,
+        // Require the parent directive, which gives us access
+        // to the parent controller in our linking function
+        require: '^stagePipeline',
         templateUrl: '/partials/task',
         scope: {
             task: '=', // Specifies 2 way binding
