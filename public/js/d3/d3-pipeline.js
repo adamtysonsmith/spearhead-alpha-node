@@ -3,7 +3,8 @@
 ///////////////////////////////////////////////
 var drawPipeline;
 
-var initPipeline = function(svgPipelineContainer) {
+var initPipeline = function(svgPipelineContainer, scope) {
+    
     // Layout variables
     var width = 1000;
     var height = 100;
@@ -49,6 +50,9 @@ var initPipeline = function(svgPipelineContainer) {
             })
             .attr('data-stage', function(d, i) {
                 return i;
+            })
+            .attr('ng-click', function(d, i){
+                return 'setActiveStage('+ i +')';
             });
             
             var polyText = polyGroup.append('text')
@@ -92,9 +96,14 @@ var initPipeline = function(svgPipelineContainer) {
                 var x2 = 150;
                 var stroke = 'black';
                 
+                scope.setActiveTasks(i);
+                
+                // Clear and set active stage index
+                d3.selectAll('.stage-item').attr('active-stage-index', null);
+                self.attr('active-stage-index', i)
+                
                 // Remove all lines
                 d3.selectAll('.active-stage').remove();
-                console.log('All lines removed');
                 
                 // Add line under this polygon
                 d3.selectAll('.stage-item-group').append('line', '.stage-item-group')
@@ -119,7 +128,6 @@ var initPipeline = function(svgPipelineContainer) {
                             return x2;
                         }
                     });
-                console.log('Line Added!');
             });
 
     } // End drawPipeline()

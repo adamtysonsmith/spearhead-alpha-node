@@ -9,7 +9,7 @@ projects.directive('projectTimeline', function(){
             // Nuke the current charts
             $('project-timeline').html('');
             
-            // Parse the data from Angular
+            // Parse the scope data from projectsController
             var parsedData = JSON.parse(scope.data);
 
             // D3 Layout variables

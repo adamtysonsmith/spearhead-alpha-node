@@ -9551,7 +9551,8 @@ $(document).ready(function(){
 ///////////////////////////////////////////////
 var drawPipeline;
 
-var initPipeline = function(svgPipelineContainer) {
+var initPipeline = function(svgPipelineContainer, scope) {
+    
     // Layout variables
     var width = 1000;
     var height = 100;
@@ -9597,6 +9598,9 @@ var initPipeline = function(svgPipelineContainer) {
             })
             .attr('data-stage', function(d, i) {
                 return i;
+            })
+            .attr('ng-click', function(d, i){
+                return 'setActiveStage('+ i +')';
             });
             
             var polyText = polyGroup.append('text')
@@ -9640,9 +9644,14 @@ var initPipeline = function(svgPipelineContainer) {
                 var x2 = 150;
                 var stroke = 'black';
                 
+                scope.setActiveTasks(i);
+                
+                // Clear and set active stage index
+                d3.selectAll('.stage-item').attr('active-stage-index', null);
+                self.attr('active-stage-index', i)
+                
                 // Remove all lines
                 d3.selectAll('.active-stage').remove();
-                console.log('All lines removed');
                 
                 // Add line under this polygon
                 d3.selectAll('.stage-item-group').append('line', '.stage-item-group')
@@ -9667,7 +9676,6 @@ var initPipeline = function(svgPipelineContainer) {
                             return x2;
                         }
                     });
-                console.log('Line Added!');
             });
 
     } // End drawPipeline()
@@ -9837,22 +9845,45 @@ dashboard.config(function($routeProvider){
 dashboard.controller('dashboardController', function($scope){
     console.log('I am the dashboard controller!!!');
 });
+
 // Stage Pipeline Navigation
 projects.directive('stagePipeline', function(){
     // Create a controller for this directive
     // that exposes methods to be used by child directives
-    var controller = function($scope) {
-        // Expose a test method
-        this.test = function(message){
-            console.log('Parent says..', message);
-        }
-    }
+//    var controller = function($scope) {
+//        $scope.scopeName = 'Stage Pipleline Controller';
+//        console.log('The pipeline controller scope', $scope);
+//        
+//        $scope.activeTasks = 0;
+//        
+//        $scope.setActiveTasks = function(stageIndex){
+//            var stages = JSON.parse($scope.stages);
+//            $scope.activeTasks = stages[stageIndex].tasks;
+//            
+//            console.log('Active tasks are', $scope.activeTasks)
+//        }
+//        
+//        this.activeTasks = $scope.activeTasks;
+        
+        // Expose these vars and methods to task component directive
+//        this.getActiveStage = function() {
+//            console.log('The active stage is', $scope.activeStageIndex);
+//            return $scope.activeStageIndex;
+//        }
+//        
+//        // this.activeTasks = $scope.activeTasks;
+//        this.stages = $scope.stages;
+//        this.activeStageIndex = $scope.activeStageIndex;
+//        this.scope = $scope;
+//    }
     
     // Can we move this to a controller?
     var link = function(scope, element){
-        // Parse the data from Angular
-        var parsedData = JSON.parse(scope.data);
-        console.log('The data..', parsedData);
+        console.log('Scope from the pipeline directive', scope);
+        // Parse the project data from the projectDetailsController
+        // We pass the data.stages into the pipeline chart
+        var stages = scope.project.stages;
+        console.log('The stages from pipeline directive..', stages);
         
         // Create a selection for the svgContainer
         var svgPipelineContainer = d3.select(element[0]).insert('svg', ':first-child')
@@ -9862,27 +9893,239 @@ projects.directive('stagePipeline', function(){
             .attr('preserveAspectRatio','xMidYMid')
             .attr("class", "project-pipeline");
         
-        initPipeline(svgPipelineContainer); // Defined in d3-pipeline.js
-        drawPipeline(parsedData.stages); // Defined in d3-pipeline.js
+        initPipeline(svgPipelineContainer, scope); // Defined in d3-pipeline.js
+        drawPipeline(stages); // Defined in d3-pipeline.js
     }
     
     
     return {
         restrict: 'E',
-        controller: controller,
         link: link,
-        scope: {
-            data: '@'
-        }
+        scope: false
+        //controller: 
+        //scope: $scope
+        //controller: controller,
+//        scope: {
+//            stages: '@'
+//        }
     }
 }); // End Pipeline Directive
-///////////////////////////////////////////////
-// Project Controllers
-///////////////////////////////////////////////
+projects.controller('projectDetailsController', function($scope, $timeout){
+    $scope.scopeName = 'Project Details Controller';
+    
+    // Mock data
+    $scope.project = {
+            dueDate: "2015-08-15",
+            duration: "The duration is XXX",
+            isAbandoned: false,
+            isActive: false,
+            isCompleted: false,
+            isDeferred: false,
+            isStarted: false,
+            name: "Final Project!",
+            stages: [
+                {
+                    dueDate: "The due date is XXX",
+                    duration: "The duration is XXX",
+                    isActive: false,
+                    isCompleted: false,
+                    isDeferred: false,
+                    isStarted: false,
+                    name: "Finish Project Details UI",
+                    startDate: undefined,
+                    tasks: [
+                        {
+                            content: "Ability to add stages, tasks, notes",
+                            duration: "The duration is XXX",
+                            isCompleted: false,
+                            isDeferred: false,
+                            notes: [
+                                {
+                                    content: "They need to update the angular vars and also update the database",
+                                    timestamp: "2015-08-09_16:10:17"
+                                },
+                                {
+                                    content: "Checkboxes need to save state, and we need styles to represent active tasks",
+                                    timestamp: "2015-08-09_16:10:17"
+                                },
+                                {
+                                    content: "When switching to new stage, needs to be set to the first task in that stage",
+                                    timestamp: "2015-08-09_16:10:17"
+                                }
+                            ],
+                            timestamp: "2015-08-09_16:10:17"
+                        },
+                        {
+                            content: "This is your second task",
+                            duration: "The duration is XXX",
+                            isCompleted: false,
+                            isDeferred: false,
+                            notes: [{
+                                content: "This is your second note! Its a part of the second task",
+                                timestamp: "2015-08-09_16:10:17"
+                            }],
+                            timestamp: "2015-08-09_16:10:17"
+                        },
+                        {
+                            content: "This is your third task",
+                            duration: "The duration is XXX",
+                            isCompleted: false,
+                            isDeferred: false,
+                            notes: [{
+                                content: "This is your third note!",
+                                timestamp: "2015-08-09_16:10:17"
+                            }],
+                            timestamp: "2015-08-09_16:10:17"
+                        }
+                    ],
+                    timestamp: "2015-08-09_16:10:17"
+                },
+                {
+                    dueDate: "The due date is XXX",
+                    duration: "The duration is XXX",
+                    isActive: false,
+                    isCompleted: false,
+                    isDeferred: false,
+                    isStarted: false,
+                    name: "Dashboard Angular UI",
+                    startDate: undefined,
+                    tasks: [{
+                        content: "Make sure you get paid son",
+                        duration: "The duration is XXX",
+                        isCompleted: false,
+                        isDeferred: false,
+                        notes: [{
+                            content: "This is your first note!",
+                            timestamp: "2015-08-09_16:10:17"
+                        }],
+                        timestamp: "2015-08-09_16:10:17"
+                    }],
+                    timestamp: "2015-08-09_16:10:17"
+                },
+                {
+                    dueDate: "The due date is XXX",
+                    duration: "The duration is XXX",
+                    isActive: false,
+                    isCompleted: false,
+                    isDeferred: false,
+                    isStarted: false,
+                    name: "Backend Code",
+                    startDate: undefined,
+                    tasks: [{
+                        content: "Design that shit!",
+                        duration: "The duration is XXX",
+                        isCompleted: false,
+                        isDeferred: false,
+                        notes: [{
+                            content: "This is your first note!",
+                            timestamp: "2015-08-09_16:10:17"
+                        }],
+                        timestamp: "2015-08-09_16:10:17"
+                    }],
+                    timestamp: "2015-08-09_16:10:17"
+                }
+            ],
+            startDate: "2015-07-18"
+    }
+    
+    
+    //////////////////////////////////////////////////
+    // Input Handlers
+    //////////////////////////////////////////////////
+    
+    // Stage Input handlers
+    $scope.showStageInput = function(){
+        $scope.stageInput = true;
+        $timeout(function(){
+            $('#add-stage').focus();
+        }, 100);
+    }
+    $scope.addStageKeyup = function(keycode) {
+        // If user presses enter:
+        // 1. Hide the stageInput
+        // 2. Clear the input
+        // 3. TODO: Save the stage to DB and update UI
+        if(keycode === 13) {
+            $scope.stageInput = false;
+            $scope.newStage = null;
+        }
+    }
+    $scope.addStageBlur = function() {
+        $scope.stageInput = false;
+        $scope.newStage = null;
+    }
+    
 
-// Projects Controller
+    
+    // Task Input handlers
+    $scope.showTaskInput = function(){
+        $scope.taskInput = true;
+        $timeout(function(){
+            $('#add-task').focus();
+        }, 100);
+    }
+    $scope.addTaskKeyup = function(keycode) {
+        // If user presses enter:
+        // 1. Hide the stageInput
+        // 2. Clear the input
+        // 3. TODO: Save the stage to DB and update UI
+        if(keycode === 13) {
+            $scope.taskInput = false;
+            $scope.newTask = null;
+        }
+    }
+    $scope.addTaskBlur = function() {
+        $scope.taskInput = false;
+        $scope.newTask = null;
+    }
+
+    // Note Input handlers
+    $scope.showNoteInput = function(){
+        $scope.noteInput = true;
+        $timeout(function(){
+            $('#add-note').focus();
+        }, 100);
+    }
+    $scope.addNoteKeyup = function(keycode) {
+        // If user presses enter:
+        // 1. Hide the stageInput
+        // 2. Clear the input
+        // 3. TODO: Save the stage to DB and update UI
+        if(keycode === 13) {
+            $scope.noteInput = false;
+            $scope.newNote = null;
+        }
+    }
+    $scope.addNoteBlur = function() {
+        $scope.noteInput = false;
+        $scope.newNote = null;
+    }
+    
+    
+    //////////////////////////////////////////////////
+    // Set the Active Tasks & Notes
+    //////////////////////////////////////////////////
+    
+    // Default to the first stage
+    $scope.activeTasks = $scope.project.stages[0].tasks;
+    $scope.activeNotes = $scope.activeTasks[0].notes;
+    
+    // Triggered by click on D3 pipeline
+    $scope.setActiveTasks = function(stageIndex){
+        $scope.$apply(function(){
+            $scope.activeTasks = $scope.project.stages[stageIndex].tasks;
+        });
+    }
+    
+    $scope.setActiveNotes = function(taskIndex){
+        $scope.activeNotes = $scope.activeTasks[taskIndex].notes;
+    }
+    
+}); // End Project Details Controller
+
 projects.controller('projectsController', function($scope){
     console.log('I am the projects controller!!!');
+    $scope.scopeName = 'Projects Controller';
     
     // Mock data
     $scope.projects = [
@@ -9965,212 +10208,129 @@ projects.controller('projectsController', function($scope){
     }
     
 }); // End Projects Controller
-
-
-// Project Details Controller
-projects.controller('projectDetailsController', function($scope, $timeout){
-    // Mock data
-    $scope.project = {
-            dueDate: "2015-08-15",
-            duration: "The duration is XXX",
-            isAbandoned: false,
-            isActive: false,
-            isCompleted: false,
-            isDeferred: false,
-            isStarted: false,
-            name: "Final Project!",
-            stages: [
-                {
-                    dueDate: "The due date is XXX",
-                    duration: "The duration is XXX",
-                    isActive: false,
-                    isCompleted: false,
-                    isDeferred: false,
-                    isStarted: false,
-                    name: "Meet Client",
-                    startDate: undefined,
-                    tasks: [
-                        {
-                            content: "This is your first task",
-                            duration: "The duration is XXX",
-                            isCompleted: false,
-                            isDeferred: false,
-                            notes: [{
-                                content: "This is your first note!",
-                                timestamp: "2015-08-09_16:10:17"
-                            }],
-                            timestamp: "2015-08-09_16:10:17"
-                        },
-                        {
-                            content: "This is your second task",
-                            duration: "The duration is XXX",
-                            isCompleted: false,
-                            isDeferred: false,
-                            notes: [{
-                                content: "This is your first note!",
-                                timestamp: "2015-08-09_16:10:17"
-                            }],
-                            timestamp: "2015-08-09_16:10:17"
-                        },
-                        {
-                            content: "This is your third task",
-                            duration: "The duration is XXX",
-                            isCompleted: false,
-                            isDeferred: false,
-                            notes: [{
-                                content: "This is your first note!",
-                                timestamp: "2015-08-09_16:10:17"
-                            }],
-                            timestamp: "2015-08-09_16:10:17"
-                        }
-                    ],
-                    timestamp: "2015-08-09_16:10:17"
-                },
-                {
-                    dueDate: "The due date is XXX",
-                    duration: "The duration is XXX",
-                    isActive: false,
-                    isCompleted: false,
-                    isDeferred: false,
-                    isStarted: false,
-                    name: "Get PAID!",
-                    startDate: undefined,
-                    tasks: [{
-                        content: "This is your first task",
-                        duration: "The duration is XXX",
-                        isCompleted: false,
-                        isDeferred: false,
-                        notes: [{
-                            content: "This is your first note!",
-                            timestamp: "2015-08-09_16:10:17"
-                        }],
-                        timestamp: "2015-08-09_16:10:17"
-                    }],
-                    timestamp: "2015-08-09_16:10:17"
-                },
-                {
-                    dueDate: "The due date is XXX",
-                    duration: "The duration is XXX",
-                    isActive: false,
-                    isCompleted: false,
-                    isDeferred: false,
-                    isStarted: false,
-                    name: "Design Website",
-                    startDate: undefined,
-                    tasks: [{
-                        content: "This is your first task",
-                        duration: "The duration is XXX",
-                        isCompleted: false,
-                        isDeferred: false,
-                        notes: [{
-                            content: "This is your first note!",
-                            timestamp: "2015-08-09_16:10:17"
-                        }],
-                        timestamp: "2015-08-09_16:10:17"
-                    }],
-                    timestamp: "2015-08-09_16:10:17"
-                }
-            ],
-            startDate: "2015-07-18"
-    }
-    
-    console.log('I am the project details controller!!! These are the stages...', $scope.project.stages);
-    
-    $scope.showStageInput = function(){
-        $scope.stageInput = true;
-        $timeout(function(){
-            $('#add-stage').focus();
-        }, 100);
-    }
-    $scope.showTaskInput = function(){
-        $scope.taskInput = true;
-        $timeout(function(){
-            $('#add-task').focus();
-        }, 100);
-    }
-    $scope.showNoteInput = function(){
-        $scope.noteInput = true;
-        $timeout(function(){
-            $('#add-note').focus();
-        }, 100);
-    }
-    
-    // Stage Input handlers
-    $scope.addStageKeyup = function(keycode) {
-        // If user presses enter:
-        // 1. Hide the stageInput
-        // 2. Clear the input
-        // 3. TODO: Save the stage to DB and update UI
-        if(keycode === 13) {
-            $scope.stageInput = false;
-            $scope.newStage = null;
-        }
-    }
-    $scope.addStageBlur = function() {
-        $scope.stageInput = false;
-        $scope.newStage = null;
-    }
-    
-    // Task Input handlers
-    $scope.addTaskKeyup = function(keycode) {
-        // If user presses enter:
-        // 1. Hide the stageInput
-        // 2. Clear the input
-        // 3. TODO: Save the stage to DB and update UI
-        if(keycode === 13) {
-            $scope.taskInput = false;
-            $scope.newTask = null;
-        }
-    }
-    $scope.addTaskBlur = function() {
-        $scope.taskInput = false;
-        $scope.newTask = null;
-    }
-    
-    // Note Input handlers
-    $scope.addNoteKeyup = function(keycode) {
-        // If user presses enter:
-        // 1. Hide the stageInput
-        // 2. Clear the input
-        // 3. TODO: Save the stage to DB and update UI
-        if(keycode === 13) {
-            $scope.noteInput = false;
-            $scope.newNote = null;
-        }
-    }
-    $scope.addNoteBlur = function() {
-        $scope.noteInput = false;
-        $scope.newNote = null;
-    }
-    
-}); // End Project Details Controller
-
-// Tasks Directive
-projects.directive('task', function(){
-    
-    var controller = function($scope) {
-        console.log('Task directive data:', $scope.task);
-    }
-    
-    var link = function(scope, element, attr, pipelineController){
-        // Pass in a message to our test method
-        pipelineController.test('It works!');
-    }
-    
-    return {
-        restrict: 'E',
-        controller: controller,
-        link: link,
-        // Require the parent directive, which gives us access
-        // to the parent controller in our linking function
-        require: '^stagePipeline',
-        templateUrl: '/partials/task',
-        scope: {
-            task: '=', // Specifies 2 way binding
-            index: '@' // Outside In
-        }
-    }
-}); // End Task Directive
+//// Task Component Directive
+//// The TC directive will contain the template to display all the tasks and notes
+//// for a selected stage in the pipeline
+//
+//// ProjectDetails controller has the whole project in scope, passes stages to pipeline directive [DONE]
+//// Pipeline controller has the stages and active stage in scope, passes tasks to TC
+//// TC should have its own scope that has the tasks/notes, active task which shows notes
+//projects.directive('tasksComponent', function(){
+//    
+////    var controller = function($scope, $timeout) {
+////        $scope.scopeName = 'TC Controller';
+////        
+////        $scope.activeTasks = $scope.$parent.activeTasks;
+//        
+////        // Task Input handlers
+////        $scope.showTaskInput = function(){
+////            $scope.taskInput = true;
+////            $timeout(function(){
+////                $('#add-task').focus();
+////            }, 100);
+////        }
+////        $scope.addTaskKeyup = function(keycode) {
+////            // If user presses enter:
+////            // 1. Hide the stageInput
+////            // 2. Clear the input
+////            // 3. TODO: Save the stage to DB and update UI
+////            if(keycode === 13) {
+////                $scope.taskInput = false;
+////                $scope.newTask = null;
+////            }
+////        }
+////        $scope.addTaskBlur = function() {
+////            $scope.taskInput = false;
+////            $scope.newTask = null;
+////        }
+////        
+////        // Note Input handlers
+////        $scope.showNoteInput = function(){
+////            $scope.noteInput = true;
+////            $timeout(function(){
+////                $('#add-note').focus();
+////            }, 100);
+////        }
+////        $scope.addNoteKeyup = function(keycode) {
+////            // If user presses enter:
+////            // 1. Hide the stageInput
+////            // 2. Clear the input
+////            // 3. TODO: Save the stage to DB and update UI
+////            if(keycode === 13) {
+////                $scope.noteInput = false;
+////                $scope.newNote = null;
+////            }
+////        }
+////        $scope.addNoteBlur = function() {
+////            $scope.noteInput = false;
+////            $scope.newNote = null;
+////        }
+//        
+////    } // End Controller
+//    
+//    var link = function(scope, element, attr, pipelineController){
+//        
+////        console.log('The scope in TC link', scope)
+////        console.log('The active tasks in pipeline controller..', pipelineController.activeTasks)
+////        
+////        scope.activeTasks = pipelineController.activeTasks;
+////        console.log('The TC active tasks are', scope.activeTasks);
+////        var activeStageIndex = pipelineController.getActiveStage();
+////        
+////        var stages = JSON.parse(pipelineController.stages);
+////        
+////        console.log('The stages are:', stages)
+////        
+////        scope.activeTasks = stages[activeStageIndex].tasks;
+////        
+////        console.log('the active tasks are', scope.activeTasks);
+////        
+////        pipelineController.scope.$watch(pipelineController.activeStageIndex, function(newStageIndex, oldStageIndex){
+////            console.log('triggered a watch', newStageIndex, oldStageIndex)
+////            if(newStageIndex) {
+////                scope.activeTasks = stages[newStageIndex].tasks;
+////            }
+////        });
+//    }
+//    
+//    return {
+//        restrict: 'E',
+//        link: link,
+//        templateUrl: '/partials/task-component',
+//        scope: false
+//        //controller: controller,
+//        // Require the parent directive, which gives us access
+//        // to the parent controller(Pipeline Directive Controller) in our linking function
+//        //require: '^stagePipeline',
+//        //scope: { tasks: '=' } 
+//    }
+//});
+//// Tasks Directive
+//projects.directive('task', function(){
+//    
+//    var controller = function($scope) {
+//        console.log('Task directive data:', $scope.task);
+//    }
+//    
+//    var link = function(scope, element, attr, pipelineController){
+//        // Pass in a message to our test method
+//        pipelineController.test('It works!');
+//    }
+//    
+//    return {
+//        restrict: 'E',
+//        controller: controller,
+//        link: link,
+//        // Require the parent directive, which gives us access
+//        // to the parent controller in our linking function
+//        require: '^stagePipeline',
+//        templateUrl: '/partials/task',
+//        scope: {
+//            task: '=', // Specifies 2 way binding
+//            index: '@' // Outside In
+//        }
+//    }
+//}); // End Task Directive
 // Project Waterfall Navigation
 projects.directive('projectTimeline', function(){
     
@@ -10182,7 +10342,7 @@ projects.directive('projectTimeline', function(){
             // Nuke the current charts
             $('project-timeline').html('');
             
-            // Parse the data from Angular
+            // Parse the scope data from projectsController
             var parsedData = JSON.parse(scope.data);
 
             // D3 Layout variables
