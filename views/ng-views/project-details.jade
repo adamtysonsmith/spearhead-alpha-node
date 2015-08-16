@@ -19,7 +19,7 @@ div.row
                     div#add-task-input.input-field.col.s12(ng-show="taskInput")
                         input#add-task(type="text" ng-model="newTask" ng-keyup="addTaskKeyup($event.keyCode)" ng-blur="addTaskBlur()")
                         label(for="add-task") Add a Task to this Stage
-                div(ng-repeat="task in activeTasks" ng-click="setActiveNotes($index)").task
+                div(ng-repeat="task in activeTasks" ng-click="setActiveNotes($index)" ng-class="{'active-task': $index == taskIndex}").task
                     p.task-content
                         input(type="checkbox" id="{{$index}}")
                         label(for="{{$index}}") {{task.content}}

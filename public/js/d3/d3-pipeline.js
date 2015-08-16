@@ -91,16 +91,11 @@ var initPipeline = function(svgPipelineContainer, scope) {
             }).on('click', function(d, i) {
                 var index = i;
                 var self = d3.select(this);
-                var currentColor;
                 var x1 = 0;
                 var x2 = 150;
-                var stroke = 'black';
+                var stroke = self.style('fill');
                 
                 scope.setActiveTasks(i);
-                
-                // Clear and set active stage index
-                d3.selectAll('.stage-item').attr('active-stage-index', null);
-                self.attr('active-stage-index', i)
                 
                 // Remove all lines
                 d3.selectAll('.active-stage').remove();

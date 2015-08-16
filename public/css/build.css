@@ -112,6 +112,9 @@ button {
     margin-top: 21px;
     margin-left: 10px;
 }
+.active-task {
+    background-color: #e3f7fd;
+}
 /* D3 Waterfall Visualization Styles */
 .grid .tick {
     stroke: lightgrey;

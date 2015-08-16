@@ -9639,16 +9639,11 @@ var initPipeline = function(svgPipelineContainer, scope) {
             }).on('click', function(d, i) {
                 var index = i;
                 var self = d3.select(this);
-                var currentColor;
                 var x1 = 0;
                 var x2 = 150;
-                var stroke = 'black';
+                var stroke = self.style('fill');
                 
                 scope.setActiveTasks(i);
-                
-                // Clear and set active stage index
-                d3.selectAll('.stage-item').attr('active-stage-index', null);
-                self.attr('active-stage-index', i)
                 
                 // Remove all lines
                 d3.selectAll('.active-stage').remove();
@@ -9849,11 +9844,8 @@ dashboard.controller('dashboardController', function($scope){
 projects.directive('stagePipeline', function(){
     // Can we move this to a controller?
     var link = function(scope, element){
-        console.log('Scope from the pipeline directive', scope);
-        // Project data from the projectDetailsController
         // We pass the stages into the pipeline chart
         var stages = scope.project.stages;
-        console.log('The stages from pipeline directive..', stages);
         
         // Create a selection for the svgContainer
         var svgPipelineContainer = d3.select(element[0]).insert('svg', ':first-child')
@@ -9865,14 +9857,7 @@ projects.directive('stagePipeline', function(){
         
         initPipeline(svgPipelineContainer, scope); // Defined in d3-pipeline.js
         drawPipeline(stages); // Defined in d3-pipeline.js
-        
-//        scope.$watch('project.stages', function(newStages) {
-//            console.log('New Stages in watch..', newStages);
-//            drawPipeline(newStages); // Defined in d3-pipeline.js
-//            scope.$apply();
-//        });
     }
-    
     
     return {
         restrict: 'E',
@@ -9998,6 +9983,29 @@ projects.controller('projectDetailsController', function($scope, $timeout){
             startDate: "2015-07-18"
     }
     
+    //////////////////////////////////////////////////
+    // Set the Active Tasks & Notes
+    //////////////////////////////////////////////////
+    
+    // Default to the first stage
+    $scope.activeTasks = $scope.project.stages[0].tasks;
+    $scope.activeNotes = $scope.activeTasks[0].notes;
+    $scope.stageIndex = 0;
+    $scope.taskIndex = 0;
+    
+    // Triggered by click on D3 pipeline
+    $scope.setActiveTasks = function(stageIndex){
+        $scope.stageIndex = stageIndex;
+        $scope.$apply(function(){
+            $scope.activeTasks = $scope.project.stages[stageIndex].tasks;
+            $scope.activeNotes = $scope.activeTasks[0].notes;
+        });
+    }
+    
+    $scope.setActiveNotes = function(taskIndex){
+        $scope.taskIndex = taskIndex;
+        $scope.activeNotes = $scope.activeTasks[taskIndex].notes;
+    }
     
     //////////////////////////////////////////////////
     // Input Handlers
@@ -10017,17 +10025,25 @@ projects.controller('projectDetailsController', function($scope, $timeout){
         // 3. Clear the input
         // 4. TODO: Save the stage to DB and update UI
         if(keycode === 13) {
-            $scope.stageInput = false;
             // Push our data to the angular scope
-            $scope.project.stages.push({ name: $scope.newStage});
+            $scope.project.stages.push({ name: $scope.newStage, tasks: [] });
+            
+            // Nuke and repave the pipeline
+            $('stage-pipeline > svg').html('');
             drawPipeline($scope.project.stages);
+            
+            // Clear the stage input & hide
             $scope.newStage = null;
+            $scope.stageInput = false;
         }
     }
-    $scope.addStageBlur = function() {
-        $scope.stageInput = false;
-        $scope.newStage = null;
-    }
+        // Deal with blur later
+//    $scope.addStageBlur = function() {
+//        $scope.stageInput = false;
+//        $scope.project.stages.push({ name: $scope.newStage});
+//        drawPipeline($scope.project.stages);
+//        $scope.newStage = null;
+//    }
     
 
     
@@ -10044,14 +10060,26 @@ projects.controller('projectDetailsController', function($scope, $timeout){
         // 2. Clear the input
         // 3. TODO: Save the stage to DB and update UI
         if(keycode === 13) {
+            // Defined below
+            $timeout(function(){
+                var taskCopy = { content: $('#add-task').val()};
+                $scope.activeTasks.push(taskCopy);
+                $('#add-task').val('');
+            }, 100);
+            
             $scope.taskInput = false;
-            $scope.newTask = null;
         }
     }
-    $scope.addTaskBlur = function() {
-        $scope.taskInput = false;
-        $scope.newTask = null;
-    }
+        // Deal with blur later
+//    $scope.addTaskBlur = function() {
+//        $scope.taskInput = false;
+//        var copy = angular.copy($scope.newTask);
+//        $scope.activeTasks.push({ content: copy});
+//        
+//        $timeout(function(){
+//            //$scope.newTask = null;
+//        }, 100);
+//    }
 
     // Note Input handlers
     $scope.showNoteInput = function(){
@@ -10066,34 +10094,23 @@ projects.controller('projectDetailsController', function($scope, $timeout){
         // 2. Clear the input
         // 3. TODO: Save the stage to DB and update UI
         if(keycode === 13) {
+            $timeout(function(){
+                var noteCopy = { content: $('#add-note').val()};
+                $scope.activeNotes.push(noteCopy);
+                $('#add-note').val('');
+            });
+            
             $scope.noteInput = false;
-            $scope.newNote = null;
         }
     }
-    $scope.addNoteBlur = function() {
-        $scope.noteInput = false;
-        $scope.newNote = null;
-    }
+    // Deal with blur later
+//    $scope.addNoteBlur = function() {
+//        $scope.noteInput = false;
+//        $scope.activeNotes.push({ content: $scope.newNote});
+//        //$scope.newNote = "test";
+//    }
     
     
-    //////////////////////////////////////////////////
-    // Set the Active Tasks & Notes
-    //////////////////////////////////////////////////
-    
-    // Default to the first stage
-    $scope.activeTasks = $scope.project.stages[0].tasks;
-    $scope.activeNotes = $scope.activeTasks[0].notes;
-    
-    // Triggered by click on D3 pipeline
-    $scope.setActiveTasks = function(stageIndex){
-        $scope.$apply(function(){
-            $scope.activeTasks = $scope.project.stages[stageIndex].tasks;
-        });
-    }
-    
-    $scope.setActiveNotes = function(taskIndex){
-        $scope.activeNotes = $scope.activeTasks[taskIndex].notes;
-    }
     
 }); // End Project Details Controller
 
@@ -10188,8 +10205,6 @@ projects.directive('projectTimeline', function(){
     var link = function(scope, element) {
         // selection is an array of the new values
         scope.$watchGroup(['start','end'], function(selection){
-            console.log('Something changed!', selection)
-            
             // Nuke the current charts
             $('project-timeline').html('');
             
@@ -10239,7 +10254,6 @@ projects.directive('projectTimeline', function(){
             } else {
                 // The last argument is the css class
                 Materialize.toast('Whoops, you have to choose a start date that comes before the end date!', 4000, 'date-toast')
-                console.log('Start date is greater than the end date');
             }
         });
     }

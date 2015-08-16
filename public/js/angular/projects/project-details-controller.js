@@ -116,6 +116,29 @@ projects.controller('projectDetailsController', function($scope, $timeout){
             startDate: "2015-07-18"
     }
     
+    //////////////////////////////////////////////////
+    // Set the Active Tasks & Notes
+    //////////////////////////////////////////////////
+    
+    // Default to the first stage
+    $scope.activeTasks = $scope.project.stages[0].tasks;
+    $scope.activeNotes = $scope.activeTasks[0].notes;
+    $scope.stageIndex = 0;
+    $scope.taskIndex = 0;
+    
+    // Triggered by click on D3 pipeline
+    $scope.setActiveTasks = function(stageIndex){
+        $scope.stageIndex = stageIndex;
+        $scope.$apply(function(){
+            $scope.activeTasks = $scope.project.stages[stageIndex].tasks;
+            $scope.activeNotes = $scope.activeTasks[0].notes;
+        });
+    }
+    
+    $scope.setActiveNotes = function(taskIndex){
+        $scope.taskIndex = taskIndex;
+        $scope.activeNotes = $scope.activeTasks[taskIndex].notes;
+    }
     
     //////////////////////////////////////////////////
     // Input Handlers
@@ -135,19 +158,25 @@ projects.controller('projectDetailsController', function($scope, $timeout){
         // 3. Clear the input
         // 4. TODO: Save the stage to DB and update UI
         if(keycode === 13) {
-            $scope.stageInput = false;
             // Push our data to the angular scope
-            $scope.project.stages.push({ name: $scope.newStage});
+            $scope.project.stages.push({ name: $scope.newStage, tasks: [] });
+            
+            // Nuke and repave the pipeline
+            $('stage-pipeline > svg').html('');
             drawPipeline($scope.project.stages);
+            
+            // Clear the stage input & hide
             $scope.newStage = null;
+            $scope.stageInput = false;
         }
     }
-    $scope.addStageBlur = function() {
-        $scope.stageInput = false;
-        $scope.project.stages.push({ name: $scope.newStage});
-        drawPipeline($scope.project.stages);
-        $scope.newStage = null;
-    }
+        // Deal with blur later
+//    $scope.addStageBlur = function() {
+//        $scope.stageInput = false;
+//        $scope.project.stages.push({ name: $scope.newStage});
+//        drawPipeline($scope.project.stages);
+//        $scope.newStage = null;
+//    }
     
 
     
@@ -164,14 +193,26 @@ projects.controller('projectDetailsController', function($scope, $timeout){
         // 2. Clear the input
         // 3. TODO: Save the stage to DB and update UI
         if(keycode === 13) {
+            // Defined below
+            $timeout(function(){
+                var taskCopy = { content: $('#add-task').val()};
+                $scope.activeTasks.push(taskCopy);
+                $('#add-task').val('');
+            }, 100);
+            
             $scope.taskInput = false;
-            $scope.newTask = null;
         }
     }
-    $scope.addTaskBlur = function() {
-        $scope.taskInput = false;
-        $scope.newTask = null;
-    }
+        // Deal with blur later
+//    $scope.addTaskBlur = function() {
+//        $scope.taskInput = false;
+//        var copy = angular.copy($scope.newTask);
+//        $scope.activeTasks.push({ content: copy});
+//        
+//        $timeout(function(){
+//            //$scope.newTask = null;
+//        }, 100);
+//    }
 
     // Note Input handlers
     $scope.showNoteInput = function(){
@@ -186,33 +227,22 @@ projects.controller('projectDetailsController', function($scope, $timeout){
         // 2. Clear the input
         // 3. TODO: Save the stage to DB and update UI
         if(keycode === 13) {
+            $timeout(function(){
+                var noteCopy = { content: $('#add-note').val()};
+                $scope.activeNotes.push(noteCopy);
+                $('#add-note').val('');
+            });
+            
             $scope.noteInput = false;
-            $scope.newNote = null;
         }
     }
-    $scope.addNoteBlur = function() {
-        $scope.noteInput = false;
-        $scope.newNote = null;
-    }
+    // Deal with blur later
+//    $scope.addNoteBlur = function() {
+//        $scope.noteInput = false;
+//        $scope.activeNotes.push({ content: $scope.newNote});
+//        //$scope.newNote = "test";
+//    }
     
     
-    //////////////////////////////////////////////////
-    // Set the Active Tasks & Notes
-    //////////////////////////////////////////////////
-    
-    // Default to the first stage
-    $scope.activeTasks = $scope.project.stages[0].tasks;
-    $scope.activeNotes = $scope.activeTasks[0].notes;
-    
-    // Triggered by click on D3 pipeline
-    $scope.setActiveTasks = function(stageIndex){
-        $scope.$apply(function(){
-            $scope.activeTasks = $scope.project.stages[stageIndex].tasks;
-        });
-    }
-    
-    $scope.setActiveNotes = function(taskIndex){
-        $scope.activeNotes = $scope.activeTasks[taskIndex].notes;
-    }
     
 }); // End Project Details Controller
