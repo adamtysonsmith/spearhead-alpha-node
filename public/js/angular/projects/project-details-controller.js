@@ -44,12 +44,12 @@ projects.controller('projectDetailsController', function($scope, $timeout){
                             timestamp: "2015-08-09_16:10:17"
                         },
                         {
-                            content: "This is your second task",
+                            content: "Edit in Place",
                             duration: "The duration is XXX",
                             isCompleted: false,
                             isDeferred: false,
                             notes: [{
-                                content: "This is your second note! Its a part of the second task",
+                                content: "We want to be able to edit in place for the stages.  We can append the form elements in d3 and handle the events outside of angular. We also need the tasks and notes to be edited in place via Angular",
                                 timestamp: "2015-08-09_16:10:17"
                             }],
                             timestamp: "2015-08-09_16:10:17"
@@ -130,16 +130,22 @@ projects.controller('projectDetailsController', function($scope, $timeout){
     }
     $scope.addStageKeyup = function(keycode) {
         // If user presses enter:
-        // 1. Hide the stageInput
-        // 2. Clear the input
-        // 3. TODO: Save the stage to DB and update UI
+        // 1. Push data to angular scope
+        // 2. Hide the stageInput
+        // 3. Clear the input
+        // 4. TODO: Save the stage to DB and update UI
         if(keycode === 13) {
             $scope.stageInput = false;
+            // Push our data to the angular scope
+            $scope.project.stages.push({ name: $scope.newStage});
+            drawPipeline($scope.project.stages);
             $scope.newStage = null;
         }
     }
     $scope.addStageBlur = function() {
         $scope.stageInput = false;
+        $scope.project.stages.push({ name: $scope.newStage});
+        drawPipeline($scope.project.stages);
         $scope.newStage = null;
     }
     

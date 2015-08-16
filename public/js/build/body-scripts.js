@@ -9845,43 +9845,13 @@ dashboard.config(function($routeProvider){
 dashboard.controller('dashboardController', function($scope){
     console.log('I am the dashboard controller!!!');
 });
-
 // Stage Pipeline Navigation
 projects.directive('stagePipeline', function(){
-    // Create a controller for this directive
-    // that exposes methods to be used by child directives
-//    var controller = function($scope) {
-//        $scope.scopeName = 'Stage Pipleline Controller';
-//        console.log('The pipeline controller scope', $scope);
-//        
-//        $scope.activeTasks = 0;
-//        
-//        $scope.setActiveTasks = function(stageIndex){
-//            var stages = JSON.parse($scope.stages);
-//            $scope.activeTasks = stages[stageIndex].tasks;
-//            
-//            console.log('Active tasks are', $scope.activeTasks)
-//        }
-//        
-//        this.activeTasks = $scope.activeTasks;
-        
-        // Expose these vars and methods to task component directive
-//        this.getActiveStage = function() {
-//            console.log('The active stage is', $scope.activeStageIndex);
-//            return $scope.activeStageIndex;
-//        }
-//        
-//        // this.activeTasks = $scope.activeTasks;
-//        this.stages = $scope.stages;
-//        this.activeStageIndex = $scope.activeStageIndex;
-//        this.scope = $scope;
-//    }
-    
     // Can we move this to a controller?
     var link = function(scope, element){
         console.log('Scope from the pipeline directive', scope);
-        // Parse the project data from the projectDetailsController
-        // We pass the data.stages into the pipeline chart
+        // Project data from the projectDetailsController
+        // We pass the stages into the pipeline chart
         var stages = scope.project.stages;
         console.log('The stages from pipeline directive..', stages);
         
@@ -9895,19 +9865,19 @@ projects.directive('stagePipeline', function(){
         
         initPipeline(svgPipelineContainer, scope); // Defined in d3-pipeline.js
         drawPipeline(stages); // Defined in d3-pipeline.js
+        
+//        scope.$watch('project.stages', function(newStages) {
+//            console.log('New Stages in watch..', newStages);
+//            drawPipeline(newStages); // Defined in d3-pipeline.js
+//            scope.$apply();
+//        });
     }
     
     
     return {
         restrict: 'E',
         link: link,
-        scope: false
-        //controller: 
-        //scope: $scope
-        //controller: controller,
-//        scope: {
-//            stages: '@'
-//        }
+        scope: true
     }
 }); // End Pipeline Directive
 projects.controller('projectDetailsController', function($scope, $timeout){
@@ -9956,12 +9926,12 @@ projects.controller('projectDetailsController', function($scope, $timeout){
                             timestamp: "2015-08-09_16:10:17"
                         },
                         {
-                            content: "This is your second task",
+                            content: "Edit in Place",
                             duration: "The duration is XXX",
                             isCompleted: false,
                             isDeferred: false,
                             notes: [{
-                                content: "This is your second note! Its a part of the second task",
+                                content: "We want to be able to edit in place for the stages.  We can append the form elements in d3 and handle the events outside of angular. We also need the tasks and notes to be edited in place via Angular",
                                 timestamp: "2015-08-09_16:10:17"
                             }],
                             timestamp: "2015-08-09_16:10:17"
@@ -10042,11 +10012,15 @@ projects.controller('projectDetailsController', function($scope, $timeout){
     }
     $scope.addStageKeyup = function(keycode) {
         // If user presses enter:
-        // 1. Hide the stageInput
-        // 2. Clear the input
-        // 3. TODO: Save the stage to DB and update UI
+        // 1. Push data to angular scope
+        // 2. Hide the stageInput
+        // 3. Clear the input
+        // 4. TODO: Save the stage to DB and update UI
         if(keycode === 13) {
             $scope.stageInput = false;
+            // Push our data to the angular scope
+            $scope.project.stages.push({ name: $scope.newStage});
+            drawPipeline($scope.project.stages);
             $scope.newStage = null;
         }
     }
@@ -10208,129 +10182,6 @@ projects.controller('projectsController', function($scope){
     }
     
 }); // End Projects Controller
-//// Task Component Directive
-//// The TC directive will contain the template to display all the tasks and notes
-//// for a selected stage in the pipeline
-//
-//// ProjectDetails controller has the whole project in scope, passes stages to pipeline directive [DONE]
-//// Pipeline controller has the stages and active stage in scope, passes tasks to TC
-//// TC should have its own scope that has the tasks/notes, active task which shows notes
-//projects.directive('tasksComponent', function(){
-//    
-////    var controller = function($scope, $timeout) {
-////        $scope.scopeName = 'TC Controller';
-////        
-////        $scope.activeTasks = $scope.$parent.activeTasks;
-//        
-////        // Task Input handlers
-////        $scope.showTaskInput = function(){
-////            $scope.taskInput = true;
-////            $timeout(function(){
-////                $('#add-task').focus();
-////            }, 100);
-////        }
-////        $scope.addTaskKeyup = function(keycode) {
-////            // If user presses enter:
-////            // 1. Hide the stageInput
-////            // 2. Clear the input
-////            // 3. TODO: Save the stage to DB and update UI
-////            if(keycode === 13) {
-////                $scope.taskInput = false;
-////                $scope.newTask = null;
-////            }
-////        }
-////        $scope.addTaskBlur = function() {
-////            $scope.taskInput = false;
-////            $scope.newTask = null;
-////        }
-////        
-////        // Note Input handlers
-////        $scope.showNoteInput = function(){
-////            $scope.noteInput = true;
-////            $timeout(function(){
-////                $('#add-note').focus();
-////            }, 100);
-////        }
-////        $scope.addNoteKeyup = function(keycode) {
-////            // If user presses enter:
-////            // 1. Hide the stageInput
-////            // 2. Clear the input
-////            // 3. TODO: Save the stage to DB and update UI
-////            if(keycode === 13) {
-////                $scope.noteInput = false;
-////                $scope.newNote = null;
-////            }
-////        }
-////        $scope.addNoteBlur = function() {
-////            $scope.noteInput = false;
-////            $scope.newNote = null;
-////        }
-//        
-////    } // End Controller
-//    
-//    var link = function(scope, element, attr, pipelineController){
-//        
-////        console.log('The scope in TC link', scope)
-////        console.log('The active tasks in pipeline controller..', pipelineController.activeTasks)
-////        
-////        scope.activeTasks = pipelineController.activeTasks;
-////        console.log('The TC active tasks are', scope.activeTasks);
-////        var activeStageIndex = pipelineController.getActiveStage();
-////        
-////        var stages = JSON.parse(pipelineController.stages);
-////        
-////        console.log('The stages are:', stages)
-////        
-////        scope.activeTasks = stages[activeStageIndex].tasks;
-////        
-////        console.log('the active tasks are', scope.activeTasks);
-////        
-////        pipelineController.scope.$watch(pipelineController.activeStageIndex, function(newStageIndex, oldStageIndex){
-////            console.log('triggered a watch', newStageIndex, oldStageIndex)
-////            if(newStageIndex) {
-////                scope.activeTasks = stages[newStageIndex].tasks;
-////            }
-////        });
-//    }
-//    
-//    return {
-//        restrict: 'E',
-//        link: link,
-//        templateUrl: '/partials/task-component',
-//        scope: false
-//        //controller: controller,
-//        // Require the parent directive, which gives us access
-//        // to the parent controller(Pipeline Directive Controller) in our linking function
-//        //require: '^stagePipeline',
-//        //scope: { tasks: '=' } 
-//    }
-//});
-//// Tasks Directive
-//projects.directive('task', function(){
-//    
-//    var controller = function($scope) {
-//        console.log('Task directive data:', $scope.task);
-//    }
-//    
-//    var link = function(scope, element, attr, pipelineController){
-//        // Pass in a message to our test method
-//        pipelineController.test('It works!');
-//    }
-//    
-//    return {
-//        restrict: 'E',
-//        controller: controller,
-//        link: link,
-//        // Require the parent directive, which gives us access
-//        // to the parent controller in our linking function
-//        require: '^stagePipeline',
-//        templateUrl: '/partials/task',
-//        scope: {
-//            task: '=', // Specifies 2 way binding
-//            index: '@' // Outside In
-//        }
-//    }
-//}); // End Task Directive
 // Project Waterfall Navigation
 projects.directive('projectTimeline', function(){
     

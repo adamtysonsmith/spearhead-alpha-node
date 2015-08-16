@@ -4,8 +4,6 @@ projects.directive('projectTimeline', function(){
     var link = function(scope, element) {
         // selection is an array of the new values
         scope.$watchGroup(['start','end'], function(selection){
-            console.log('Something changed!', selection)
-            
             // Nuke the current charts
             $('project-timeline').html('');
             
@@ -55,7 +53,6 @@ projects.directive('projectTimeline', function(){
             } else {
                 // The last argument is the css class
                 Materialize.toast('Whoops, you have to choose a start date that comes before the end date!', 4000, 'date-toast')
-                console.log('Start date is greater than the end date');
             }
         });
     }
