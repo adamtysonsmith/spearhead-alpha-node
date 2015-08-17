@@ -19,7 +19,7 @@ var projectSchema = mongoose.Schema({
     isDeferred: {type: Boolean, default: false},
     
     // Stages array
-    // stages: [{type: Schema.Types.ObjectId, ref: 'Stage'}]
+    // stages: [{type: mongoose.Schema.ObjectId, ref: 'Stage'}]
     stages: [Stage.stageSchema]
 });
 

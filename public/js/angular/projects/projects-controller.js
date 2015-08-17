@@ -1,4 +1,4 @@
-projects.controller('projectsController', function($scope, projectFactory){
+projects.controller('projectsController', function($scope, projectFactory, $routeParams){
     console.log('I am the projects controller!!!');
     $scope.scopeName = 'Projects Controller';
     

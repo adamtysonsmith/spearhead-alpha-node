@@ -9713,7 +9713,7 @@ var drawAxis = function(svgContainer, sidePadding, topPadding, width, height, mi
 
 
 // Function to draw the bars and labels
-function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeight, theColorScale, timeScale, dateFormat, w, h) {
+function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeight, theColorScale, timeScale, dateFormat, w, h, scope, projectFactory, $routeParams) {
     
     // Append our bars
     var barGroup = svgContainer.append('g')
@@ -9743,8 +9743,8 @@ function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeigh
             return d3.rgb(theColorScale(i));
         })
         .on('click', function(d, i) {
-            console.log('clicked bar..', d)
-            return window.location.hash = '/' + i;
+            // console.log('clicked bar, this is the _id and name..', d._id, d.name)
+            return window.location.hash = '/' + d._id;
         });
    
 
@@ -9844,19 +9844,23 @@ dashboard.controller('dashboardController', function($scope){
 projects.directive('stagePipeline', function(){
     // Can we move this to a controller?
     var link = function(scope, element){
+        var stages;
         // We pass the stages into the pipeline chart
-        var stages = scope.project.stages;
-        
-        // Create a selection for the svgContainer
-        var svgPipelineContainer = d3.select(element[0]).insert('svg', ':first-child')
-            .attr('width', '100%')
-            .attr('height', '100%')
-            .attr('viewBox', '0 0 ' + 1000 + ' ' + 100)
-            .attr('preserveAspectRatio','xMidYMid')
-            .attr("class", "project-pipeline");
-        
-        initPipeline(svgPipelineContainer, scope); // Defined in d3-pipeline.js
-        drawPipeline(stages); // Defined in d3-pipeline.js
+        scope.$watch('project', function(newValue){
+            if(newValue !== undefined) {
+                stages = scope.project.stages;
+                // Create a selection for the svgContainer
+                var svgPipelineContainer = d3.select(element[0]).insert('svg', ':first-child')
+                    .attr('width', '100%')
+                    .attr('height', '100%')
+                    .attr('viewBox', '0 0 ' + 1000 + ' ' + 100)
+                    .attr('preserveAspectRatio','xMidYMid')
+                    .attr("class", "project-pipeline");
+
+                initPipeline(svgPipelineContainer, scope); // Defined in d3-pipeline.js
+                drawPipeline(stages); // Defined in d3-pipeline.js
+            }
+        });
     }
     
     return {
@@ -9865,131 +9869,148 @@ projects.directive('stagePipeline', function(){
         scope: true
     }
 }); // End Pipeline Directive
-projects.controller('projectDetailsController', function($scope, $timeout){
+projects.controller('projectDetailsController', function($scope, $timeout, projectFactory, $routeParams){
     $scope.scopeName = 'Project Details Controller';
     
+    console.log('The $routeParams are', $routeParams)
+
+    projectFactory.model.get({_id: $routeParams.id}, function(successObject){
+        $scope.project = successObject;
+        console.log('The project is..', $scope.project)
+    });
+    
+    
+    // Cannot push into a resource object!
+    //$scope.project.stages.$save({name: 'Initial Stage'}); ???
+    
     // Mock data
-    $scope.project = {
-            dueDate: "2015-08-15",
-            duration: "The duration is XXX",
-            isAbandoned: false,
-            isActive: false,
-            isCompleted: false,
-            isDeferred: false,
-            isStarted: false,
-            name: "Final Project!",
-            stages: [
-                {
-                    dueDate: "The due date is XXX",
-                    duration: "The duration is XXX",
-                    isActive: false,
-                    isCompleted: false,
-                    isDeferred: false,
-                    isStarted: false,
-                    name: "Finish Project Details UI",
-                    startDate: undefined,
-                    tasks: [
-                        {
-                            content: "Ability to add stages, tasks, notes",
-                            duration: "The duration is XXX",
-                            isCompleted: false,
-                            isDeferred: false,
-                            notes: [
-                                {
-                                    content: "They need to update the angular vars and also update the database",
-                                    timestamp: "2015-08-09_16:10:17"
-                                },
-                                {
-                                    content: "Checkboxes need to save state, and we need styles to represent active tasks",
-                                    timestamp: "2015-08-09_16:10:17"
-                                },
-                                {
-                                    content: "When switching to new stage, needs to be set to the first task in that stage",
-                                    timestamp: "2015-08-09_16:10:17"
-                                }
-                            ],
-                            timestamp: "2015-08-09_16:10:17"
-                        },
-                        {
-                            content: "Edit in Place",
-                            duration: "The duration is XXX",
-                            isCompleted: false,
-                            isDeferred: false,
-                            notes: [{
-                                content: "We want to be able to edit in place for the stages.  We can append the form elements in d3 and handle the events outside of angular. We also need the tasks and notes to be edited in place via Angular",
-                                timestamp: "2015-08-09_16:10:17"
-                            }],
-                            timestamp: "2015-08-09_16:10:17"
-                        },
-                        {
-                            content: "This is your third task",
-                            duration: "The duration is XXX",
-                            isCompleted: false,
-                            isDeferred: false,
-                            notes: [{
-                                content: "This is your third note!",
-                                timestamp: "2015-08-09_16:10:17"
-                            }],
-                            timestamp: "2015-08-09_16:10:17"
-                        }
-                    ],
-                    timestamp: "2015-08-09_16:10:17"
-                },
-                {
-                    dueDate: "The due date is XXX",
-                    duration: "The duration is XXX",
-                    isActive: false,
-                    isCompleted: false,
-                    isDeferred: false,
-                    isStarted: false,
-                    name: "Dashboard Angular UI",
-                    startDate: undefined,
-                    tasks: [{
-                        content: "Make sure you get paid son",
-                        duration: "The duration is XXX",
-                        isCompleted: false,
-                        isDeferred: false,
-                        notes: [{
-                            content: "This is your first note!",
-                            timestamp: "2015-08-09_16:10:17"
-                        }],
-                        timestamp: "2015-08-09_16:10:17"
-                    }],
-                    timestamp: "2015-08-09_16:10:17"
-                },
-                {
-                    dueDate: "The due date is XXX",
-                    duration: "The duration is XXX",
-                    isActive: false,
-                    isCompleted: false,
-                    isDeferred: false,
-                    isStarted: false,
-                    name: "Backend Code",
-                    startDate: undefined,
-                    tasks: [{
-                        content: "Design that shit!",
-                        duration: "The duration is XXX",
-                        isCompleted: false,
-                        isDeferred: false,
-                        notes: [{
-                            content: "This is your first note!",
-                            timestamp: "2015-08-09_16:10:17"
-                        }],
-                        timestamp: "2015-08-09_16:10:17"
-                    }],
-                    timestamp: "2015-08-09_16:10:17"
-                }
-            ],
-            startDate: "2015-07-18"
-    }
+//    $scope.project = {
+//            dueDate: "2015-08-15",
+//            duration: "The duration is XXX",
+//            isAbandoned: false,
+//            isActive: false,
+//            isCompleted: false,
+//            isDeferred: false,
+//            isStarted: false,
+//            name: "Final Project!",
+//            stages: [
+//                {
+//                    dueDate: "The due date is XXX",
+//                    duration: "The duration is XXX",
+//                    isActive: false,
+//                    isCompleted: false,
+//                    isDeferred: false,
+//                    isStarted: false,
+//                    name: "Finish Project Details UI",
+//                    startDate: undefined,
+//                    tasks: [
+//                        {
+//                            content: "Ability to add stages, tasks, notes",
+//                            duration: "The duration is XXX",
+//                            isCompleted: false,
+//                            isDeferred: false,
+//                            notes: [
+//                                {
+//                                    content: "They need to update the angular vars and also update the database",
+//                                    timestamp: "2015-08-09_16:10:17"
+//                                },
+//                                {
+//                                    content: "Checkboxes need to save state, and we need styles to represent active tasks",
+//                                    timestamp: "2015-08-09_16:10:17"
+//                                },
+//                                {
+//                                    content: "When switching to new stage, needs to be set to the first task in that stage",
+//                                    timestamp: "2015-08-09_16:10:17"
+//                                }
+//                            ],
+//                            timestamp: "2015-08-09_16:10:17"
+//                        },
+//                        {
+//                            content: "Edit in Place",
+//                            duration: "The duration is XXX",
+//                            isCompleted: false,
+//                            isDeferred: false,
+//                            notes: [{
+//                                content: "We want to be able to edit in place for the stages.  We can append the form elements in d3 and handle the events outside of angular. We also need the tasks and notes to be edited in place via Angular",
+//                                timestamp: "2015-08-09_16:10:17"
+//                            }],
+//                            timestamp: "2015-08-09_16:10:17"
+//                        },
+//                        {
+//                            content: "This is your third task",
+//                            duration: "The duration is XXX",
+//                            isCompleted: false,
+//                            isDeferred: false,
+//                            notes: [{
+//                                content: "This is your third note!",
+//                                timestamp: "2015-08-09_16:10:17"
+//                            }],
+//                            timestamp: "2015-08-09_16:10:17"
+//                        }
+//                    ],
+//                    timestamp: "2015-08-09_16:10:17"
+//                },
+//                {
+//                    dueDate: "The due date is XXX",
+//                    duration: "The duration is XXX",
+//                    isActive: false,
+//                    isCompleted: false,
+//                    isDeferred: false,
+//                    isStarted: false,
+//                    name: "Dashboard Angular UI",
+//                    startDate: undefined,
+//                    tasks: [{
+//                        content: "Make sure you get paid son",
+//                        duration: "The duration is XXX",
+//                        isCompleted: false,
+//                        isDeferred: false,
+//                        notes: [{
+//                            content: "This is your first note!",
+//                            timestamp: "2015-08-09_16:10:17"
+//                        }],
+//                        timestamp: "2015-08-09_16:10:17"
+//                    }],
+//                    timestamp: "2015-08-09_16:10:17"
+//                },
+//                {
+//                    dueDate: "The due date is XXX",
+//                    duration: "The duration is XXX",
+//                    isActive: false,
+//                    isCompleted: false,
+//                    isDeferred: false,
+//                    isStarted: false,
+//                    name: "Backend Code",
+//                    startDate: undefined,
+//                    tasks: [{
+//                        content: "Design that shit!",
+//                        duration: "The duration is XXX",
+//                        isCompleted: false,
+//                        isDeferred: false,
+//                        notes: [{
+//                            content: "This is your first note!",
+//                            timestamp: "2015-08-09_16:10:17"
+//                        }],
+//                        timestamp: "2015-08-09_16:10:17"
+//                    }],
+//                    timestamp: "2015-08-09_16:10:17"
+//                }
+//            ],
+//            startDate: "2015-07-18"
+//    }
     
     //////////////////////////////////////////////////
     // Set the Active Tasks & Notes
     //////////////////////////////////////////////////
     
     // Default to the first stage
-    $scope.activeTasks = $scope.project.stages[0].tasks;
-    $scope.activeNotes = $scope.activeTasks[0].notes;
+    //$scope.activeTasks = $scope.project.stages[0].tasks;
+    //$scope.activeNotes = $scope.activeTasks[0].notes;
+//    console.log('$scope.project =', $scope.project)
+//    console.log('$scope.project.stages =', $scope.project.stages)
+//    console.log('$scope.project.stages[0] =', $scope.project.stages[0])
+//    console.log('$scope.project.stages[0].tasks =', $scope.project.stages[0].tasks)
+//    console.log('$scope.project.stages[0].tasks[0] =', $scope.project.stages[0].tasks[0])
+    
     $scope.stageIndex = 0;
     $scope.taskIndex = 0;
     
@@ -10136,7 +10157,7 @@ projects.factory('projectFactory', function($resource){
 	}
 
 });
-projects.controller('projectsController', function($scope, projectFactory){
+projects.controller('projectsController', function($scope, projectFactory, $routeParams){
     console.log('I am the projects controller!!!');
     $scope.scopeName = 'Projects Controller';
     
@@ -10296,7 +10317,7 @@ projects.controller('projectsController', function($scope, projectFactory){
     
 }); // End Projects Controller
 // Project Waterfall Navigation
-projects.directive('projectTimeline', function(){
+projects.directive('projectTimeline', function(projectFactory, $routeParams){
     
     var link = function(scope, element) {
         // selection is an array of the new values
@@ -10346,7 +10367,7 @@ projects.directive('projectTimeline', function(){
             if(min < max) {
                 // Now rebuild the charts
                 drawAxis(svgContainer, 0, 0, width, height, min, max, timeScale, timeFormat); // Defined in d3-waterfall.js
-                drawBars(parsedData, svgContainer, 50, 0, 0, 40, colorScale, timeScale, dateFormat, width, height); // Defined in d3-waterfall.js
+                drawBars(parsedData, svgContainer, 50, 0, 0, 40, colorScale, timeScale, dateFormat, width, height, scope, projectFactory, $routeParams); // Defined in d3-waterfall.js
             } else {
                 // The last argument is the css class
                 Materialize.toast('Whoops, you have to choose a start date that comes before the end date!', 4000, 'date-toast')

@@ -35,7 +35,7 @@ var drawAxis = function(svgContainer, sidePadding, topPadding, width, height, mi
 
 
 // Function to draw the bars and labels
-function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeight, theColorScale, timeScale, dateFormat, w, h) {
+function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeight, theColorScale, timeScale, dateFormat, w, h, scope, projectFactory, $routeParams) {
     
     // Append our bars
     var barGroup = svgContainer.append('g')
@@ -65,8 +65,8 @@ function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeigh
             return d3.rgb(theColorScale(i));
         })
         .on('click', function(d, i) {
-            console.log('clicked bar..', d)
-            return window.location.hash = '/' + i;
+            // console.log('clicked bar, this is the _id and name..', d._id, d.name)
+            return window.location.hash = '/' + d._id;
         });
    
 
