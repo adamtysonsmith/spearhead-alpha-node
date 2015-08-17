@@ -3,7 +3,7 @@ projects.directive('projectTimeline', function(){
     
     var link = function(scope, element) {
         // selection is an array of the new values
-        scope.$watchGroup(['start','end'], function(selection){
+        scope.$watchGroup(['start','end','data'], function(selection){
             // Nuke the current charts
             $('project-timeline').html('');
             
