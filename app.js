@@ -8,7 +8,7 @@ var passportConfig      = require('./config/passport');
 var indexController     = require('./controllers/index.js');
 var authController      = require('./controllers/auth.js');
 var templateController  = require('./controllers/templates.js');
-
+var apiController       = require('./controllers/api.js');
 
 // Connect to spearhead database
 mongoose.connect('mongodb://localhost/spearhead');
@@ -56,6 +56,12 @@ app.get('/dashboard', indexController.app);
 app.get('/projects', indexController.app);
 app.get('/ng-views/:templateName', templateController.ngview);
 app.get('/partials/:partialName', templateController.partial);
+
+// Authenticated API Routes
+app.post('/api/projects', apiController.create);
+app.get('/api/projects', apiController.read);
+//app.put('/api/projects', apiController.update);
+//app.delete('/api/projects', apiController.delete);
 
 // Server
 var port = 2800;

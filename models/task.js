@@ -1,32 +1,35 @@
 var mongoose = require('mongoose');
 var helpers = require('./helpers.js')
 
+var noteSchema = mongoose.Schema({
+    content: String
+    //timestamp: helpers.getTimestamp()
+});
+
 var taskSchema = mongoose.Schema({
     content: String,
     
     // Calculated Properties
-    duration: helpers.getDuration(),
-    timestamp: helpers.getTimestamp(),
+    //duration: helpers.getDuration(),
+    //timestamp: helpers.getTimestamp(),
 
     // Status Tracking
     isCompleted: {type: Boolean, default: false},
     isDeferred: {type: Boolean, default: false},
     
     // Notes array
-    notes: [{type: Schema.Types.ObjectId, ref: 'Note'}]
+    // notes: [{type: Schema.Types.ObjectId, ref: 'Note'}]
+    notes: [noteSchema]
 });
 
-var noteSchema = mongoose.Schema({
-    content: String,
-    timestamp: helpers.getTimestamp()
-});
 
 var Task = mongoose.model('Task', taskSchema);
 var Note = mongoose.model('Note', noteSchema);
 
 module.exports = {
     task: Task,
-    note: Note
+    note: Note,
+    taskSchema: taskSchema
 }
 
 

@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var helpers = require('./helpers.js')
+var Stage = require('./stage.js');
 
 var projectSchema = mongoose.Schema({
     name: String,
@@ -7,8 +8,8 @@ var projectSchema = mongoose.Schema({
     dueDate: String,
     
     // Calculated Properties
-    duration: helpers.getDuration(),
-    timestamp: helpers.getTimestamp(),
+    //duration: helpers.getDuration(),
+    //timestamp: helpers.getTimestamp(),
     
     // Status tracking
     isStarted: {type: Boolean, default: false},
@@ -18,7 +19,8 @@ var projectSchema = mongoose.Schema({
     isDeferred: {type: Boolean, default: false},
     
     // Stages array
-    stages: [{type: Schema.Types.ObjectId, ref: 'Stage'}]
+    // stages: [{type: Schema.Types.ObjectId, ref: 'Stage'}]
+    stages: [Stage.stageSchema]
 });
 
 var Project = mongoose.model('Project', projectSchema);

@@ -1,6 +1,6 @@
 //div(ng-controller="projectsController")
 div.waterfall-title.row
-    div.col.s7
+    div.col.s7 {{newProject}}
         h1 Your Projects
         // Include the Angular-Materialize modal directive
         a(ng-click="addProject()").btn.modal-trigger Add Project
@@ -22,15 +22,17 @@ block modals
     div#addProjectModal.modal
         div.modal-content
             h5 Add a Project
-            div.input-field
-                input(type="text")#project-name
-                label(for="project-name") Project Name
-            div.input-field
-                input(type="date" ng-click="addStartDate()")#start-date.datepicker
-                label(for="start-date") Start Date
-            div.input-field
-                input(type="date" ng-click="addDueDate()")#end-date.datepicker
-                label(for="end-date") Completion Date
-        div.modal-footer
-            a(ng-click="closeModal()").modal-action.modal-close.btn-flat Cancel
-            a(ng-click="closeModal()").modal-action.modal-close.btn-flat Save
+            // These ng-models match our schema
+            form
+                div.input-field
+                    input(type="text" ng-model="newProject.name")#project-name
+                    label(for="project-name") Project Name
+                div.input-field
+                    input(type="date" ng-click="addStartDate()")#start-date.datepicker
+                    label(for="start-date") Start Date
+                div.input-field
+                    input(type="date" ng-click="addDueDate()")#end-date.datepicker
+                    label(for="end-date") Completion Date
+                div.modal-footer
+                    a(ng-click="closeModal()").modal-action.modal-close.btn-flat Cancel
+                    a(ng-click="saveProject()").modal-action.modal-close.btn-flat Save
