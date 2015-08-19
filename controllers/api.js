@@ -1,6 +1,7 @@
 var Project = require('../models/project.js');
 var Stage = require('../models/stage.js').stage;
 var Task = require('../models/task.js').task;
+var Note = require('../models/task.js').note;
 
 var apiController = {
     createProject: function(req, res) {
@@ -56,9 +57,8 @@ var apiController = {
         var task = new Task(req.body);
 
         Project.findOne({'stages._id': stageID}, function(err, project){
-            console.log('Create Task: found the project', project)
             if(err){
-                console.log('Error querying stage', err)
+                console.log('Error querying project to update stage', err)
             } else {
                 task.save(function(err, task){
                     Stage.findOne({_id: stageID}, function(err, stage){
@@ -66,6 +66,7 @@ var apiController = {
                         stage.save(function(err, stage){
                             project.stages.forEach(function(thisStage, index){
                                 if(thisStage._id.toString() === stageID){
+                                    // Overwrite the stage
                                     project.stages[index] = stage;
                                 }
                             });
@@ -83,7 +84,49 @@ var apiController = {
     createNote: function(req, res) {
         // create a note, and push it into the TASK id param
         var reqID = req.params.id;
-        var note = new Note();
+        var stageID = req.params.stageid;
+        var taskID = req.params.taskid;
+        var note = new Note(req.body);
+        console.log('The stage id', stageID)
+        console.log('The task id', taskID)
+        console.log('The request body', req.body)
+        
+        Project.findOne({_id: reqID}, function(err, project){
+            note.save(function(err, note){
+                Task.findOne({_id: taskID}, function(err, task){
+                    console.log('The task you are attempting to create a note', task)
+                    if(err){
+                        console.log('Error finding task', err)
+                    }
+                    task.notes.push(note);
+                    task.save(function(err, savedTask){
+                        console.log('Create Note: The saved task', savedTask);
+                        Stage.findOne({_id: stageID}, function(err, stage){
+                            stage.tasks.forEach(function(thisTask, index){
+                                if(thisTask._id.toString() === taskID) {
+                                    stage.tasks[index] = savedTask;
+                                }
+                            });
+                            stage.markModified('tasks');
+                            stage.save(function(err, savedStage){
+                                console.log('You saved the stage! it should have tasks with notes', savedStage.tasks)
+                                project.stages.forEach(function(thisStage, index){
+                                    if(thisStage._id.toString() === stageID){
+                                        // Overwrite the stage
+                                        project.stages[index] = savedStage;
+                                    }
+                                });
+                                project.markModified('stages');
+
+                                project.save(function(err, project){
+                                    res.send(note); // Send back note as returnData to angular
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
     },
     readProject: function(req, res){
         var reqID = req.query._id;

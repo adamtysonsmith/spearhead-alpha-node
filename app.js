@@ -61,7 +61,7 @@ app.get('/partials/:partialName', templateController.partial);
 app.post('/api/projects', apiController.createProject);
 app.post('/api/projects/:id/stages', apiController.createStage);
 app.post('/api/projects/:id/stages/:stageid/tasks', apiController.createTask);
-app.post('/api/projects/:id/stages/:stageid/tasks/:taskid/notes', apiController.createNote)
+app.post('/api/projects/:id/stages/:stageid/tasks/:taskid/notes', apiController.createNote);
 
 app.get('/api/projects', apiController.readProject);
 //app.put('/api/projects', apiController.update);

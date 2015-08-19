@@ -190,17 +190,6 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
                 $scope.newStage = null;
                 $scope.stageInput = false;
             });
-            
-//            // Push our data to the angular scope
-//            $scope.project.stages.push({ name: $scope.newStage, tasks: [] });
-//            
-//            // Nuke and repave the pipeline
-//            $('stage-pipeline > svg').html('');
-//            drawPipeline($scope.project.stages);
-//            
-//            // Clear the stage input & hide
-//            $scope.newStage = null;
-//            $scope.stageInput = false;
         }
     }
         // Deal with blur later
@@ -234,18 +223,13 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
                 console.log('Task save returnData', returnData)
                 $scope.activeTasks.push(returnData);
                 console.log('The project after save', $scope.project)
-                $scope.newTask = null;
-                $scope.taskInput = false;
-            });
                 
-            // Defined below
-//            $timeout(function(){
-//                var taskCopy = { content: $('#add-task').val()};
-//                $scope.activeTasks.push(taskCopy);
-//                $('#add-task').val('');
-//            }, 100);
-//            
-//            $scope.taskInput = false;
+            });
+            
+            $timeout(function(){
+                $('#add-task').val('');
+                $scope.taskInput = false;
+            }, 100)
         }
     }
         // Deal with blur later
@@ -272,13 +256,20 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         // 2. Clear the input
         // 3. TODO: Save the stage to DB and update UI
         if(keycode === 13) {
-            $timeout(function(){
-                var noteCopy = { content: $('#add-note').val()};
-                $scope.activeNotes.push(noteCopy);
-                $('#add-note').val('');
-            });
+            var newNote = new projectFactory.note(this.newNote);
+            var stageId = $scope.project.stages[$scope.stageIndex]._id;
+            var taskId = $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex]._id;
             
-            $scope.noteInput = false;
+            newNote.$save({ id: $routeParams.id, stageid: stageId, taskid: taskId }, function(returnData){
+                console.log('Note save returnData', returnData)
+                $scope.activeNotes.push(returnData);
+                console.log('The project after save', $scope.project)
+            }); 
+            
+            $timeout(function(){
+                $('#add-note').val('');
+                $scope.noteInput = false;
+            }, 100)
         }
     }
     // Deal with blur later

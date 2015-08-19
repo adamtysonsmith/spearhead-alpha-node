@@ -12,7 +12,7 @@ div.row
         stage-pipeline
             // Task Pane
             div.col.s6.tasks-component
-                div.row
+                div.row The new task model: {{newTask}}
                     div.col.s12
                         h2.left Tasks
                         button.btn-floating.add-task-btn(ng-click="showTaskInput()") +
@@ -31,7 +31,7 @@ div.row
                         h2.left Notes
                         button.btn-floating.add-note-btn(ng-click="showNoteInput()") +
                     div#add-note-input.input-field.col.s12(ng-show="noteInput")
-                        input#add-note(type="text" ng-model="newNote" ng-keyup="addNoteKeyup($event.keyCode)" ng-blur="addNoteBlur()")
+                        input#add-note(type="text" ng-model="newNote.content" ng-keyup="addNoteKeyup($event.keyCode)" ng-blur="addNoteBlur()")
                         label(for="add-note") Add a Note to this Task
                 div.card-panel(ng-repeat="note in activeNotes")
                     p.note-date {{note.timestamp}}
