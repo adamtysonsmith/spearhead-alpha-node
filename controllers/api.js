@@ -141,6 +141,24 @@ var apiController = {
                 res.send(projects);
             });
         }
+    },
+    checkTask: function(req, res){
+        var reqID = req.params.id;
+        var stageID = req.params.stageid;
+        var taskID = req.params.taskid;
+        
+        Project.findOne({_id: reqID}, function(err, project){
+            project.stages.forEach(function(thisStage, index){
+                if(thisStage._id.toString() === stageID) {
+                    project.stages[index].tasks.forEach(function(thisTask, index){
+                        if(thisTask._id.toString() === taskID) {
+                            thisTask.isCompleted = req.body.checked;
+                            console.log('The checked/unchecked task', thisTask)
+                        }
+                    });
+                }
+            });
+        });
     }
 }
 

@@ -272,6 +272,16 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
             }, 100)
         }
     }
+    
+    $scope.checkTask = function(index){
+        // ng-model isChecked is true or false
+        var checkTask = new projectFactory.checkTask({checked: isChecked});
+        var stageId = $scope.project.stages[$scope.stageIndex]._id;
+        var taskId = $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex]._id;
+        
+        $http.post('/api/projects/:id/stages/:stageid/tasks/:taskid', {checked: isChecked})
+            .success(console.log('Succesfully checked off the task'));
+    }
     // Deal with blur later
 //    $scope.addNoteBlur = function() {
 //        $scope.noteInput = false;
