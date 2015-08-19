@@ -17,7 +17,7 @@ div.row
                         h2.left Tasks
                         button.btn-floating.add-task-btn(ng-click="showTaskInput()") +
                     div#add-task-input.input-field.col.s12(ng-show="taskInput")
-                        input#add-task(type="text" ng-model="newTask" ng-keyup="addTaskKeyup($event.keyCode)" ng-blur="addTaskBlur()")
+                        input#add-task(type="text" ng-model="newTask.content" ng-keyup="addTaskKeyup($event.keyCode)" ng-blur="addTaskBlur()")
                         label(for="add-task") Add a Task to this Stage
                 div(ng-repeat="task in activeTasks" ng-click="setActiveNotes($index)" ng-class="{'active-task': $index == taskIndex}").task
                     p.task-content

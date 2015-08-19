@@ -10097,14 +10097,26 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         // 2. Clear the input
         // 3. TODO: Save the stage to DB and update UI
         if(keycode === 13) {
-            // Defined below
-            $timeout(function(){
-                var taskCopy = { content: $('#add-task').val()};
-                $scope.activeTasks.push(taskCopy);
-                $('#add-task').val('');
-            }, 100);
+            // newTask object is the ng-model in the view
+            var newTask = new projectFactory.task(this.newTask);
+            var stageID = $scope.project.stages[$scope.stageIndex]._id;
             
-            $scope.taskInput = false;
+            newTask.$save({ id: $routeParams.id, stageid: stageID }, function(returnData){
+                console.log('Task save returnData', returnData)
+                $scope.activeTasks.push(returnData);
+                console.log('The project after save', $scope.project)
+                $scope.newTask = null;
+                $scope.taskInput = false;
+            });
+                
+            // Defined below
+//            $timeout(function(){
+//                var taskCopy = { content: $('#add-task').val()};
+//                $scope.activeTasks.push(taskCopy);
+//                $('#add-task').val('');
+//            }, 100);
+//            
+//            $scope.taskInput = false;
         }
     }
         // Deal with blur later
@@ -10183,7 +10195,7 @@ projects.controller('projectsController', function($scope, projectFactory){
     
     // Get all projects from the api route
     $scope.projects = projectFactory.queryProjects;
-    console.log('The projects scope..', $scope.projects)
+    console.log('All projects scope..', $scope.projects)
     
     // Defaults to show the current month in the projects datepicker range
     $scope.start = new Date();

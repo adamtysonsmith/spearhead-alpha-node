@@ -3,7 +3,7 @@ projects.controller('projectsController', function($scope, projectFactory){
     
     // Get all projects from the api route
     $scope.projects = projectFactory.queryProjects;
-    console.log('The projects scope..', $scope.projects)
+    console.log('All projects scope..', $scope.projects)
     
     // Defaults to show the current month in the projects datepicker range
     $scope.start = new Date();

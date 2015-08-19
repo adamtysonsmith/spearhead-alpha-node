@@ -51,8 +51,34 @@ var apiController = {
     },
     createTask: function(req, res) {
         // create a task, and push it into the STAGE id param
-        var reqID = req.params.id;
-        var task = new Task();
+        var projectID = req.params.id;
+        var stageID = req.params.stageid;
+        var task = new Task(req.body);
+
+        Project.findOne({'stages._id': stageID}, function(err, project){
+            console.log('Create Task: found the project', project)
+            if(err){
+                console.log('Error querying stage', err)
+            } else {
+                task.save(function(err, task){
+                    Stage.findOne({_id: stageID}, function(err, stage){
+                        stage.tasks.push(task);
+                        stage.save(function(err, stage){
+                            project.stages.forEach(function(thisStage, index){
+                                if(thisStage._id.toString() === stageID){
+                                    project.stages[index] = stage;
+                                }
+                            });
+                            project.markModified('stages');
+
+                            project.save(function(err, project){
+                                res.send(task); // Send back task as returnData to angular
+                            });
+                        });
+                    });
+                });
+            }
+        });  
     },
     createNote: function(req, res) {
         // create a note, and push it into the TASK id param
@@ -64,10 +90,8 @@ var apiController = {
         console.log('The query..', reqID);
         
         if(reqID) {
-            Project.findOne({_id : reqID}).populate('stages').exec(function(err, doc){
-                console.log('The populate error', err)
-                console.log('The populated stages', doc)
-                res.send(doc);
+            Project.findOne({_id : reqID}, function(err, project){
+                res.send(project);   
             });
         } else {
             Project.find({}, function(err, projects){
