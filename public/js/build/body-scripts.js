@@ -9713,7 +9713,7 @@ var drawAxis = function(svgContainer, sidePadding, topPadding, width, height, mi
 
 
 // Function to draw the bars and labels
-function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeight, theColorScale, timeScale, dateFormat, w, h, scope, projectFactory, $routeParams) {
+function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeight, theColorScale, timeScale, dateFormat, w, h) {
     
     // Append our bars
     var barGroup = svgContainer.append('g')
@@ -9874,7 +9874,7 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
     
     console.log('The $routeParams are', $routeParams)
 
-    projectFactory.model.get({_id: $routeParams.id}, function(successObject){
+    projectFactory.project.get({_id: $routeParams.id}, function(successObject){
         $scope.project = successObject;
         console.log('The project is..', $scope.project)
     });
@@ -10046,16 +10046,32 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         // 3. Clear the input
         // 4. TODO: Save the stage to DB and update UI
         if(keycode === 13) {
-            // Push our data to the angular scope
-            $scope.project.stages.push({ name: $scope.newStage, tasks: [] });
+            // newStage ng-model in the view
+            var newStage = new projectFactory.stage(this.newStage);
             
-            // Nuke and repave the pipeline
-            $('stage-pipeline > svg').html('');
-            drawPipeline($scope.project.stages);
+            newStage.$save({id: $routeParams.id}, function(returnData){
+                console.log('The stage save data', returnData)
+                $scope.project.stages.push(returnData);
+                
+                // Nuke and repave the pipeline
+                $('stage-pipeline > svg').html('');
+                drawPipeline($scope.project.stages);
+                
+                // Clear the stage input & hide
+                $scope.newStage = null;
+                $scope.stageInput = false;
+            });
             
-            // Clear the stage input & hide
-            $scope.newStage = null;
-            $scope.stageInput = false;
+//            // Push our data to the angular scope
+//            $scope.project.stages.push({ name: $scope.newStage, tasks: [] });
+//            
+//            // Nuke and repave the pipeline
+//            $('stage-pipeline > svg').html('');
+//            drawPipeline($scope.project.stages);
+//            
+//            // Clear the stage input & hide
+//            $scope.newStage = null;
+//            $scope.stageInput = false;
         }
     }
         // Deal with blur later
@@ -10136,11 +10152,14 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
 }); // End Project Details Controller
 
 projects.factory('projectFactory', function($resource){
-
 	// This creates a $resource model
 	// Our base URL is /api/projects with the option of additionally passing the /:id component
 	// All the methods this $resource model uses will be in reference to those URLs
-	var model = $resource('/api/projects/:id', {id : '@_id'})
+	var project = $resource('/api/projects/:id', {id: '@_id'});
+	var stage   = $resource('/api/projects/:id/stages/:stageid', {id: '@_id', stageid: '@_id'});
+	var task    = $resource('/api/projects/:id/stages/:stageid/tasks/:taskid', {id: '@_id', stageid: '@_id', taskid: '@_id'});
+    var note    = $resource('/api/projects/:id/stages/:stageid/tasks/:taskid/notes', {id: '@_id', stageid: '@_id', taskid: '@_id'});
+    
 	// this._id
 	// @_id
 
@@ -10152,70 +10171,19 @@ projects.factory('projectFactory', function($resource){
 
 	// Factories use the revealing module pattern, so we must return the relevant pieces of information
 	return {
-		model   : model,
-		projects : model.query()
+		project: project,
+        queryProjects: project.query(),
+        stage: stage,
+        task: task,
+        note: note
 	}
-
 });
-projects.controller('projectsController', function($scope, projectFactory, $routeParams){
-    console.log('I am the projects controller!!!');
+projects.controller('projectsController', function($scope, projectFactory){
     $scope.scopeName = 'Projects Controller';
     
-    // Mock data
-//    $scope.projects = [
-//        {
-//            dueDate: "2015-05-01",
-//            duration: "The duration is XXX",
-//            isAbandoned: false,
-//            isActive: false,
-//            isCompleted: false,
-//            isDeferred: false,
-//            isStarted: false,
-//            name: "Move to Colorado",
-//            stages: [],
-//            startDate: "2015-04-20"
-//        },
-//        {
-//            dueDate: "2015-07-16",
-//            duration: "The duration is XXX",
-//            isAbandoned: false,
-//            isActive: false,
-//            isCompleted: false,
-//            isDeferred: false,
-//            isStarted: false,
-//            name: "Midterm Project",
-//            stages: [],
-//            startDate: "2015-07-01"
-//        },
-//        {
-//            dueDate: "2015-08-30",
-//            duration: "The duration is XXX",
-//            isAbandoned: false,
-//            isActive: false,
-//            isCompleted: false,
-//            isDeferred: false,
-//            isStarted: false,
-//            name: "Website Design for Pup n' Suds",
-//            stages: [],
-//            startDate: "2015-08-01"
-//        },
-//        {
-//            dueDate: "2015-08-15",
-//            duration: "The duration is XXX",
-//            isAbandoned: false,
-//            isActive: false,
-//            isCompleted: false,
-//            isDeferred: false,
-//            isStarted: false,
-//            name: "Final Project!",
-//            stages: [],
-//            startDate: "2015-07-18"
-//        }
-//    ];
-    
     // Get all projects from the api route
-    $scope.projects = projectFactory.projects;
-    console.log($scope.projects);
+    $scope.projects = projectFactory.queryProjects;
+    console.log('The projects scope..', $scope.projects)
     
     // Defaults to show the current month in the projects datepicker range
     $scope.start = new Date();
@@ -10307,17 +10275,16 @@ projects.controller('projectsController', function($scope, projectFactory, $rout
         $scope.newProject.startDate = convertDate(start);
         $scope.newProject.dueDate = convertDate(end);
         
-        var newProject = new projectFactory.model(this.newProject);
+        var newProject = new projectFactory.project(this.newProject);
         newProject.$save(function(returnData){
-            console.log('The return data..', returnData);
-            projectFactory.projects.push(returnData);
-            console.log('The return data after save..', returnData);
+            // This keeps the scope updated
+            projectFactory.queryProjects.push(returnData);
         });
     }
     
 }); // End Projects Controller
 // Project Waterfall Navigation
-projects.directive('projectTimeline', function(projectFactory, $routeParams){
+projects.directive('projectTimeline', function(projectFactory){
     
     var link = function(scope, element) {
         // selection is an array of the new values
@@ -10367,7 +10334,7 @@ projects.directive('projectTimeline', function(projectFactory, $routeParams){
             if(min < max) {
                 // Now rebuild the charts
                 drawAxis(svgContainer, 0, 0, width, height, min, max, timeScale, timeFormat); // Defined in d3-waterfall.js
-                drawBars(parsedData, svgContainer, 50, 0, 0, 40, colorScale, timeScale, dateFormat, width, height, scope, projectFactory, $routeParams); // Defined in d3-waterfall.js
+                drawBars(parsedData, svgContainer, 50, 0, 0, 40, colorScale, timeScale, dateFormat, width, height); // Defined in d3-waterfall.js
             } else {
                 // The last argument is the css class
                 Materialize.toast('Whoops, you have to choose a start date that comes before the end date!', 4000, 'date-toast')

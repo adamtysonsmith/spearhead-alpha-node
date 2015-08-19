@@ -4,7 +4,7 @@ div.row
         h1 {{project.name}}
         button.btn(ng-click="showStageInput()") + Add Stage
     div#add-stage-input.input-field.col.s6.m3(ng-show="stageInput")
-        input#add-stage(type="text" ng-model="newStage" ng-keyup="addStageKeyup($event.keyCode)" ng-blur="addStageBlur()")
+        input#add-stage(type="text" ng-model="newStage.name" ng-keyup="addStageKeyup($event.keyCode)" ng-blur="addStageBlur()")
         label(for="add-stage") Add a Stage to this project
 
 div.row

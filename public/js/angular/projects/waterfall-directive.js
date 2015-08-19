@@ -1,5 +1,5 @@
 // Project Waterfall Navigation
-projects.directive('projectTimeline', function(projectFactory, $routeParams){
+projects.directive('projectTimeline', function(projectFactory){
     
     var link = function(scope, element) {
         // selection is an array of the new values
@@ -49,7 +49,7 @@ projects.directive('projectTimeline', function(projectFactory, $routeParams){
             if(min < max) {
                 // Now rebuild the charts
                 drawAxis(svgContainer, 0, 0, width, height, min, max, timeScale, timeFormat); // Defined in d3-waterfall.js
-                drawBars(parsedData, svgContainer, 50, 0, 0, 40, colorScale, timeScale, dateFormat, width, height, scope, projectFactory, $routeParams); // Defined in d3-waterfall.js
+                drawBars(parsedData, svgContainer, 50, 0, 0, 40, colorScale, timeScale, dateFormat, width, height); // Defined in d3-waterfall.js
             } else {
                 // The last argument is the css class
                 Materialize.toast('Whoops, you have to choose a start date that comes before the end date!', 4000, 'date-toast')

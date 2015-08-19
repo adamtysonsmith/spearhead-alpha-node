@@ -3,7 +3,7 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
     
     console.log('The $routeParams are', $routeParams)
 
-    projectFactory.model.get({_id: $routeParams.id}, function(successObject){
+    projectFactory.project.get({_id: $routeParams.id}, function(successObject){
         $scope.project = successObject;
         console.log('The project is..', $scope.project)
     });
@@ -175,16 +175,32 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         // 3. Clear the input
         // 4. TODO: Save the stage to DB and update UI
         if(keycode === 13) {
-            // Push our data to the angular scope
-            $scope.project.stages.push({ name: $scope.newStage, tasks: [] });
+            // newStage ng-model in the view
+            var newStage = new projectFactory.stage(this.newStage);
             
-            // Nuke and repave the pipeline
-            $('stage-pipeline > svg').html('');
-            drawPipeline($scope.project.stages);
+            newStage.$save({id: $routeParams.id}, function(returnData){
+                console.log('The stage save data', returnData)
+                $scope.project.stages.push(returnData);
+                
+                // Nuke and repave the pipeline
+                $('stage-pipeline > svg').html('');
+                drawPipeline($scope.project.stages);
+                
+                // Clear the stage input & hide
+                $scope.newStage = null;
+                $scope.stageInput = false;
+            });
             
-            // Clear the stage input & hide
-            $scope.newStage = null;
-            $scope.stageInput = false;
+//            // Push our data to the angular scope
+//            $scope.project.stages.push({ name: $scope.newStage, tasks: [] });
+//            
+//            // Nuke and repave the pipeline
+//            $('stage-pipeline > svg').html('');
+//            drawPipeline($scope.project.stages);
+//            
+//            // Clear the stage input & hide
+//            $scope.newStage = null;
+//            $scope.stageInput = false;
         }
     }
         // Deal with blur later

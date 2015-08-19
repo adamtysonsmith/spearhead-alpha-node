@@ -35,7 +35,7 @@ var drawAxis = function(svgContainer, sidePadding, topPadding, width, height, mi
 
 
 // Function to draw the bars and labels
-function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeight, theColorScale, timeScale, dateFormat, w, h, scope, projectFactory, $routeParams) {
+function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeight, theColorScale, timeScale, dateFormat, w, h) {
     
     // Append our bars
     var barGroup = svgContainer.append('g')
