@@ -11,7 +11,7 @@ var performLogin = function(req, res, next, user){
     if(err) return next(err);
 
     // Otherwise, send the user to the app dashboard.
-    return res.redirect('/dashboard');
+    return res.redirect('/projects');
   });
 };
 
