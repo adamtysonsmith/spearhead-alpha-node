@@ -68,3 +68,7 @@ input[type=password]:focus:not([readonly])+label, input[type=text]:focus:not([re
     padding-left: 20px;
     color: white;
 }
+.numbered-circle-image {
+    width: 50%;
+    margin-left: 60px;
+}

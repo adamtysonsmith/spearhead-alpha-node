@@ -28,7 +28,7 @@ block content
                                     div.input-field.col.s10
                                         input#login-password(type="password" name="password")
                                         label.login-label(for="login-password") Password
-                                    div.input-field.col.s10
+                                    div.input-field.col.s10.offset-s2
                                         input(type="submit" value="Login").btn.login-button.teal.lighten-5
         div.container
             div.row
@@ -42,26 +42,26 @@ block content
                             span 1
                         h3 Break up your project into stages
                         p 
-                        img
-                    div
-                        div.numbered-circle
-                            span 2
-                        h3 Quickly estimate short-term tasks
-                        p
-                        img
-                        
-                div.col.s6
+                        img.numbered-circle-image(src="/img/stages.png")
                     div
                         div.numbered-circle
                             span 3
                         h3 Block out your schedule
                         p
-                        img
+                        img.numbered-circle-image(src="/img/schedule.png")
+                        
+                div.col.s6
+                    div
+                        div.numbered-circle
+                            span 2
+                        h3 Quickly estimate short-term tasks
+                        p
+                        img.numbered-circle-image(src="/img/tasks.png")
                     div
                         div.numbered-circle
                             span 4
                         h3 See the big picture
                         p 
-                        img
+                        img.numbered-circle-image(src="/img/waterfall.png")
                     
         script(src="/js/index/index.js")
