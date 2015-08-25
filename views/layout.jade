@@ -1,26 +1,28 @@
-doctype html
-
 if (pathname == '/dashboard')
-    html(lang='en' ng-app="dashboard")
+    - var app = 'dashboard'
 else if (pathname == '/projects')
-    html(lang='en' ng-app="projects")
+    - var app = 'projects'
 else
-    html(lang='en')
+    - var app = ''
 
-head
-    meta(charset="utf-8")
-    title Spearhead | Project Management Simplified
+doctype html
+html(lang='en' ng-app='#{app}')
+    head
+        meta(charset="utf-8")
+        title Spearhead | Project Management Simplified
 
-    // Gulp Styles and Scripts
-    link(rel="stylesheet" href="/css/build.css")
-    
-    if (pathname === '/')
-        link(rel="stylesheet" href="/css/index/index.css")
+        // Gulp Styles and Scripts
+        link(rel="stylesheet" href="/css/build.css")
 
-    //link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
-    script(src="/js/build/head-scripts.js")
+        if (pathname === '/')
+            link(rel="stylesheet" href="/css/index/index.css")
 
-block content
-block modals
+        //link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
+        script(src="/js/build/head-scripts.js")
 
-script(src="/js/build/body-scripts.js")
+    body
+        include partials/gtm
+        block content
+        block modals
+
+        script(src="/js/build/body-scripts.js")
