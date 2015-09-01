@@ -148,7 +148,8 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         $scope.stageIndex = stageIndex;
         $scope.$apply(function(){
             $scope.activeTasks = $scope.project.stages[stageIndex].tasks;
-            $scope.activeNotes = $scope.activeTasks[0].notes;
+            $scope.activeNotes = undefined; // This resets the notes when switching tasks
+            //$scope.activeNotes = $scope.activeTasks[0].notes;
         });
     }
     

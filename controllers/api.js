@@ -147,6 +147,7 @@ var apiController = {
         var stageID = req.params.stageid;
         var taskID = req.params.taskid;
         
+        // This is not currently being triggered in a click event, waiting to revise the schema
         Project.findOne({_id: reqID}, function(err, project){
             project.stages.forEach(function(thisStage, index){
                 if(thisStage._id.toString() === stageID) {

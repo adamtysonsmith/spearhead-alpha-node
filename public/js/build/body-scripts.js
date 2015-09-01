@@ -9644,7 +9644,7 @@ var initPipeline = function(svgPipelineContainer, scope) {
                 var stroke = self.style('fill');
                 
                 scope.setActiveTasks(i);
-                
+    
                 // Remove all lines
                 d3.selectAll('.active-stage').remove();
                 
@@ -10019,7 +10019,8 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         $scope.stageIndex = stageIndex;
         $scope.$apply(function(){
             $scope.activeTasks = $scope.project.stages[stageIndex].tasks;
-            $scope.activeNotes = $scope.activeTasks[0].notes;
+            $scope.activeNotes = undefined;
+            //$scope.activeNotes = $scope.activeTasks[0].notes;
         });
     }
     

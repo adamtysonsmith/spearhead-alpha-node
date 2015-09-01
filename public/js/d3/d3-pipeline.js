@@ -96,7 +96,7 @@ var initPipeline = function(svgPipelineContainer, scope) {
                 var stroke = self.style('fill');
                 
                 scope.setActiveTasks(i);
-                
+    
                 // Remove all lines
                 d3.selectAll('.active-stage').remove();
                 
