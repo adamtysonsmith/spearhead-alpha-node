@@ -1,20 +1,18 @@
-//div(ng-controller="projectsController")
 div.waterfall-title.row
     div.col.s7
         h1 Your Projects
-        // Include the Angular-Materialize modal directive
         a(ng-click="addProject()").btn.modal-trigger Add Project
     div.input-field.waterfall-date-range.col.s2
-        //input(type="date" )#start.datepicker
-        span Month Beginning
         br
-        input(type="month" ng-model="start")#start
+        select#start
+            option(value="" disabled selected) Choose Start Date
+        label Month Beginning
     div.input-field.waterfall-date-range.col.s2
-        //input(type="date" ng-model="end")#end.datepicker
-        span Month Ending
         br
-        input(type="month" ng-model="end")#end
-
+        select#end
+            option(value="" disabled selected) Choose End Date
+        label Month Ending
+        
 // Angular Directive for D3 Timeline
 project-timeline(data="{{projects}}" start="{{start}}" end="{{end}}")
 
@@ -32,7 +30,7 @@ block modals
                     label(for="start-date") Start Date
                 div.input-field
                     input(type="date" ng-click="addDueDate()")#end-date.datepicker
-                    label(for="end-date") Completion Date
+                    label(for="end-date") Completion Date 
                 div.modal-footer
                     a(ng-click="closeModal()").modal-action.modal-close.btn-flat Cancel
                     a(ng-click="saveProject()").modal-action.modal-close.btn-flat Save

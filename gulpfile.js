@@ -10,13 +10,15 @@ var paths = {
         './bower_components/angular-resource/angular-resource.min.js',
         './bower_components/angular-route/angular-route.min.js',
         './bower_components/materialize/dist/js/materialize.min.js',
-        './public/js/init/*.js',
         './bower_components/d3/d3.js',
         './public/js/d3/*.js',
         './public/js/angular/app.js',
         './public/js/angular/**/*.js'
     ],
-    stylesheets: ['./bower_components/materialize/dist/css/materialize.min.css', './public/css/partials/*.css']
+    stylesheets: [
+        './bower_components/materialize/dist/css/materialize.min.css',
+        './public/css/partials/*.css'     
+    ]
 }
 
 
