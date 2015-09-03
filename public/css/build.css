@@ -128,9 +128,13 @@ button {
     margin-bottom: 50px;
 }
 .waterfall-date-range {
-    margin-top: 80px;
+    margin-top: 55px;
 }
 .date-toast {
     background-color: darkslategray;
     margin-top: 20px;
+}
+.dropdown-content li > a, .dropdown-content li > span {
+    color: black;
+    font-size: 0.9rem;
 }

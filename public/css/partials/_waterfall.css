@@ -17,3 +17,7 @@
     background-color: darkslategray;
     margin-top: 20px;
 }
+.dropdown-content li > a, .dropdown-content li > span {
+    color: black;
+    font-size: 0.9rem;
+}
