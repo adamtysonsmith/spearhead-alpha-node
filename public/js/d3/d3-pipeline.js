@@ -70,7 +70,13 @@ var initPipeline = function(svgPipelineContainer, scope) {
                     return x;
                 })
                 .text(function(d) {
-                    return d.name;
+                    if(d.name.length > 16) {
+                        // Truncate names
+                        console.log('The name', d.name, d.name.length);
+                        return d.name.substr(0, 16) + '...';
+                    } else {
+                        return d.name;
+                    }
                 });
         
             // Event Handlers on Polygons

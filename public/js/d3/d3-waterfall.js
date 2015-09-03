@@ -65,24 +65,29 @@ function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeigh
             return d3.rgb(theColorScale(i));
         })
         .on('click', function(d, i) {
-            // console.log('clicked bar, this is the _id and name..', d._id, d.name)
             return window.location.hash = '/' + d._id;
         });
    
 
     var barText = barGroup.append('text')
-        .text(function(d){
-            return d.name;
+        .text(function(d, i){
+            // Check the bar width and truncate text if necessary
+            var barWidth = document.querySelectorAll("rect")[i].getBBox().width;
+            var textLength = d.name.length;
+            
+            if((barWidth/textLength) < 11.5){
+                return d.name.substr(0, d.name.length - 7) + '...';
+            } else {
+                return d.name;
+            }
         })
         .attr('x', function(d){
             return timeScale(dateFormat.parse(d.startDate)) + 15;
-            //return (timeScale(dateFormat.parse(d.dueDate)) - timeScale(dateFormat.parse(d.startDate))) / 2 + timeScale(dateFormat.parse(d.startDate)) + theSidePad;
         })
         .attr('y', function(d, i){
             return i * theGap + 25 + theTopPad;
         })
         .attr('font-size', 14)
-        //.attr("text-anchor", "left")
         .attr('text-height', theBarHeight)
         .attr('fill', '#fff');
 
