@@ -23,11 +23,11 @@ module.exports = {
     },
     
     getDuration: function() {
-        return 'The duration is XXX';
+        return 'The duration is X';
     },
     
     getDueDate: function() {
-        return 'The due date is XXX';
+        return 'The due date is X';
     }
     
 }
