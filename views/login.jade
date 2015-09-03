@@ -16,31 +16,31 @@ block content
                     li
                         a(href="/") About Spearhead
 
-div.container
-    div.row
-        form(action="/auth/login" method="POST").col.s6
-            h4.login-title Login to Spearhead
-            div.row
-                div.input-field.col.s10
-                    input#login-username(type="text" name="username" value="adam")
-                    label(for="login-username") Username
-                div.input-field.col.s10
-                    input#login-password(type="password" name="password" value="abc123")
-                    label(for="login-password") Password
-                div.input-field.col.s10
-                    input(type="submit" value="Login").btn
+    div.container
+        div.row
+            form(action="/auth/login" method="POST").col.s6
+                h4.login-title Login to Spearhead
+                div.row
+                    div.input-field.col.s10
+                        input#login-username(type="text" name="username" value="adam")
+                        label(for="login-username") Username
+                    div.input-field.col.s10
+                        input#login-password(type="password" name="password" value="abc123")
+                        label(for="login-password") Password
+                    div.input-field.col.s10
+                        input(type="submit" value="Login").btn
 
-        form(action="/auth/signup" method="POST").col.s6
-            h4.login-title Create a New Account
-            div.row
-                div.input-field.col.s10
-                    input#signup-username(type="text" name="username")
-                    label(for="signup-username") Username
-                div.input-field.col.s10
-                    input#signup-email(type="email" name="email").validate
-                    label(for="signup-email" data-error="Not a Valid Email Address" data-success="Looks good!") Email
-                div.input-field.col.s10
-                    input#signup-password(type="password" name="password")
-                    label(for="signup-password") Password
-                div.input-field.col.s10
-                    input(type="submit" value="Create Account").btn
+            form(action="/auth/signup" method="POST").col.s6
+                h4.login-title Create a New Account
+                div.row
+                    div.input-field.col.s10
+                        input#signup-username(type="text" name="username")
+                        label(for="signup-username") Username
+                    div.input-field.col.s10
+                        input#signup-email(type="email" name="email").validate
+                        label(for="signup-email" data-error="Not a Valid Email Address" data-success="Looks good!") Email
+                    div.input-field.col.s10
+                        input#signup-password(type="password" name="password")
+                        label(for="signup-password") Password
+                    div.input-field.col.s10
+                        input(type="submit" value="Create Account").btn
