@@ -16,7 +16,7 @@ var apiController = {
                     project.stages[0].tasks.push(task);
                     // We must save the project again after adding stages and tasks!!!
                     project.save();
-                    console.log('The saved project', project)
+                    // console.log('The saved project', project)
                     res.send(project);  
                 });
             });
@@ -33,7 +33,7 @@ var apiController = {
         
         Project.findOne({_id: reqID}, function(err, project){
             if(!err) {
-                console.log('Found project to create stage', project);
+                // console.log('Found project to create stage', project);
                 stage.save(function(err, stage){
                     project.stages.push(stage);
                     project.save(function(err, project){
@@ -87,20 +87,20 @@ var apiController = {
         var stageID = req.params.stageid;
         var taskID = req.params.taskid;
         var note = new Note(req.body);
-        console.log('The stage id', stageID)
-        console.log('The task id', taskID)
-        console.log('The request body', req.body)
+        // console.log('The stage id', stageID)
+        // console.log('The task id', taskID)
+        // console.log('The request body', req.body)
         
         Project.findOne({_id: reqID}, function(err, project){
             note.save(function(err, note){
                 Task.findOne({_id: taskID}, function(err, task){
-                    console.log('The task you are attempting to create a note', task)
+                    // console.log('The task you are attempting to create a note', task)
                     if(err){
                         console.log('Error finding task', err)
                     }
                     task.notes.push(note);
                     task.save(function(err, savedTask){
-                        console.log('Create Note: The saved task', savedTask);
+                        // console.log('Create Note: The saved task', savedTask);
                         Stage.findOne({_id: stageID}, function(err, stage){
                             stage.tasks.forEach(function(thisTask, index){
                                 if(thisTask._id.toString() === taskID) {
@@ -109,7 +109,7 @@ var apiController = {
                             });
                             stage.markModified('tasks');
                             stage.save(function(err, savedStage){
-                                console.log('You saved the stage! it should have tasks with notes', savedStage.tasks)
+                                // console.log('You saved the stage! it should have tasks with notes', savedStage.tasks)
                                 project.stages.forEach(function(thisStage, index){
                                     if(thisStage._id.toString() === stageID){
                                         // Overwrite the stage
@@ -130,7 +130,7 @@ var apiController = {
     },
     readProject: function(req, res){
         var reqID = req.query._id;
-        console.log('The query..', reqID);
+        // console.log('The query..', reqID);
         
         if(reqID) {
             Project.findOne({_id : reqID}, function(err, project){
@@ -154,7 +154,7 @@ var apiController = {
                     project.stages[index].tasks.forEach(function(thisTask, index){
                         if(thisTask._id.toString() === taskID) {
                             thisTask.isCompleted = req.body.checked;
-                            console.log('The checked/unchecked task', thisTask)
+                            // console.log('The checked/unchecked task', thisTask)
                         }
                     });
                 }

@@ -69,7 +69,7 @@ app.get('/api/projects', apiController.readProject);
 //app.delete('/api/projects', apiController.delete);
 
 // Server
-var port = 2800;
+var port = process.env.PORT || 2800;
 
 var server = app.listen(port, function() {
     console.log('Express server listening on port:', port);
