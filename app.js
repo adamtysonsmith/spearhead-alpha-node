@@ -11,7 +11,7 @@ var templateController  = require('./controllers/templates.js');
 var apiController       = require('./controllers/api.js');
 
 // Connect to spearhead database
-mongoose.connect('mongodb://localhost/spearhead');
+mongoose.connect('mongodb://localhost/spearhead_2');
 
 // Express Config
 var app = express();

@@ -1,25 +1,22 @@
+var mongoose = require('mongoose');
 var Project = require('../models/project.js');
-var Stage = require('../models/stage.js').stage;
-var Task = require('../models/task.js').task;
-var Note = require('../models/task.js').note;
+//var Stage = require('../models/stage.js').stage;
+//var Task = require('../models/task.js').task;
+//var Note = require('../models/task.js').note;
 
 var apiController = {
     createProject: function(req, res) {
 		var project = new Project(req.body);
-        var stage = new Stage({name: 'Initial Stage'});
-        var task = new Task({content: 'This is your first task'});
+        var stage = {name: 'Initial Stage'};
+        var task = {content: 'This is your first task'};
         
 		project.save(function(err, project){
-            stage.save(function(err, stage){
-                project.stages.push(stage);
-                task.save(function(err, task){
-                    project.stages[0].tasks.push(task);
-                    // We must save the project again after adding stages and tasks!!!
-                    project.save();
-                    // console.log('The saved project', project)
-                    res.send(project);  
-                });
-            });
+            project.stages.push(stage);
+            project.stages[0].tasks.push(task);
+            // We must save the project again after adding stages and tasks!!!
+            project.save();
+            console.log('The saved project', project)
+            res.send(project);
 		});
     },
     createStage: function(req, res) {
@@ -29,21 +26,22 @@ var apiController = {
         // 1. Pass the _id of the project as a param
         // 2. Pass the name of the stage in the req body
         var reqID = req.params.id;
-        var stage = new Stage(req.body);
+        
+        // Create a stage property according to the schema
+        var stage = req.body;
+        stage.tasks = [];
+        stage._id = mongoose.Types.ObjectId(); // Generates a new ObjectId
         
         Project.findOne({_id: reqID}, function(err, project){
             if(!err) {
                 // console.log('Found project to create stage', project);
-                stage.save(function(err, stage){
-                    project.stages.push(stage);
-                    project.save(function(err, project){
-                        if(err){
-                            console.log('Error saving stage to project:', err)
-                        } else {
-                            res.send(stage);
-                        }
-                        
-                    });
+                project.stages.push(stage);
+                project.save(function(err, project){
+                    if(err){
+                        console.log('Error saving stage to project:', err)
+                    } else {
+                        res.send(stage);
+                    }
                 });
             } else {
                 console.log('Error creating stage', err);
@@ -54,29 +52,28 @@ var apiController = {
         // create a task, and push it into the STAGE id param
         var projectID = req.params.id;
         var stageID = req.params.stageid;
-        var task = new Task(req.body);
-
+        
+        // Create a stage property according to the schema
+        var task = req.body;
+        task.notes = [];
+        task._id = mongoose.Types.ObjectId(); // Generates a new ObjectId
+        
         Project.findOne({'stages._id': stageID}, function(err, project){
             if(err){
                 console.log('Error querying project to update stage', err)
             } else {
-                task.save(function(err, task){
-                    Stage.findOne({_id: stageID}, function(err, stage){
-                        stage.tasks.push(task);
-                        stage.save(function(err, stage){
-                            project.stages.forEach(function(thisStage, index){
-                                if(thisStage._id.toString() === stageID){
-                                    // Overwrite the stage
-                                    project.stages[index] = stage;
-                                }
-                            });
-                            project.markModified('stages');
-
-                            project.save(function(err, project){
-                                res.send(task); // Send back task as returnData to angular
-                            });
-                        });
-                    });
+                // Find the correct stage
+                // Push the task
+                // Save the project
+                project.stages.forEach(function(thisStage, index){
+                    if(thisStage._id.toString() === stageID){
+                        // Push the task
+                        project.stages[index].tasks.push(task);
+                    }
+                });
+                
+                project.save(function(err, project){
+                    res.send(task); // Send back task as returnData to angular
                 });
             }
         });  
@@ -86,51 +83,32 @@ var apiController = {
         var reqID = req.params.id;
         var stageID = req.params.stageid;
         var taskID = req.params.taskid;
-        var note = new Note(req.body);
-        // console.log('The stage id', stageID)
-        // console.log('The task id', taskID)
-        // console.log('The request body', req.body)
+        var note = req.body;
         
         Project.findOne({_id: reqID}, function(err, project){
-            note.save(function(err, note){
-                Task.findOne({_id: taskID}, function(err, task){
-                    // console.log('The task you are attempting to create a note', task)
-                    if(err){
-                        console.log('Error finding task', err)
-                    }
-                    task.notes.push(note);
-                    task.save(function(err, savedTask){
-                        // console.log('Create Note: The saved task', savedTask);
-                        Stage.findOne({_id: stageID}, function(err, stage){
-                            stage.tasks.forEach(function(thisTask, index){
-                                if(thisTask._id.toString() === taskID) {
-                                    stage.tasks[index] = savedTask;
-                                }
-                            });
-                            stage.markModified('tasks');
-                            stage.save(function(err, savedStage){
-                                // console.log('You saved the stage! it should have tasks with notes', savedStage.tasks)
-                                project.stages.forEach(function(thisStage, index){
-                                    if(thisStage._id.toString() === stageID){
-                                        // Overwrite the stage
-                                        project.stages[index] = savedStage;
-                                    }
-                                });
-                                project.markModified('stages');
-
-                                project.save(function(err, project){
-                                    res.send(note); // Send back note as returnData to angular
-                                });
-                            });
-                        });
+            if(err){
+                console.log('Error finding task', err)
+            }
+            
+            // Get the stage index by finding _id
+            project.stages.forEach(function(thisStage, stageIndex){
+                if(thisStage._id.toString() === stageID){
+                    // Get the task index by finding _id
+                    project.stages[stageIndex].tasks.forEach(function(thisTask, taskIndex){
+                        if(thisTask._id.toString() === taskID) {
+                            thisTask.notes.push(note);
+                        }
                     });
-                });
+                }
             });
+            
+            project.save(function(err, project){
+                res.send(note); // Send back note as returnData to angular
+            });      
         });
     },
     readProject: function(req, res){
         var reqID = req.query._id;
-        // console.log('The query..', reqID);
         
         if(reqID) {
             Project.findOne({_id : reqID}, function(err, project){
