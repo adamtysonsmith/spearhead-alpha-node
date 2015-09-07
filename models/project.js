@@ -2,13 +2,12 @@ var mongoose = require('mongoose');
 var helpers = require('./helpers.js')
 
 var projectSchema = mongoose.Schema({
+    user_id: mongoose.Schema.ObjectId,
     name: String,
     startDate: String,
     dueDate: String,
-    
-    // Calculated Properties
+    timestamp: { type: Date, default: Date.now },
     //duration: helpers.getDuration(),
-    //timestamp: helpers.getTimestamp(),
     
     // Status tracking
     isStarted: {type: Boolean, default: false},
@@ -20,11 +19,11 @@ var projectSchema = mongoose.Schema({
     // Stages
     stages: [{
         name: String,
+        timestamp: { type: Date, default: Date.now },
 
         // Calculated Properties
         //dueDate: helpers.getDueDate(),
         //duration: helpers.getDuration(),
-        //timestamp: helpers.getTimestamp(),
 
         // Status tracking
         startDate: {type: String, default: undefined},
@@ -36,17 +35,20 @@ var projectSchema = mongoose.Schema({
         // Tasks
         tasks: [{
             content: String,
+            timestamp: { type: Date, default: Date.now },
 
             // Calculated Properties
             //duration: helpers.getDuration(),
-            //timestamp: helpers.getTimestamp(),
 
             // Status Tracking
             isCompleted: {type: Boolean, default: false},
             isDeferred: {type: Boolean, default: false},
 
             // Notes
-            notes: [{content: String}]
+            notes: [{
+                content: String,
+                timestamp: { type: Date, default: Date.now }
+            }]
         }]
     }]
 });

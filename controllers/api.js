@@ -1,21 +1,18 @@
 var mongoose = require('mongoose');
 var Project = require('../models/project.js');
-//var Stage = require('../models/stage.js').stage;
-//var Task = require('../models/task.js').task;
-//var Note = require('../models/task.js').note;
 
 var apiController = {
     createProject: function(req, res) {
 		var project = new Project(req.body);
         var stage = {name: 'Initial Stage'};
         var task = {content: 'This is your first task'};
+        project.user_id = req.user._id;
         
 		project.save(function(err, project){
             project.stages.push(stage);
             project.stages[0].tasks.push(task);
             // We must save the project again after adding stages and tasks!!!
             project.save();
-            console.log('The saved project', project)
             res.send(project);
 		});
     },
@@ -111,11 +108,11 @@ var apiController = {
         var reqID = req.query._id;
         
         if(reqID) {
-            Project.findOne({_id : reqID}, function(err, project){
+            Project.findOne({_id: reqID}, function(err, project){
                 res.send(project);   
             });
         } else {
-            Project.find({}, function(err, projects){
+            Project.find({user_id: req.user._id}, function(err, projects){
                 res.send(projects);
             });
         }
