@@ -10020,13 +10020,25 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
     }
     
     $scope.checkTask = function(index){
-        // ng-model isChecked is true or false
-        var checkTask = new projectFactory.checkTask({checked: isChecked});
         var stageId = $scope.project.stages[$scope.stageIndex]._id;
         var taskId = $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex]._id;
+        var isChecked;
         
-        $http.post('/api/projects/:id/stages/:stageid/tasks/:taskid', {checked: isChecked})
-            .success(console.log('Succesfully checked off the task'));
+        console.log('The checkbox is..', $scope.project.stages[$scope.stageIndex].tasks[index].isCompleted)
+        
+        if($scope.project.stages[$scope.stageIndex].tasks[index].isCompleted === true) {
+            isChecked = false;
+        } else {
+            isChecked = true;
+        }
+        
+        console.log('isChecked is..', isChecked);
+        
+        var checkbox = new projectFactory.checkbox({checked: isChecked});
+        
+        checkbox.$save({ id: $routeParams.id, stageid: stageId, taskid: taskId }, function(returnData){
+            $scope.project.stages[$scope.stageIndex].tasks[index].isCompleted = returnData.isCompleted;
+        });
     }
     // Deal with blur later
 //    $scope.addNoteBlur = function() {
@@ -10049,7 +10061,7 @@ projects.factory('projectFactory', function($resource){
 	var stage   = $resource('/api/projects/:id/stages/:stageid', {id: '@_id', stageid: '@_id'});
 	var task    = $resource('/api/projects/:id/stages/:stageid/tasks/:taskid', {id: '@_id', stageid: '@_id', taskid: '@_id'});
     var note    = $resource('/api/projects/:id/stages/:stageid/tasks/:taskid/notes', {id: '@_id', stageid: '@_id', taskid: '@_id'});
-    
+    var checkbox = task;
 	// this._id
 	// @_id
 
@@ -10065,7 +10077,8 @@ projects.factory('projectFactory', function($resource){
         queryProjects: project.query(),
         stage: stage,
         task: task,
-        note: note
+        note: note,
+        checkbox: checkbox
 	}
 });
 projects.controller('projectsController', function($scope, $filter, projectFactory){

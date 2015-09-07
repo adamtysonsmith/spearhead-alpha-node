@@ -1,11 +1,8 @@
 projects.controller('projectDetailsController', function($scope, $timeout, projectFactory, $routeParams){
     $scope.scopeName = 'Project Details Controller';
     
-    console.log('The $routeParams are', $routeParams)
-
     projectFactory.project.get({_id: $routeParams.id}, function(successObject){
         $scope.project = successObject;
-        console.log('The project is..', $scope.project)
     });
     
     $scope.stageIndex = 0;
@@ -89,10 +86,7 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
             var stageID = $scope.project.stages[$scope.stageIndex]._id;
             
             newTask.$save({ id: $routeParams.id, stageid: stageID }, function(returnData){
-                console.log('Task save returnData', returnData)
                 $scope.activeTasks.push(returnData);
-                console.log('The project after save', $scope.project)
-                
             });
             
             $timeout(function(){
@@ -130,9 +124,7 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
             var taskId = $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex]._id;
             
             newNote.$save({ id: $routeParams.id, stageid: stageId, taskid: taskId }, function(returnData){
-                console.log('Note save returnData', returnData)
                 $scope.activeNotes.push(returnData);
-                console.log('The project after save', $scope.project)
             }); 
             
             $timeout(function(){
@@ -143,13 +135,21 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
     }
     
     $scope.checkTask = function(index){
-        // ng-model isChecked is true or false
-        var checkTask = new projectFactory.checkTask({checked: isChecked});
         var stageId = $scope.project.stages[$scope.stageIndex]._id;
         var taskId = $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex]._id;
+        var isChecked;
         
-        $http.post('/api/projects/:id/stages/:stageid/tasks/:taskid', {checked: isChecked})
-            .success(console.log('Succesfully checked off the task'));
+        if($scope.project.stages[$scope.stageIndex].tasks[index].isCompleted === true) {
+            isChecked = false;
+        } else {
+            isChecked = true;
+        }
+        
+        var checkbox = new projectFactory.checkbox({checked: isChecked});
+        
+        checkbox.$save({ id: $routeParams.id, stageid: stageId, taskid: taskId }, function(returnData){
+            $scope.project.stages[$scope.stageIndex].tasks[index].isCompleted = returnData.isCompleted;
+        });
     }
     // Deal with blur later
 //    $scope.addNoteBlur = function() {

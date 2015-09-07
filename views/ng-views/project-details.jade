@@ -21,7 +21,7 @@ div.row
                         label(for="add-task") Add a Task to this Stage
                 div(ng-repeat="task in activeTasks" ng-click="setActiveNotes($index)" ng-class="{'active-task': $index == taskIndex}").task
                     p.task-content
-                        input(type="checkbox" id="{{$index}}" ng-checked="{{task.isCompleted}}")
+                        input(type="checkbox" id="{{$index}}" ng-checked="{{task.isCompleted}}" ng-click="checkTask($index)")
                         label(for="{{$index}}") {{task.content}}
 
             // Notes Pane

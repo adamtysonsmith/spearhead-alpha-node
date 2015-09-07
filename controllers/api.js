@@ -122,20 +122,22 @@ var apiController = {
         var stageID = req.params.stageid;
         var taskID = req.params.taskid;
         
-        // This is not currently being triggered in a click event, waiting to revise the schema
         Project.findOne({_id: reqID}, function(err, project){
             project.stages.forEach(function(thisStage, index){
                 if(thisStage._id.toString() === stageID) {
                     project.stages[index].tasks.forEach(function(thisTask, index){
                         if(thisTask._id.toString() === taskID) {
                             thisTask.isCompleted = req.body.checked;
-                            // console.log('The checked/unchecked task', thisTask)
+                            console.log('The checked/unchecked task', thisTask)
+                            project.save(function(err, project){
+                                res.send(thisTask); // Send back the object to angular
+                            });
                         }
                     });
                 }
             });
         });
-    }
-}
+    } // End checkTask
+} // End apiController
 
 module.exports = apiController;

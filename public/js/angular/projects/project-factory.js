@@ -6,7 +6,7 @@ projects.factory('projectFactory', function($resource){
 	var stage   = $resource('/api/projects/:id/stages/:stageid', {id: '@_id', stageid: '@_id'});
 	var task    = $resource('/api/projects/:id/stages/:stageid/tasks/:taskid', {id: '@_id', stageid: '@_id', taskid: '@_id'});
     var note    = $resource('/api/projects/:id/stages/:stageid/tasks/:taskid/notes', {id: '@_id', stageid: '@_id', taskid: '@_id'});
-    
+    var checkbox = task;
 	// this._id
 	// @_id
 
@@ -22,6 +22,7 @@ projects.factory('projectFactory', function($resource){
         queryProjects: project.query(),
         stage: stage,
         task: task,
-        note: note
+        note: note,
+        checkbox: checkbox
 	}
 });
