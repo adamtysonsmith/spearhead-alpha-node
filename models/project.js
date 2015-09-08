@@ -47,78 +47,17 @@ var projectSchema = mongoose.Schema({
     }]
 });
 
+// Instance Methods
+// getProjectHourlyDuration
+// getStageHourlyDuration
+// getProjectEndDate
 
-// Virtual Getter Attributes
-// projectActualEndDate - Actual end date, if scheduled
+// Not done:
 // stageActualEndDate - Actual end date, if scheduled
-// projectEstimatedEndDate - Theoretical end date, if unscheduled
 // stageEstimatedEndDate - Theoretical end date, if unscheduled
 // taskScheduledDuration
 // taskNotScheduledDuration
 
-projectSchema.virtual('projectEndDate').get(function() {
-    var actual;
-    var estimated;
-    var actualDates = [];
-    
-    // Get project actual end date
-    for(var i = 0; i < this.stages.length; i++) {
-        for(var j = 0; j < this.stages[i].tasks.length; j++) {
-            for(var k = 0; k < this.stages[i].tasks[j].schedule.length; k++) {
-                actualDates.push(this.stages[i].tasks[j].schedule[k].timestamp);
-                actualDates.sort();
-                actual = actualDates.slice(-1)[0];
-            }
-        }
-    }
-    
-    // Get project estimated end date
-    var projectDuration = 0;
-    var days;
-    
-    for(var i = 0; i < this.stages.length; i++) {
-        for(var j = 0; j < this.stages[i].tasks.length; j++) {
-            projectDuration += this.stages[i].tasks[j].duration;
-        }
-    }
-    
-    days = projectDuration/8;
-    // estimated = this.startDate + days; We need to figure out how to add days to the date
-    
-    // Control flow logic comparison
-    // See written notes
-    // Walk away.. too tired.
-});
-
-//    projectSchema.virtual('projectActualEndDate').get(function() {
-//        // return something
-//    });
-//    projectSchema.virtual('projectEstimatedEndDate').get(function() {
-//        // return something
-//    });
-
-projectSchema.virtual('stageEndDate').get(function() {
-    // return something
-});
-
-//    projectSchema.virtual('stageActualEndDate').get(function() {
-//        // return something
-//    });
-//    projectSchema.virtual('stageEstimatedEndDate').get(function() {
-//        // return something
-//    });
-
-projectSchema.virtual('taskScheduledDuration').get(function() {
-    // return something
-});
-projectSchema.virtual('taskNotScheduledDuration').get(function() {
-    // return something
-});
-
-
-// Instance Methods
-// getProjectHourlyDuration
-// getStageHourlyDuration
 projectSchema.methods.getProjectHourlyDuration = function() {
     var projectDuration = 0;
     for(var i = 0; i < this.stages.length; i++) {
@@ -135,7 +74,62 @@ projectSchema.methods.getStageHourlyDuration = function(stageIndex) {
     }
     return stageDuration;
 }
-
+projectSchema.methods.getProjectEndDate = function() {
+    var self = this;
+    // This function does not even care about the due date the user entered.
+    // It actually calculates an esitmated end date based on task duration,
+    // or it returns the end date based on the last scheduled task.
+    var actual;
+    var estimated;
+    var actualDates = [];
+    
+    // Date format helper
+    // 9 to 09 or 10 to 10
+    function format(n) {
+        return n < 10 ? '0' + n : ''  + n;
+    }
+    
+    // Get project actual end date
+    for(var i = 0; i < this.stages.length; i++) {
+        for(var j = 0; j < this.stages[i].tasks.length; j++) {
+            for(var k = 0; k < this.stages[i].tasks[j].schedule.length; k++) {
+                actualDates.push(this.stages[i].tasks[j].schedule[k].timestamp);
+                actualDates.sort();
+                actual = actualDates.slice(-1)[0]; // We assume actual is a date object
+            }
+        }
+    }
+    
+    // Get project estimated end date
+    var projectDuration = 0;
+    var days;
+    
+    for(var i = 0; i < this.stages.length; i++) {
+        for(var j = 0; j < this.stages[i].tasks.length; j++) {
+            projectDuration += this.stages[i].tasks[j].duration;
+        }
+    }
+    
+    days = projectDuration/8;
+    
+    function addDays() {
+        // '2015-09-03' + days
+        var split = self.startDate.split('-');
+        split[2] = format(Math.round(parseInt(split[2], 10) + days));
+        return new Date(split[0], split[1]-1, split[2]);
+    }
+    
+    estimated = addDays();
+    
+    // Compare and return date object from this function
+    if(typeof actual === 'undefined'){
+        return estimated;
+    } else if(estimated > actual) {
+        return estimated;
+    } else {
+        return actual;
+    }
+}
 
 // Compile and export
 var Project = mongoose.model('Project', projectSchema);

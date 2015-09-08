@@ -56,6 +56,7 @@ var apiController = {
         task._id = mongoose.Types.ObjectId(); // Generates a new ObjectId
         
         Project.findOne({'stages._id': stageID}, function(err, project){
+            console.log('Project end date: ', project.getProjectEndDate())
             if(err){
                 console.log('Error querying project to update stage', err)
             } else {
@@ -73,7 +74,7 @@ var apiController = {
                     res.send(task); // Send back task as returnData to angular
                 });
             }
-        });  
+        });
     },
     createNote: function(req, res) {
         // create a note, and push it into the TASK id param
