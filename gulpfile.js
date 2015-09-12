@@ -9,14 +9,18 @@ var paths = {
     bodyScripts: [
         './bower_components/angular-resource/angular-resource.min.js',
         './bower_components/angular-route/angular-route.min.js',
-        './bower_components/materialize/dist/js/materialize.min.js',
+        './bower_components/angular-animate/angular-animate.min.js',
+        './bower_components/angular-aria/angular-aria.min.js',
+        './bower_components/angular-material/angular-material.min.js',
+        // './bower_components/materialize/dist/js/materialize.min.js',
         './bower_components/d3/d3.js',
         './public/js/d3/*.js',
         './public/js/angular/app.js',
         './public/js/angular/**/*.js'
     ],
     stylesheets: [
-        './bower_components/materialize/dist/css/materialize.min.css',
+        // './bower_components/materialize/dist/css/materialize.min.css',
+        './bower_components/angular-material/angular-material.min.css',
         './public/css/partials/*.css'     
     ]
 }

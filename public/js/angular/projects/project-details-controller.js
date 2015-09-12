@@ -80,31 +80,43 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         // 1. Hide the stageInput
         // 2. Clear the input
         // 3. TODO: Save the stage to DB and update UI
-        if(keycode === 13) {
-            // newTask object is the ng-model in the view
-            var newTask = new projectFactory.task(this.newTask);
-            var stageID = $scope.project.stages[$scope.stageIndex]._id;
-            
-            newTask.$save({ id: $routeParams.id, stageid: stageID }, function(returnData){
-                $scope.activeTasks.push(returnData);
-            });
-            
-            $timeout(function(){
-                $('#add-task').val('');
-                $scope.taskInput = false;
-            }, 100)
-        }
+//        if(keycode === 13) {
+//            // newTask object is the ng-model in the view
+//            var newTask = new projectFactory.task(this.newTask);
+//            var stageID = $scope.project.stages[$scope.stageIndex]._id;
+//            
+//            newTask.$save({ id: $routeParams.id, stageid: stageID }, function(returnData){
+//                $scope.activeTasks.push(returnData);
+//            });
+//            
+//            $timeout(function(){
+//                $('#add-task').val('');
+//                $scope.taskInput = false;
+//            }, 100)
+//        }
     }
-        // Deal with blur later
-//    $scope.addTaskBlur = function() {
-//        $scope.taskInput = false;
-//        var copy = angular.copy($scope.newTask);
-//        $scope.activeTasks.push({ content: copy});
-//        
-//        $timeout(function(){
-//            //$scope.newTask = null;
-//        }, 100);
-//    }
+    $scope.addDuration = function() {
+        console.log('Triggered add duration')
+        // We are grabbing the value with jQuery, but the select still requires a model in HTML
+        this.newTask.duration = $('#task-duration').val();
+        // newTask object is the ng-model in the view
+        var newTask = new projectFactory.task(this.newTask);
+        var stageID = $scope.project.stages[$scope.stageIndex]._id;
+
+        newTask.$save({ id: $routeParams.id, stageid: stageID }, function(returnData){
+            $scope.activeTasks.push(returnData);
+        });
+        
+        $timeout(function(){
+            $('#add-task').val('');
+            // $('#task-duration').material_select('destroy');
+            //$('.duration .caret').remove();
+            
+            // Reinitialize select element
+            //$('#task-duration').material_select(); // Why does the addDuration not fire the second time??
+            $scope.taskInput = false;
+        }, 100);
+    }
 
     // Note Input handlers
     $scope.showNoteInput = function(){
@@ -160,6 +172,6 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
     
     // Materialize inits
     $('.button-collapse').sideNav();
-    $('select').material_select();
+    $('#task-duration').material_select();
     
 }); // End Project Details Controller

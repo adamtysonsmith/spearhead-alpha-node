@@ -1,4 +1,4 @@
-var projects = angular.module('projects', ['ngResource', 'ngRoute']);
+var projects = angular.module('projects', ['ngResource', 'ngRoute','ngMaterial']);
 var dashboard = angular.module('dashboard', ['ngResource', 'ngRoute']);
 
 ///////////////////////////////////////////////

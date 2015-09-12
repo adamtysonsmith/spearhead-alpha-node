@@ -16,9 +16,36 @@ div.row
                     div.col.s12
                         h2.left Tasks
                         button.btn-floating.add-task-btn(ng-click="showTaskInput()") +
-                    div#add-task-input.input-field.col.s12(ng-show="taskInput")
-                        input#add-task(type="text" ng-model="newTask.content" ng-keyup="addTaskKeyup($event.keyCode)" ng-blur="addTaskBlur()")
-                        label(for="add-task") Add a Task to this Stage
+                    div#add-task-input.col.s12(ng-show="taskInput")
+                        div.input-field.col.s8
+                            input#add-task(type="text" ng-model="newTask.content" ng-keyup="addTaskKeyup($event.keyCode)" ng-blur="addTaskBlur()")
+                            label(for="add-task") Add a Task to this Stage
+                        div.input-field.col.s4.duration
+                            select#task-duration(ng-click="addDuration()")
+                                option(value="" disabled selected) Choose
+                                option(value="0.25") 15 min
+                                option(value="0.5") 30 min
+                                option(value="0.75") 45 min
+                                option(value="1") 1 hr
+                                option(value="1.5") 1.5 hr
+                                option(value="2") 2 hr
+                                option(value="2.5") 2.5 hr
+                                option(value="3") 3 hr
+                                option(value="3.5") 3.5 hr
+                                option(value="4") 4 hr
+                                option(value="4.5") 4.5 hr
+                                option(value="5") 5 hr
+                                option(value="5.5") 5.5 hr
+                                option(value="6") 6 hr
+                                option(value="6.5") 6.5 hr
+                                option(value="7") 7 hr
+                                option(value="7.5") 7.5 hr
+                                option(value="8") 8 hr
+                                option(value="8.5") 8.5 hr
+                                option(value="9") 9 hr
+                                option(value="9.5") 9.5 hr
+                                option(value="10") 10 hr
+                            label Select Task Duration
                 div(ng-repeat="task in activeTasks" ng-click="setActiveNotes($index)" ng-class="{'active-task': $index == taskIndex}").task
                     p.task-content
                         input(type="checkbox" id="{{$index}}" ng-checked="{{task.isCompleted}}" ng-click="checkTask($index)")
