@@ -1,10 +1,12 @@
+/* Angular Material Styles */
+.logo-top-nav {
+    width: 170px;
+}
+
+
+
 .nav-wrapper {
     background-color: #36415b;
-}
-.logo-top-nav {
-    width: 16%;
-    padding-top: 15px;
-    padding-left: 6px;
 }
 .nav-links {
     font-weight: 100;

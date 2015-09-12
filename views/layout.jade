@@ -3,10 +3,10 @@ if (pathname == '/dashboard')
 else if (pathname == '/projects')
     - var app = 'projects'
 else
-    - var app = ''
+    - var app = 'public'
 
 doctype html
-html(lang='en' ng-app='#{app}')
+html(lang="en" ng-app="#{app}")
     head
         meta(charset="utf-8")
         title Spearhead | Project Management Simplified
@@ -20,7 +20,7 @@ html(lang='en' ng-app='#{app}')
         //link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
         script(src="/js/build/head-scripts.js")
 
-    body
+    body(layout="column")
         include partials/gtm
         block content
         block modals

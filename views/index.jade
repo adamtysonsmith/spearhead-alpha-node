@@ -1,65 +1,82 @@
 extends layout
 
 block content
-    div.navbar-fixed
-        nav
-            div.nav-wrapper
-                a(href="/").brand-logo
-                    img(src="/img/spearhead-logo-lt.png").logo-top-nav
-
-    div.hero-container                  
-        div.container
-            div.row
-                div.col.s8.hero
-                    h1 Spearhead is a simple, personal project management app
-                    hr
-                    p It helps you to get projects done on time.
-                    button.btn Sign Up Free
-                div.col.s4.cta-form-container
-                    div.cta-form
-                        form(action="/auth/login" method="POST").col.s10.offset-s2
-                            span.login-title Login to Spearhead
-                            div.row.inputs
-                                div.input-field.col.s10
-                                    input#login-username(type="text" name="username" value="adam")
-                                    label.login-label(for="login-username") Username
-                                div.input-field.col.s10
-                                    input#login-password(type="password" name="password")
-                                    label.login-label(for="login-password") Password
-                                div.input-field.col.s10.offset-s2
-                                    input(type="submit" value="Login").btn.login-button.teal.lighten-5
-    div.container
-        div.row
-            div.col.s8
-                h2 No more missed deadlines
-                p Avoid underestimating your workload and missing another deadline.  We know what happens when projects start to overlap and the tasks stack up.  You should be spending your weekend enjoying yourself, instead of catching up on work.
-        div.row
-            div.col.s6
-                div
-                    div.numbered-circle
-                        span 1
-                    h3 Break up your project into stages
-                    p 
-                    img.numbered-circle-image(src="/img/stages.png")
-                div
-                    div.numbered-circle
-                        span 3
-                    h3 Block out your schedule
-                    p
-                    img.numbered-circle-image(src="/img/schedule.png")
-
-            div.col.s6
-                div
-                    div.numbered-circle
-                        span 2
-                    h3 Quickly estimate short-term tasks
-                    p
-                    img.numbered-circle-image(src="/img/tasks.png")
-                div
-                    div.numbered-circle
-                        span 4
-                    h3 See the big picture
-                    p 
-                    img.numbered-circle-image(src="/img/waterfall.png")
-
-    script(src="/js/index/index.js")
+    md-toolbar(layout="row" layout-align="space-between center" layout-padding)
+        a(href="/")
+            img(src="/img/spearhead-logo-lt.png").logo-top-nav
+        md-button(href="/") About Spearhead
+        
+    // Children layout will be rows here while the body is column layout for topbar then content stacked  
+    md-content
+        div(layout="row" layout-align="center center")
+            div(layout="row")
+                div(flex)
+                    h2 Login to Spearhead
+                    
+                div(flex)
+                    h2 Create an Account
+                    
+                
+        
+//    div.navbar-fixed
+//        nav
+//            div.nav-wrapper
+//                a(href="/").brand-logo
+//                    img(src="/img/spearhead-logo-lt.png").logo-top-nav
+//
+//    div.hero-container                  
+//        div.container
+//            div.row
+//                div.col.s8.hero
+//                    h1 Spearhead is a simple, personal project management app
+//                    hr
+//                    p It helps you to get projects done on time.
+//                    button.btn Sign Up Free
+//                div.col.s4.cta-form-container
+//                    div.cta-form
+//                        form(action="/auth/login" method="POST").col.s10.offset-s2
+//                            span.login-title Login to Spearhead
+//                            div.row.inputs
+//                                div.input-field.col.s10
+//                                    input#login-username(type="text" name="username" value="adam")
+//                                    label.login-label(for="login-username") Username
+//                                div.input-field.col.s10
+//                                    input#login-password(type="password" name="password")
+//                                    label.login-label(for="login-password") Password
+//                                div.input-field.col.s10.offset-s2
+//                                    input(type="submit" value="Login").btn.login-button.teal.lighten-5
+//    div.container
+//        div.row
+//            div.col.s8
+//                h2 No more missed deadlines
+//                p Avoid underestimating your workload and missing another deadline.  We know what happens when projects start to overlap and the tasks stack up.  You should be spending your weekend enjoying yourself, instead of catching up on work.
+//        div.row
+//            div.col.s6
+//                div
+//                    div.numbered-circle
+//                        span 1
+//                    h3 Break up your project into stages
+//                    p 
+//                    img.numbered-circle-image(src="/img/stages.png")
+//                div
+//                    div.numbered-circle
+//                        span 3
+//                    h3 Block out your schedule
+//                    p
+//                    img.numbered-circle-image(src="/img/schedule.png")
+//
+//            div.col.s6
+//                div
+//                    div.numbered-circle
+//                        span 2
+//                    h3 Quickly estimate short-term tasks
+//                    p
+//                    img.numbered-circle-image(src="/img/tasks.png")
+//                div
+//                    div.numbered-circle
+//                        span 4
+//                    h3 See the big picture
+//                    p 
+//                    img.numbered-circle-image(src="/img/waterfall.png")
+//
+//    script(src="/js/index/index.js")
