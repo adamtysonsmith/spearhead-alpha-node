@@ -9887,7 +9887,7 @@ function drawBars(data, svgContainer, theGap, theTopPad, theSidePad, theBarHeigh
     
 } // End drawBars()
 var projects  = angular.module('projects', ['ngResource', 'ngRoute', 'ngMaterial']);
-var dashboard = angular.module('dashboard', ['ngResource', 'ngRoute']);
+var dashboard = angular.module('dashboard', ['ngResource', 'ngRoute', 'ngMaterial']);
 var public    = angular.module('public', ['ngMaterial']);
 
 ///////////////////////////////////////////////
