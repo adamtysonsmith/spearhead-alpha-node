@@ -1,36 +1,34 @@
-div.waterfall-title.row
-    div.col.s7
-        h1 Your Projects
-        a(ng-click="addProject()").btn.modal-trigger Add Project
-    div.input-field.waterfall-date-range.col.s2
-        br
-        select#start
-            option(value="" disabled selected) Choose Start Date
-        label Month Beginning
-    div.input-field.waterfall-date-range.col.s2
-        br
-        select#end
-            option(value="" disabled selected) Choose End Date
-        label Month Ending
-        
-// Angular Directive for D3 Timeline
+div(layout="row" layout-margin layout-padding flex)
+    div(flex="50")
+        h1.md-display-1.project-title Your Projects
+        md-button.md-accent Add Project
+    div(flex)
+        label.date-label Start Date
+        md-datepicker(md-placeholder="Choose Start date" ng-model="start")
+    div(flex)
+        label.date-label End Date
+        md-datepicker(md-placeholder="Choose End date" ng-model="end")
+    div(flex="5")
+
 project-timeline(data="{{projects}}" start="{{start}}" end="{{end}}")
 
-block modals
-    div#addProjectModal.modal
-        div.modal-content
-            h5 Add a Project
-            // These ng-models match our schema
-            form
-                div.input-field
-                    input(type="text" ng-model="newProject.name")#project-name
-                    label(for="project-name") Project Name
-                div.input-field
-                    input(type="date" ng-click="addStartDate()")#start-date.datepicker
-                    label(for="start-date") Start Date
-                div.input-field
-                    input(type="date" ng-click="addDueDate()")#end-date.datepicker
-                    label(for="end-date") Completion Date 
-                div.modal-footer
-                    a(ng-click="closeModal()").modal-action.modal-close.btn-flat Cancel
-                    a(ng-click="saveProject()").modal-action.modal-close.btn-flat Save
+// Next figure out how to implement the dialog modals
+
+//block modals
+//    div#addProjectModal.modal
+//        div.modal-content
+//            h5 Add a Project
+//            // These ng-models match our schema
+//            form
+//                div.input-field
+//                    input(type="text" ng-model="newProject.name")#project-name
+//                    label(for="project-name") Project Name
+//                div.input-field
+//                    input(type="date" ng-click="addStartDate()")#start-date.datepicker
+//                    label(for="start-date") Start Date
+//                div.input-field
+//                    input(type="date" ng-click="addDueDate()")#end-date.datepicker
+//                    label(for="end-date") Completion Date 
+//                div.modal-footer
+//                    a(ng-click="closeModal()").modal-action.modal-close.btn-flat Cancel
+//                    a(ng-click="saveProject()").modal-action.modal-close.btn-flat Save

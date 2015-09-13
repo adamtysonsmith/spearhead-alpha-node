@@ -3,9 +3,17 @@ var dashboard = angular.module('dashboard', ['ngResource', 'ngRoute', 'ngMateria
 var public    = angular.module('public', ['ngMaterial']);
 
 ///////////////////////////////////////////////
-// Project Routes
+// Public Config
 ///////////////////////////////////////////////
+public.config(function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('cyan')
+    .accentPalette('orange');
+});
 
+///////////////////////////////////////////////
+// Project Config
+///////////////////////////////////////////////
 projects.config(function($routeProvider){
 	$routeProvider
         // Referring to /projects#/
@@ -20,6 +28,12 @@ projects.config(function($routeProvider){
 		});
 });
 
+projects.config(function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('cyan')
+    .accentPalette('orange');
+});
+
 ///////////////////////////////////////////////
 // Dashboard Routes
 ///////////////////////////////////////////////
@@ -31,4 +45,10 @@ dashboard.config(function($routeProvider){
 			templateUrl : '/ng-views/dashboard',
 			controller  : 'dashboardController'
 		});
+});
+
+dashboard.config(function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('cyan')
+    .accentPalette('orange');
 });

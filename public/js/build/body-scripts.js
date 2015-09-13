@@ -9891,9 +9891,17 @@ var dashboard = angular.module('dashboard', ['ngResource', 'ngRoute', 'ngMateria
 var public    = angular.module('public', ['ngMaterial']);
 
 ///////////////////////////////////////////////
-// Project Routes
+// Public Config
 ///////////////////////////////////////////////
+public.config(function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('cyan')
+    .accentPalette('orange');
+});
 
+///////////////////////////////////////////////
+// Project Config
+///////////////////////////////////////////////
 projects.config(function($routeProvider){
 	$routeProvider
         // Referring to /projects#/
@@ -9908,6 +9916,12 @@ projects.config(function($routeProvider){
 		});
 });
 
+projects.config(function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('cyan')
+    .accentPalette('orange');
+});
+
 ///////////////////////////////////////////////
 // Dashboard Routes
 ///////////////////////////////////////////////
@@ -9919,6 +9933,12 @@ dashboard.config(function($routeProvider){
 			templateUrl : '/ng-views/dashboard',
 			controller  : 'dashboardController'
 		});
+});
+
+dashboard.config(function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('cyan')
+    .accentPalette('orange');
 });
 ///////////////////////////////////////////////
 // Dashboard Controllers
@@ -10172,65 +10192,6 @@ projects.controller('projectsController', function($scope, $filter, projectFacto
     $scope.start = new Date();
     $scope.end = new Date();
     
-    // Initialize Materialize Datepicker for modal
-    // Grab the datepicker object so we can programatically open it
-    var $pickadate = $('.datepicker').pickadate({
-        selectMonths: true,
-        selectYears: 15,
-        container: 'body',
-        formatSubmit: 'yyyy-mm-dd'
-    });
-    
-    var datepick = $pickadate.pickadate('datepick');
-    
-    // Click handlers for Timeline Date Selections
-    var startSelection = $('#start'); 
-    var endSelection = $('#end');
-    
-    var startDateRange = [];
-    var endDateRange = [];
-    
-    for(var i = 2015; i <= 2017; i++){
-        // For each year, push the months into our date range
-        for(var j = 0; j < 12; j++) {
-            var year  = i;
-            var month = j;
-            
-            // Push to the start date array
-            var startDate = new Date(year, month, 1);
-            startDateRange.push(startDate);
-            
-            // Push to end date array, browsers identify zero as last day of month
-            var endDate = new Date(year, month, 0);
-            endDateRange.push(endDate);
-        }
-    }
-    
-    var $start = jQuery('#start');
-    var $end = jQuery('#end');
-    var dateOptions = {month: 'long', year: 'numeric'};
-    
-    startDateRange.forEach(function(value) {
-        console.log('The value', value)
-        $start.append('<option value="'+ value +'">'+ value.toLocaleDateString('en-US', dateOptions) +'</option>');
-    });
-    endDateRange.forEach(function(value) {
-        $end.append('<option value="'+ value +'">'+ value.toLocaleDateString('en-US', dateOptions) +'</option>');
-    });
-    
-    startSelection.on('change', function(){
-        $scope.$apply(function(){
-            // D3 will convert our date object
-            $scope.start = new Date(startSelection.val());
-        });
-    });
-    endSelection.on('change', function(){
-        $scope.$apply(function(){
-            // D3 will convert our date object
-            $scope.end = new Date(endSelection.val());
-        });
-    });
-    
     // Click handlers New Project Modal
     $scope.addProject = function() {
         $('#addProjectModal').openModal();
@@ -10313,9 +10274,6 @@ projects.controller('projectsController', function($scope, $filter, projectFacto
         });
     }
     
-    // Materialize inits
-    jQuery('.button-collapse').sideNav();
-    jQuery('select').material_select();
 }); // End Projects Controller
 // Project Waterfall Navigation
 projects.directive('projectTimeline', function(projectFactory){
