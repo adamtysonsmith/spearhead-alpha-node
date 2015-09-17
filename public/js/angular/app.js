@@ -8,7 +8,7 @@ var public    = angular.module('public', ['ngMaterial']);
 public.config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
     .primaryPalette('cyan')
-    .accentPalette('orange');
+    .accentPalette('teal');
 });
 
 ///////////////////////////////////////////////

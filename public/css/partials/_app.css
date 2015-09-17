@@ -1,5 +1,7 @@
 .top-nav {
     position: fixed;
+    background-color: #202048;
+    width: 100%;
 }
 .left-nav {
     width: 40px;

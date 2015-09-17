@@ -10,7 +10,7 @@ block content
             // md-button(href="/auth/account") Account
             md-button(href="/auth/logout") Logout
 
-    md-content(layout="row" layout-fill)
+    div(layout="row" layout-fill)
         div.left-nav
             a(href="/dashboard#/")
                 md-tooltip(md-direction="right") Dashboard
@@ -18,5 +18,5 @@ block content
             a(href="/projects#/")
                 md-tooltip(md-direction="right") Projects
                 md-icon.icon-48(md-svg-src="img/ic_poll_white_48px.svg" class="s48" aria-label="Projects")
-        div(flex)
+        md-content(flex)
             ng-view

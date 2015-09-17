@@ -1,12 +1,22 @@
-#add-stage-input {
-    margin-top: 30px;
+.project-details-title {
+    margin: 0;
 }
-.tasks-component {
-    border-right: 1px solid #4d4d4d;
+.pipeline {
+    width: 100%;
+    margin-left: 20px;
+    margin-top: 20px;
 }
-.task-content label {
-    font-size: 18px;
-    color: black;
+.tasks {
+    border-right: 1px solid #c9c9c9;
+}
+.task-title, .note-title {
+    float: left;
+    font-weight: normal;
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+.tasks-container, .notes-container {
+    margin-top: 25px;
 }
 .task {
     padding: 20px;
@@ -15,6 +25,15 @@
 .task:hover {
     background-color: #CBE0E6;
 }
+
+.notes-container {
+    margin-top: 10px;
+}
+.note-card {
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.14),0 2px 2px 0 rgba(0,0,0,.098),0 1px 5px 0 rgba(0,0,0,.084);
+    padding: 10px;
+    margin-bottom: 5px;
+}
 .note-date {
     font-size: 14px;
     font-weight: bold;
@@ -22,12 +41,7 @@
 .note-content {
     font-size: 14px;
 }
-.add-task-btn, .add-note-btn {
-    font-size: 25px;
-    font-weight: 300;
-    margin-top: 21px;
-    margin-left: 10px;
-}
+
 .active-task {
     background-color: #e3f7fd;
 }

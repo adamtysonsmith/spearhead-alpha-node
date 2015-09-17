@@ -129,7 +129,6 @@ var apiController = {
                     project.stages[index].tasks.forEach(function(thisTask, index){
                         if(thisTask._id.toString() === taskID) {
                             thisTask.isCompleted = req.body.checked;
-                            console.log('The checked/unchecked task', thisTask)
                             project.save(function(err, project){
                                 res.send(thisTask); // Send back the object to angular
                             });
@@ -139,6 +138,7 @@ var apiController = {
             });
         });
     } // End checkTask
+    
 } // End apiController
 
 module.exports = apiController;

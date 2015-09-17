@@ -18,14 +18,15 @@ body {
 .right {
     float: right;
 }
-
 /*
+h2 {
+    margin: 0;
+    font-weight: normal;
+}
 h1 {
     font-size: 35px;
 }
-h2 {
-    font-size: 28px;
-}
+
 button {
     font-size: 12px;   
 }

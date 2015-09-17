@@ -20,7 +20,7 @@ html(lang="en" ng-app="#{app}")
         //link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
         script(src="/js/build/head-scripts.js")
 
-    body(layout="column")
+    body(layout="column" ng-cloak)
         include partials/gtm
         block content
         block modals
