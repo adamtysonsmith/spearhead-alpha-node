@@ -14,14 +14,21 @@ div(layout="row" layout-margin layout-padding)
         h2.headline.task-title Tasks
         md-button.md-fab.md-mini(ng-click="showTaskInput()")
             md-icon(md-svg-src="img/ic_add_white_48px.svg")
-        md-input-container(ng-show="taskInput")
-            label Add a Task to this Stage
-            input#add-task(ng-model="newTask.content" ng-keyup="addTaskKeyup($event.keyCode)" ng-blur="addTaskBlur()")
+        p {{newTask}}
+        div(ng-show="taskInput" layout="row")
+            md-input-container(flex="70")
+                label Add a Task to this Stage
+                input#add-task(ng-model="newTask.content")
+                //input#add-task(ng-model="newTask.content" ng-keyup="addTaskKeyup($event.keyCode)" ng-blur="addTaskBlur()")
+            md-input-container(flex)
+                label Duration
+                md-select#task-duration(ng-model="newTask.duration")
+                    md-option(ng-repeat="duration in durationOptions" value="{{duration.value}}" ng-click="addDuration(duration)") {{duration.selection}}
+
         div.tasks-container
             div(ng-repeat="task in activeTasks" ng-click="setActiveNotes($index)" ng-class="{'active-task': $index == taskIndex}").task
                 div.task-content
                     md-checkbox(ng-click="checkTask($index)" ng-model="task.isCompleted") {{task.content}}
-                    //md-checkbox(ng-checked="task.isCompleted" ng-click="checkTask($index)" aria-label="checkbox") {{task.content}}
                 
     div(flex)
         h2.headline.task-title Notes

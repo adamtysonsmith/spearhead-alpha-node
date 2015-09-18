@@ -10001,6 +10001,27 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         $scope.activeNotes = $scope.activeTasks[taskIndex].notes;
     }
     
+    $scope.durationOptions = [
+        { selection: '15 min', value: 0.25 },
+        { selection: '30 min', value: 0.5 },
+        { selection: '45 min', value: 0.75 },
+        { selection: '1 hr', value: 1 } 
+    ];
+    
+    for(var i = 3; i < 21; i++) {
+        var opt = $scope.durationOptions[i];
+        var incValue = opt.value + 0.5;
+        var incSelection = function(){
+            var split = opt.selection.split(' ');
+            var num = parseFloat(split[0], 10);
+            return num + 0.5;
+        }
+        $scope.durationOptions.push({selection: incSelection() + ' hrs', value: incValue});
+    }
+    
+    console.log('The durationOptions', $scope.durationOptions);
+    
+    
     //////////////////////////////////////////////////
     // Input Handlers
     //////////////////////////////////////////////////
@@ -10048,45 +10069,45 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
             $('#add-task').focus();
         }, 100);
     }
-    $scope.addTaskKeyup = function(keycode) {
-        // If user presses enter:
-        // 1. Hide the stageInput
-        // 2. Clear the input
-        // 3. TODO: Save the stage to DB and update UI
-        if(keycode === 13) {
-            // newTask object is the ng-model in the view
-            var newTask = new projectFactory.task(this.newTask);
-            var stageID = $scope.project.stages[$scope.stageIndex]._id;
-            
-            newTask.$save({ id: $routeParams.id, stageid: stageID }, function(returnData){
-                console.log('Task save return data', returnData)
-                $scope.activeTasks.push(returnData);
-            });
-            
-            $timeout(function(){
-                $('#add-task').val('');
-                $scope.taskInput = false;
-            }, 100)
-        }
-    }
-    $scope.addTaskBlur = function() {
-        $scope.taskInput = false;
-    }
+//    $scope.addTaskKeyup = function(keycode) {
+//        // If user presses enter:
+//        // 1. Hide the stageInput
+//        // 2. Clear the input
+//        // 3. TODO: Save the stage to DB and update UI
+////        if(keycode === 13) {
+////            // newTask object is the ng-model in the view
+////            var newTask = new projectFactory.task(this.newTask);
+////            var stageID = $scope.project.stages[$scope.stageIndex]._id;
+////            
+////            newTask.$save({ id: $routeParams.id, stageid: stageID }, function(returnData){
+////                console.log('Task save return data', returnData)
+////                $scope.activeTasks.push(returnData);
+////            });
+////            
+////            $timeout(function(){
+////                $('#add-task').val('');
+////                $scope.taskInput = false;
+////            }, 100)
+////        }
+//    }
+//    $scope.addTaskBlur = function() {
+//        //$scope.taskInput = false;
+//    }
     
-    $scope.addDuration = function() {
-        console.log('Triggered add duration')
-        // We are grabbing the value with jQuery, but the select still requires a model in HTML
-        this.newTask.duration = $('#task-duration').val();
-        // newTask object is the ng-model in the view
+    $scope.addDuration = function(duration) {
+        this.newTask.duration = duration.value;
+
         var newTask = new projectFactory.task(this.newTask);
         var stageID = $scope.project.stages[$scope.stageIndex]._id;
 
         newTask.$save({ id: $routeParams.id, stageid: stageID }, function(returnData){
             $scope.activeTasks.push(returnData);
+            
         });
         
         $timeout(function(){
             $('#add-task').val('');
+            $scope.newTask = undefined;
             $scope.taskInput = false;
         }, 100);
     }
