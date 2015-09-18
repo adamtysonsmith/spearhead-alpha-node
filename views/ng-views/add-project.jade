@@ -1,0 +1,18 @@
+md-dialog(aria-label="Add Project")
+    form
+        md-toolbar
+            div.md-toolbar-tools
+              h2 Add Project
+              span(flex)
+
+        md-dialog-content
+            form
+                md-input-container
+                    input(ng-model="newProject.name")
+                    label Project Name
+                md-datepicker(ng-model="newProject.startDate" md-placeholder="Start Date")
+                md-datepicker(ng-model="newProject.dueDate" md-placeholder="Completion Date")
+
+        div.md-actions(layout="row")
+            md-button(ng-click="close()") Cancel
+            md-button(ng-click="save()") Save

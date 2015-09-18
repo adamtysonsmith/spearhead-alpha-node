@@ -1,7 +1,7 @@
 div(layout="row" layout-margin layout-padding flex)
     div(flex="50")
         h1.md-display-1.projects-title Your Projects
-        md-button.md-accent Add Project
+        md-button.md-accent.md-raised(ng-click="addProjectDialog()") Add Project
     div(flex)
         label.date-label Start Date
         md-datepicker(md-placeholder="Choose Start date" ng-model="start")
