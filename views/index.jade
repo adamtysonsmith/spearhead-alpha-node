@@ -8,15 +8,64 @@ block content
         
     // Children layout will be rows here while the body is column layout for topbar then content stacked  
     md-content
-        div(layout="row" layout-align="center center")
-            div(layout="row")
-                div(flex)
-                    h2 Login to Spearhead
-                    
-                div(flex)
-                    h2 Create an Account
-                    
-                
+        div(layout="row" layout-align="space-between center")
+            div(flex="15")
+            div(flex="45")
+                h1 Spearhead is a simple, personal project management app
+                hr
+                p It helps you to get projects done on time.
+                md-button.md-raised Sign Up Free
+            div(flex)
+                div.cta-form
+                    form(action="/auth/login" method="POST")
+                        span.login-title Login to Spearhead
+                        div
+                            md-input-container
+                                input#login-username(type="text" name="username" value="adam")
+                                label.login-label(for="login-username") Username
+                            md-input-container
+                                input#login-password(type="password" name="password")
+                                label.login-label(for="login-password") Password
+                            md-button.md-raised Login
+            div(flex="15")
+
+        div(layout="row")
+            div(flex="15")
+            div(flex="45")
+                h2 No more missed deadlines
+                p Avoid underestimating your workload and missing another deadline.  We know what happens when projects start to overlap and the tasks stack up.  You should be spending your weekend enjoying yourself, instead of catching up on work.
+            div(flex="15")
+            
+        div(layout="row")
+            div(flex="15")
+            div(flex="30")
+                div
+                    div.numbered-circle
+                        span 1
+                    h3 Break up your project into stages
+                    p 
+                    img.numbered-circle-image(src="/img/stages.png")
+                div
+                    div.numbered-circle
+                        span 3
+                    h3 Block out your schedule
+                    p
+                    img.numbered-circle-image(src="/img/schedule.png")
+
+            div(flex="30")
+                div
+                    div.numbered-circle
+                        span 2
+                    h3 Quickly estimate short-term tasks
+                    p
+                    img.numbered-circle-image(src="/img/tasks.png")
+                div
+                    div.numbered-circle
+                        span 4
+                    h3 See the big picture
+                    p 
+                    img.numbered-circle-image(src="/img/waterfall.png")
+            div(flex="15")
         
 //    div.navbar-fixed
 //        nav
