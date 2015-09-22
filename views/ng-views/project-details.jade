@@ -1,7 +1,7 @@
 div(layout="row" layout-margin layout-padding)
     div
         h1.md-display-1.project-details-title {{project.name}}
-        md-button.md-raised.md-primary(ng-click="showStageInput()") + Add Stage
+        md-button.md-raised.md-accent(ng-click="showStageInput()") + Add Stage
         md-input-container(ng-show="stageInput")
             label Add a Stage
             input#add-stage(ng-model="newStage.name" ng-keyup="addStageKeyup($event.keyCode)" ng-blur="addStageBlur()")

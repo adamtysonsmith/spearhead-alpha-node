@@ -1,23 +1,40 @@
+/*
 html, body {
     height: 100vh;
 }
-body {
+*/
+body,
+md-content {
     background-color: aliceblue;
 }
 
+
+/*
 .full-height {
     height: 100vh;
 }
+*/
 
-.full-width {
-    width
-}
 .left {
     float: left;
 }
 .right {
     float: right;
 }
+
+a.md-button.md-accent.md-raised > span,
+a.md-button.md-accent.md-fab > span,
+.md-button.md-accent.md-raised > span,
+.md-button.md-accent.md-fab > span {
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+md-dialog h2 {
+    color: white;
+}
+
 /*
 h2 {
     margin: 0;

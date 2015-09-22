@@ -1,12 +1,12 @@
 extends layout
 
 block content
-    md-toolbar(layout="row" layout-align="space-between center" layout-padding)
+    md-toolbar(layout="row" layout-align="space-between center")
         a(href="/")
             img(src="/img/spearhead-logo-lt.png").logo-top-nav
-        md-button(href="/") About Spearhead
+        a.nav-item(href="/") About Spearhead
         
-    // Children layout will be rows here while the body is column layout for topbar then content stacked  
+    // Children layout will be rows here while the body is column layout for topbar and content stacked  
     md-content
         div(layout="row" layout-align="center center")
             div(layout="row" layout-sm="column" flex-gt-sm="50")
@@ -19,7 +19,7 @@ block content
                         md-input-container
                             label Password
                             input(type="password" name="password")
-                        md-button.md-raised.md-primary(type="submit") Login
+                        md-button.md-raised.md-accent.btn-accent(type="submit") Login
                 
                 span(flex-gt-sm="10")
                 
@@ -35,4 +35,4 @@ block content
                         md-input-container
                             label Password
                             input(type="password" name="password")
-                        md-button.md-raised.md-primary(type="submit") Create Account
+                        md-button.md-raised.md-accent.btn-accent(type="submit") Create Account

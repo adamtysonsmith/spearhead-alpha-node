@@ -1,10 +1,27 @@
 /* Angular Material Styles */
+md-toolbar {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16);
+}
 .logo-top-nav {
     width: 170px;
+    padding-left: 20px;
+}
+.logo-top-nav:hover {
+    opacity: 0.8;
+}
+.nav-item {
+    font-weight: 300;
+    padding: 20px;
+    color: white;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+.nav-item:hover {
+    background-color: #2B3449;
 }
 
 
-
+/*
 .nav-wrapper {
     background-color: #36415b;
 }
@@ -12,7 +29,7 @@
     font-weight: 100;
 }
 .static-side-nav-col {
-    /* Override Materialize.css column */
+     Override Materialize.css column 
     padding: 0 !important;
     position: fixed;
 }
@@ -25,4 +42,4 @@
 }
 .static-side-nav a li:hover, .static-side-nav-active {
     background-color: #e3f2fd;
-}
+}*/

@@ -2,13 +2,13 @@ extends layout
 
 block content
     // Topbar Nav
-    md-toolbar(layout="row" layout-align="space-between center" layout-padding)
+    md-toolbar(layout="row" layout-align="space-between center")
         a(href="/")
             img(src="/img/spearhead-logo-lt.png").logo-top-nav
         div
-            md-button(href="/") About Spearhead
-            // md-button(href="/auth/account") Account
-            md-button(href="/auth/logout") Logout
+            a.nav-item(href="/") About Spearhead
+            // a.nav-item(href="/auth/account") Account
+            a.nav-item(href="/auth/logout") Logout
 
     div(layout="row" layout-fill)
         div.left-nav

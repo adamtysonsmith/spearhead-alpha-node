@@ -1,0 +1,52 @@
+.home-title {
+    padding-top: 50px;
+}
+/*
+.hero-container {
+    padding-top: 60px;
+    padding-bottom: 30px;
+}
+*/
+.cta-form {
+    background-color: #00a1be;
+    color: white;
+    padding: 65px 40px;
+    -webkit-clip-path: polygon(100% 0%, 100% 89%, 50% 100%, 0% 89%, 0 0%);
+    clip-path: polygon(100% 0%, 100% 89%, 50% 100%, 0% 89%, 0 0%);
+}
+
+.content-container {
+    width: 100%;
+    padding-top: 30px;
+    background-color: white;
+}
+
+.numbered-circle {
+    float: left;
+    background-color: #36415b;
+    border-radius: 100%;
+    height: 50px;
+    width: 50px;
+}
+.numbered-circle span {
+    display: block;
+    font-size: 20px;
+    padding-left: 19px;
+    padding-top: 10px;
+    color: white;
+}
+.numbered-circle-image {
+    width: 50%;
+    margin-left: 60px;
+}
+
+.step-title {
+    padding-top: 12px;
+    padding-left: 60px;
+}
+
+footer {
+    padding-top: 70px;
+    background-color: white;
+    color: #aaaaaa;
+}
