@@ -28,28 +28,20 @@
 .db-day-calendar, .db-quick-add {
     height: 300px;
 }
-/*
-html, body {
-    height: 100vh;
-}
-*/
 body,
 md-content {
     background-color: aliceblue;
+    font-family: Roboto, sans-serif;
 }
-
-
-/*
-.full-height {
-    height: 100vh;
-}
-*/
 
 .left {
     float: left;
 }
 .right {
     float: right;
+}
+.text-center {
+    text-align: center;
 }
 
 a.md-button.md-accent.md-raised > span,
@@ -65,42 +57,69 @@ md-dialog h2 {
     color: white;
 }
 
-/*
-h2 {
-    margin: 0;
-    font-weight: normal;
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+    background-color: none;
 }
-h1 {
+.hero-container {
+    background-color: #d9e9f7;
+    padding-top: 60px;
+    padding-bottom: 70px;
+}
+.hero-container h1 {
+    font-weight: 400;
     font-size: 35px;
 }
-
-button {
-    font-size: 12px;   
+.hero-container p {
+    font-size: 22px;
 }
-*/
 
-
-.home-title {
-    padding-top: 50px;
-}
-/*
-.hero-container {
-    padding-top: 60px;
-    padding-bottom: 30px;
-}
-*/
 .cta-form {
-    background-color: #00a1be;
+    position: absolute;
+    background: url('/img/home-login-bg.svg') no-repeat;
+    width: 350px;
+    height: 350px;
+    top: -1px;
     color: white;
+    margin-left: 30px;
     padding: 65px 40px;
-    -webkit-clip-path: polygon(100% 0%, 100% 89%, 50% 100%, 0% 89%, 0 0%);
-    clip-path: polygon(100% 0%, 100% 89%, 50% 100%, 0% 89%, 0 0%);
+}
+.cta-form label {
+    color: #36415b;
+}
+.cta-form input {
+    color: white;
+    border-bottom: 1px solid #36415b;
+}
+#login-password:focus:not([readonly])+label, #login-username:focus:not([readonly])+label {
+    color: #c6f5f1;
+}
+#login-password:focus,
+#login-username:focus {
+    border-bottom: 1px solid #c6f5f1;
+    box-shadow: 0 1px 0 0 #c6f5f1;
+}
+.login-title {
+    display: block;
+    font-size: 28px;
+    font-weight: 400;
+    margin: 20px 0px;
 }
 
 .content-container {
     width: 100%;
     padding-top: 30px;
-    background-color: white;
+}
+.content-container h2 {
+    font-weight: 400;
+    font-size: 32px;
+}
+.content-container h3 {
+    font-size: 20px;
+    font-weight: 400;
+    padding-top: 12px;
+    padding-left: 60px;
 }
 
 .numbered-circle {
@@ -122,14 +141,15 @@ button {
     margin-left: 60px;
 }
 
+/*
 .step-title {
     padding-top: 12px;
     padding-left: 60px;
 }
+*/
 
 footer {
     padding-top: 70px;
-    background-color: white;
     color: #aaaaaa;
 }
 /*

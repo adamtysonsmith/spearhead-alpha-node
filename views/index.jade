@@ -10,25 +10,26 @@ block content
     md-content
         div(layout="column")
             // Container row for hero
-            div(layout="row")
+            div.hero-container(layout="row")
                 span(flex="15")
                 div(flex="40")
-                    h1.home-title Spearhead is a simple, personal project management app
+                    h1 Spearhead is a simple, personal project management app
                     hr
                     p It helps you to get projects done on time.
                     md-button.md-raised.md-accent(href="#") Sign Up Free
-                div(flex)
+                div
                     div.cta-form
                         form(action="/auth/login" method="POST")
                             span.login-title Login to Spearhead
                             div
                                 md-input-container
-                                    input#login-username(type="text" name="username" value="adam")
-                                    label.login-label(for="login-username") Username
+                                    input#login-username(type="text" name="username")
+                                    label(for="login-username") Username
                                 md-input-container
                                     input#login-password(type="password" name="password")
-                                    label.login-label(for="login-password") Password
-                                md-button.md-raised Login
+                                    label(for="login-password") Password
+                                div.text-center
+                                    md-button.md-raised Login
                 span(flex="15")
                 
             // Container row for content
