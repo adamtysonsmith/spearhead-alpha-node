@@ -3,10 +3,10 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="-281 373 48 48" style="enable-background:new -281 373 48 48;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#FFFFFF;}
+	.st0{fill:#F5B7B8;}
 	.st1{fill:none;}
 </style>
-<path id="poll-icon" class="st0" d="M-239,411v-28c0-2.2-1.8-4-4-4h-28c-2.2,0-4,1.8-4,4v28c0,2.2,1.8,4,4,4h28C-240.8,415-239,413.2-239,411z
-	 M-267,391v-4h14v4H-267z M-267,399v-4h20v4H-267z M-267,407v-4h8v4H-267z"/>
-<path class="st1" d="M-233,373v48h-48v-48H-233z"/>
+<path class="st0" d="M-243,385.8l-2.8-2.8l-11.2,11.2l-11.2-11.2l-2.8,2.8l11.2,11.2l-11.2,11.2l2.8,2.8l11.2-11.2l11.2,11.2
+	l2.8-2.8l-11.2-11.2L-243,385.8z"/>
+<path class="st1" d="M-281,373h48v48h-48V373z"/>
 </svg>

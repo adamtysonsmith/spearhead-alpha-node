@@ -39,8 +39,10 @@ div(layout="row" layout-margin layout-padding)
             input#add-note(ng-model="newNote.content" ng-keyup="addNoteKeyup($event.keyCode)" ng-blur="addNoteBlur()")
         div.notes-container
             div.note-card(ng-repeat="note in activeNotes")
-                p.note-date {{note.timestamp}}
+                p.note-date {{note.timestamp | date:'medium'}}
                 p.note-content {{note.content}}
+                div.note-hover
+                md-icon.note-delete(md-svg-src="img/ic_clear_red_48px.svg")
 
 // $scope: ProjectDetailsController
 //div.row

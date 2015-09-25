@@ -20,3 +20,10 @@ project-timeline .svg-container {
       stroke-width: 0;
 }
 
+.md-datepicker-input-container {
+    border: none;
+}
+
+md-datepicker {
+    background-color: transparent;
+}

@@ -9,10 +9,15 @@
     padding: 10px;
 }
 .icon-48 {
+    fill: white;
     width: 36px;
     height: 36px;
     margin-bottom: 20px;
 }
 .icon-48:hover {
     opacity: 0.8;
+    fill: white;
+}
+.icon-48:focus, .icon-48:active {
+    fill: white;
 }

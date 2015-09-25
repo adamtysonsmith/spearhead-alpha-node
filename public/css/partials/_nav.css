@@ -20,6 +20,9 @@ md-toolbar {
     background-color: #2B3449;
 }
 
+#poll-icon {
+    fill: white;
+}
 
 /*
 .nav-wrapper {

@@ -32,3 +32,7 @@ textarea:-webkit-autofill,
 select:-webkit-autofill {
     background-color: none;
 }
+
+:focus {
+    outline: none;
+}
