@@ -239,11 +239,50 @@ md-toolbar {
     margin-top: 25px;
 }
 .task {
+    position: relative;
     padding: 20px;
     background-color: aliceblue;
 }
 .task:hover {
     background-color: #CBE0E6;
+}
+.task-duration {
+    /* Relative to .task */
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    color: gray;
+}
+.task-duration:hover {
+    visibility: hidden;
+}
+.task-delete {
+    /* Relative to .task */
+    position: absolute;
+    display: none;
+    cursor: pointer;
+    top: 25px;
+    right: 20px;
+}
+.task-delete:hover {
+    display: block;
+    cursor: pointer;
+}
+.task-delete:hover ~.task-duration {
+    display: none;
+}
+.task-hover {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+}
+.task-hover:hover ~.task-delete {
+    display: block;
+}
+.task-hover:hover ~.task-duration {
+    visibility: hidden;
 }
 
 .notes-container {

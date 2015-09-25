@@ -19,7 +19,6 @@ div(layout="row" layout-margin layout-padding)
             md-input-container(flex="70")
                 label Add a Task to this Stage
                 input#add-task(ng-model="newTask.content")
-                //input#add-task(ng-model="newTask.content" ng-keyup="addTaskKeyup($event.keyCode)" ng-blur="addTaskBlur()")
             md-input-container(flex)
                 label Duration
                 md-select#task-duration(ng-model="newTask.duration")
@@ -29,6 +28,9 @@ div(layout="row" layout-margin layout-padding)
             div(ng-repeat="task in activeTasks" ng-click="setActiveNotes($index)" ng-class="{'active-task': $index == taskIndex}").task
                 div.task-content
                     md-checkbox(ng-click="checkTask($index)" ng-model="task.isCompleted") {{task.content}}
+                    div.task-hover
+                    md-icon.task-delete(md-svg-src="img/ic_clear_red_48px.svg")
+                    span.task-duration {{task.duration}} hrs
                 
     div(flex)
         h2.headline.task-title Notes
@@ -39,73 +41,7 @@ div(layout="row" layout-margin layout-padding)
             input#add-note(ng-model="newNote.content" ng-keyup="addNoteKeyup($event.keyCode)" ng-blur="addNoteBlur()")
         div.notes-container
             div.note-card(ng-repeat="note in activeNotes")
+                div.note-hover
                 p.note-date {{note.timestamp | date:'medium'}}
                 p.note-content {{note.content}}
-                div.note-hover
                 md-icon.note-delete(md-svg-src="img/ic_clear_red_48px.svg")
-
-// $scope: ProjectDetailsController
-//div.row
-//    div.col.s12
-//        h1 {{project.name}}
-//        button.btn(ng-click="showStageInput()") + Add Stage
-//    div#add-stage-input.input-field.col.s6.m3(ng-show="stageInput")
-//        input#add-stage(type="text" ng-model="newStage.name" ng-keyup="addStageKeyup($event.keyCode)" ng-blur="addStageBlur()")
-//        label(for="add-stage") Add a Stage to this project
-//
-//div.row
-//    div.col.s12
-//        stage-pipeline
-// Task Pane
-//            div.col.s6.tasks-component
-//                div.row
-//                    div.col.s12
-//                        h2.left Tasks
-//                        button.btn-floating.add-task-btn(ng-click="showTaskInput()") +
-//                    div#add-task-input.col.s12(ng-show="taskInput")
-//                        div.input-field.col.s8
-//                            input#add-task(type="text" ng-model="newTask.content" ng-keyup="addTaskKeyup($event.keyCode)" ng-blur="addTaskBlur()")
-//                            label(for="add-task") Add a Task to this Stage
-//                        div.input-field.col.s4.duration
-//                            select#task-duration(ng-click="addDuration()")
-//                                option(value="" disabled selected) Choose
-//                                option(value="0.25") 15 min
-//                                option(value="0.5") 30 min
-//                                option(value="0.75") 45 min
-//                                option(value="1") 1 hr
-//                                option(value="1.5") 1.5 hr
-//                                option(value="2") 2 hr
-//                                option(value="2.5") 2.5 hr
-//                                option(value="3") 3 hr
-//                                option(value="3.5") 3.5 hr
-//                                option(value="4") 4 hr
-//                                option(value="4.5") 4.5 hr
-//                                option(value="5") 5 hr
-//                                option(value="5.5") 5.5 hr
-//                                option(value="6") 6 hr
-//                                option(value="6.5") 6.5 hr
-//                                option(value="7") 7 hr
-//                                option(value="7.5") 7.5 hr
-//                                option(value="8") 8 hr
-//                                option(value="8.5") 8.5 hr
-//                                option(value="9") 9 hr
-//                                option(value="9.5") 9.5 hr
-//                                option(value="10") 10 hr
-//                            label Select Task Duration
-//                div(ng-repeat="task in activeTasks" ng-click="setActiveNotes($index)" ng-class="{'active-task': $index == taskIndex}").task
-//                    p.task-content
-//                        input(type="checkbox" id="{{$index}}" ng-checked="{{task.isCompleted}}" ng-click="checkTask($index)")
-//                        label(for="{{$index}}") {{task.content}}
-//
-// Notes Pane
-//            div.col.s6.notes-component
-//                div.row
-//                    div.col.s12
-//                        h2.left Notes
-//                        button.btn-floating.add-note-btn(ng-click="showNoteInput()") +
-//                    div#add-note-input.input-field.col.s12(ng-show="noteInput")
-//                        input#add-note(type="text" ng-model="newNote.content" ng-keyup="addNoteKeyup($event.keyCode)" ng-blur="addNoteBlur()")
-//                        label(for="add-note") Add a Note to this Task
-//                div.card-panel(ng-repeat="note in activeNotes")
-//                    p.note-date {{note.timestamp}}
-//                    p.note-content {{note.content}}
