@@ -41,20 +41,21 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         $scope.durationOptions.push({selection: incSelection() + ' hrs', value: incValue});
     }
     
-    console.log('The durationOptions', $scope.durationOptions);
-    
     
     //////////////////////////////////////////////////
     // Input Handlers
     //////////////////////////////////////////////////
     
+    //////////////////////////////////
     // Stage Input handlers
+    //////////////////////////////////
     $scope.showStageInput = function(){
         $scope.stageInput = true;
         $timeout(function(){
             $('#add-stage').focus();
         }, 100);
     }
+    
     $scope.addStageKeyup = function(keycode) {
         // If user presses enter:
         // 1. Push data to angular scope
@@ -79,42 +80,25 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
             });
         }
     }
+    
     $scope.addStageBlur = function() {
         $scope.stageInput = false;
     }
 
     
+    //////////////////////////////////
     // Task Input handlers
+    //////////////////////////////////
     $scope.showTaskInput = function(){
         $scope.taskInput = true;
         $timeout(function(){
             $('#add-task').focus();
         }, 100);
     }
-//    $scope.addTaskKeyup = function(keycode) {
-//        // If user presses enter:
-//        // 1. Hide the stageInput
-//        // 2. Clear the input
-//        // 3. TODO: Save the stage to DB and update UI
-////        if(keycode === 13) {
-////            // newTask object is the ng-model in the view
-////            var newTask = new projectFactory.task(this.newTask);
-////            var stageID = $scope.project.stages[$scope.stageIndex]._id;
-////            
-////            newTask.$save({ id: $routeParams.id, stageid: stageID }, function(returnData){
-////                console.log('Task save return data', returnData)
-////                $scope.activeTasks.push(returnData);
-////            });
-////            
-////            $timeout(function(){
-////                $('#add-task').val('');
-////                $scope.taskInput = false;
-////            }, 100)
-////        }
-//    }
-//    $scope.addTaskBlur = function() {
-//        //$scope.taskInput = false;
-//    }
+    
+    $scope.addTaskBlur = function() {
+        $scope.taskInput = false;
+    }
     
     $scope.addDuration = function(duration) {
         this.newTask.duration = duration.value;
@@ -132,36 +116,6 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
             $scope.newTask = undefined;
             $scope.taskInput = false;
         }, 100);
-    }
-
-    // Note Input handlers
-    $scope.showNoteInput = function(){
-        $scope.noteInput = true;
-        $timeout(function(){
-            $('#add-note').focus();
-        }, 100);
-    }
-    $scope.addNoteKeyup = function(keycode) {
-        // If user presses enter:
-        // 1. Hide the stageInput
-        // 2. Clear the input
-        // 3. TODO: Save the stage to DB and update UI
-        if(keycode === 13) {
-            var newNote = new projectFactory.note(this.newNote);
-            var stageId = $scope.project.stages[$scope.stageIndex]._id;
-            var taskId = $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex]._id;
-            
-            newNote.$save({ id: $routeParams.id, stageid: stageId, taskid: taskId }, function(returnData){
-                // Temporary timestamp value
-                returnData.timestamp = 'Just Now';
-                $scope.activeNotes.push(returnData);
-            }); 
-            
-            $timeout(function(){
-                $('#add-note').val('');
-                $scope.noteInput = false;
-            }, 100)
-        }
     }
     
     $scope.checkTask = function(index){
@@ -185,6 +139,48 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
             setCheckbox();
         } else {
             console.log('Error saving checkbox, boolean is invalid.')
+        }
+    }
+    
+    $scope.deleteTask = function(index){
+        var stageId = $scope.project.stages[$scope.stageIndex]._id;
+        var taskId = $scope.project.stages[$scope.stageIndex].tasks[index]._id;
+        
+        projectFactory.task.delete({id: $routeParams.id, stageid: stageId, taskid: taskId}, function(returnData){
+            $scope.project.stages[$scope.stageIndex].tasks.splice(index, 1);
+        });
+    }
+    
+    //////////////////////////////////
+    // Note Input handlers
+    //////////////////////////////////
+    $scope.showNoteInput = function(){
+        $scope.noteInput = true;
+        $timeout(function(){
+            $('#add-note').focus();
+        }, 100);
+    }
+    
+    $scope.addNoteKeyup = function(keycode) {
+        // If user presses enter:
+        // 1. Hide the stageInput
+        // 2. Clear the input
+        // 3. TODO: Save the stage to DB and update UI
+        if(keycode === 13) {
+            var newNote = new projectFactory.note(this.newNote);
+            var stageId = $scope.project.stages[$scope.stageIndex]._id;
+            var taskId = $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex]._id;
+            
+            newNote.$save({ id: $routeParams.id, stageid: stageId, taskid: taskId }, function(returnData){
+                // Temporary timestamp value
+                returnData.timestamp = 'Just Now';
+                $scope.activeNotes.push(returnData);
+            }); 
+            
+            $timeout(function(){
+                $('#add-note').val('');
+                $scope.noteInput = false;
+            }, 100)
         }
     }
     

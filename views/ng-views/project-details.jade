@@ -18,7 +18,7 @@ div(layout="row" layout-margin layout-padding)
         div(ng-show="taskInput" layout="row")
             md-input-container(flex="70")
                 label Add a Task to this Stage
-                input#add-task(ng-model="newTask.content")
+                input#add-task(ng-model="newTask.content" ng-blur="addTaskBlur()")
             md-input-container(flex)
                 label Duration
                 md-select#task-duration(ng-model="newTask.duration")
@@ -29,7 +29,7 @@ div(layout="row" layout-margin layout-padding)
                 div.task-content
                     md-checkbox(ng-click="checkTask($index)" ng-model="task.isCompleted") {{task.content}}
                     div.task-hover
-                    md-icon.task-delete(md-svg-src="img/ic_clear_red_48px.svg")
+                    md-icon.task-delete(md-svg-src="img/ic_clear_red_48px.svg" ng-click="deleteTask($index)")
                     span.task-duration {{task.duration}} hrs
                 
     div(flex)
@@ -44,4 +44,4 @@ div(layout="row" layout-margin layout-padding)
                 div.note-hover
                 p.note-date {{note.timestamp | date:'medium'}}
                 p.note-content {{note.content}}
-                md-icon.note-delete(md-svg-src="img/ic_clear_red_48px.svg")
+                md-icon.note-delete(md-svg-src="img/ic_clear_red_48px.svg" ng-click="deleteNote($index)")

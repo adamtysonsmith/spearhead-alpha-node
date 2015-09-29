@@ -58,15 +58,16 @@ app.get('/ng-views/:templateName', templateController.ngview);
 app.get('/partials/:partialName', templateController.partial);
 
 // Authenticated API Routes
+app.get('/api/projects', apiController.readProject);
+
 app.post('/api/projects', apiController.createProject);
 app.post('/api/projects/:id/stages', apiController.createStage);
 app.post('/api/projects/:id/stages/:stageid/tasks', apiController.createTask);
 app.post('/api/projects/:id/stages/:stageid/tasks/:taskid/notes', apiController.createNote);
 app.post('/api/projects/:id/stages/:stageid/tasks/:taskid', apiController.checkTask)
 
-app.get('/api/projects', apiController.readProject);
-//app.put('/api/projects', apiController.update);
-//app.delete('/api/projects', apiController.delete);
+app.delete('/api/projects/:id/stages/:stageid/tasks/:taskid', apiController.deleteTask);
+app.delete('/api/projects/:id/stages/:stageid/tasks/:taskid/notes/:noteid', apiController.deleteNote);
 
 // Server
 var port = process.env.PORT || 2800;
