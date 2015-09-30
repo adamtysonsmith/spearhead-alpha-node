@@ -82,6 +82,7 @@ var apiController = {
         var stageID = req.params.stageid;
         var taskID = req.params.taskid;
         var note = req.body;
+        note._id = mongoose.Types.ObjectId();
         
         Project.findOne({_id: reqID}, function(err, project){
             if(err){

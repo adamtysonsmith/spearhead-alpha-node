@@ -14,11 +14,10 @@ div(layout="row" layout-margin layout-padding)
         h2.headline.task-title Tasks
         md-button.md-fab.md-mini(ng-click="showTaskInput()")
             md-icon(md-svg-src="img/ic_add_white_48px.svg")
-        p {{newTask}}
         div(ng-show="taskInput" layout="row")
             md-input-container(flex="70")
                 label Add a Task to this Stage
-                input#add-task(ng-model="newTask.content" ng-blur="addTaskBlur()")
+                input#add-task(ng-model="newTask.content")
             md-input-container(flex)
                 label Duration
                 md-select#task-duration(ng-model="newTask.duration")

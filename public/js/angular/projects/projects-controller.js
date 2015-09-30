@@ -1,4 +1,8 @@
 projects.controller('projectsController', function($scope, $filter, projectFactory, $mdDialog){
+    // For Debugging in console
+    window.SCOPE = function(selector){
+        return angular.element(selector).scope();
+    }
     $scope.scopeName = 'Projects Controller';
     
     // Get all projects from the api route

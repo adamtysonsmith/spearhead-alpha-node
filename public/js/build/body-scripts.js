@@ -10042,9 +10042,13 @@ projects.directive('stagePipeline', function(){
     }
 }); // End Pipeline Directive
 projects.controller('projectDetailsController', function($scope, $timeout, projectFactory, $routeParams){
+    // For Debugging in console
+    window.SCOPE = function(){
+        return angular.element('ng-view').scope();
+    }
     $scope.scopeName = 'Project Details Controller';
     
-    projectFactory.project.get({_id: $routeParams.id}, function(returnData){
+    projectFactory.project.get({ _id: $routeParams.id }, function(returnData){
         $scope.project = returnData;
     });
     
@@ -10081,7 +10085,7 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
             var num = parseFloat(split[0], 10);
             return num + 0.5;
         }
-        $scope.durationOptions.push({selection: incSelection() + ' hrs', value: incValue});
+        $scope.durationOptions.push({ selection: incSelection() + ' hrs', value: incValue });
     }
     
     
@@ -10109,7 +10113,7 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
             // newStage ng-model in the view
             var newStage = new projectFactory.stage(this.newStage);
             
-            newStage.$save({id: $routeParams.id}, function(returnData){
+            newStage.$save({ id: $routeParams.id }, function(returnData){
                 console.log('The stage save data', returnData)
                 $scope.project.stages.push(returnData);
                 
@@ -10139,10 +10143,6 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         }, 100);
     }
     
-    $scope.addTaskBlur = function() {
-        $scope.taskInput = false;
-    }
-    
     $scope.addDuration = function(duration) {
         this.newTask.duration = duration.value;
 
@@ -10150,8 +10150,8 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         var stageID = $scope.project.stages[$scope.stageIndex]._id;
 
         newTask.$save({ id: $routeParams.id, stageid: stageID }, function(returnData){
+            console.log('The new task returned', returnData)
             $scope.activeTasks.push(returnData);
-            
         });
         
         $timeout(function(){
@@ -10189,7 +10189,7 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         var stageId = $scope.project.stages[$scope.stageIndex]._id;
         var taskId = $scope.project.stages[$scope.stageIndex].tasks[index]._id;
         
-        projectFactory.task.delete({id: $routeParams.id, stageid: stageId, taskid: taskId}, function(returnData){
+        projectFactory.task.delete({ id: $routeParams.id, stageid: stageId, taskid: taskId }, function(returnData){
             $scope.project.stages[$scope.stageIndex].tasks.splice(index, 1);
         });
     }
@@ -10217,6 +10217,7 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
             newNote.$save({ id: $routeParams.id, stageid: stageId, taskid: taskId }, function(returnData){
                 // Temporary timestamp value
                 returnData.timestamp = 'Just Now';
+                console.log('The new note returned', returnData)
                 $scope.activeNotes.push(returnData);
             }); 
             
@@ -10236,7 +10237,7 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         var taskId = $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex]._id;
         var noteId = $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex].notes[index]._id;
         
-        projectFactory.note.delete({id: $routeParams.id, stageid: stageId, taskid: taskId, noteid: noteId}, function(returnData){
+        projectFactory.note.delete({ id: $routeParams.id, stageid: stageId, taskid: taskId, noteid: noteId }, function(returnData){
             $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex].notes.splice(index, 1);
         });
     }
@@ -10271,6 +10272,10 @@ projects.factory('projectFactory', function($resource){
 	}
 });
 projects.controller('projectsController', function($scope, $filter, projectFactory, $mdDialog){
+    // For Debugging in console
+    window.SCOPE = function(selector){
+        return angular.element(selector).scope();
+    }
     $scope.scopeName = 'Projects Controller';
     
     // Get all projects from the api route
