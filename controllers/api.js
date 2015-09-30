@@ -161,7 +161,31 @@ var apiController = {
         console.log('Task delete triggered', req.params)
     },
     deleteNote: function(req, res){
-        console.log('Note delete triggered', req.body)
+        var reqID = req.params.id;
+        var stageID = req.params.stageid;
+        var taskID = req.params.taskid;
+        var noteID = req.params.noteid;
+        
+        Project.findOne({_id: reqID}, function(err, project){
+            project.stages.forEach(function(thisStage, index){
+                if(thisStage._id.toString() === stageID) {
+                    thisStage.tasks.forEach(function(thisTask, index){
+                        if(thisTask._id.toString() === taskID) {
+                            thisTask.notes.forEach(function(thisNote, index){
+                                if(thisNote._id.toString() === noteID) {
+                                    thisNote.remove();
+                                    project.save(function(err, project){
+                                        res.send(thisNote); // Send back the object to angular
+                                    });
+                                }
+                            })
+                        }
+                    });
+                }
+            });
+        });
+        
+        console.log('Note delete triggered', req.params)
     }
 } // End apiController
 

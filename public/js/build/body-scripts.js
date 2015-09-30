@@ -10231,6 +10231,16 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         $scope.noteInput = false;
     }
     
+    $scope.deleteNote = function(index){
+        var stageId = $scope.project.stages[$scope.stageIndex]._id;
+        var taskId = $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex]._id;
+        var noteId = $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex].notes[index]._id;
+        
+        projectFactory.note.delete({id: $routeParams.id, stageid: stageId, taskid: taskId, noteid: noteId}, function(returnData){
+            $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex].notes.splice(index, 1);
+        });
+    }
+    
 }); // End Project Details Controller
 projects.factory('projectFactory', function($resource){
 	// This creates a $resource model
@@ -10239,7 +10249,7 @@ projects.factory('projectFactory', function($resource){
 	var project = $resource('/api/projects/:id', {id: '@_id'});
 	var stage   = $resource('/api/projects/:id/stages/:stageid', {id: '@_id', stageid: '@_id'});
 	var task    = $resource('/api/projects/:id/stages/:stageid/tasks/:taskid', {id: '@_id', stageid: '@_id', taskid: '@_id'});
-    var note    = $resource('/api/projects/:id/stages/:stageid/tasks/:taskid/notes', {id: '@_id', stageid: '@_id', taskid: '@_id'});
+    var note    = $resource('/api/projects/:id/stages/:stageid/tasks/:taskid/notes/:noteid', {id: '@_id', stageid: '@_id', taskid: '@_id', noteid: '@_id'});
     var checkbox = task;
 	// this._id
 	// @_id

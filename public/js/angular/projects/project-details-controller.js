@@ -188,4 +188,14 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         $scope.noteInput = false;
     }
     
+    $scope.deleteNote = function(index){
+        var stageId = $scope.project.stages[$scope.stageIndex]._id;
+        var taskId = $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex]._id;
+        var noteId = $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex].notes[index]._id;
+        
+        projectFactory.note.delete({id: $routeParams.id, stageid: stageId, taskid: taskId, noteid: noteId}, function(returnData){
+            $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex].notes.splice(index, 1);
+        });
+    }
+    
 }); // End Project Details Controller
