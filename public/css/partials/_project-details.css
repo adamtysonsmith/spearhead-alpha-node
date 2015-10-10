@@ -78,7 +78,8 @@
 .note-hover {
     position: absolute;
     top: 0;
-    width: 98%;
+    left: 70%;
+    width: 25%;
     height: 100%;
 }
 .note-date {
@@ -104,4 +105,13 @@
 
 .active-task {
     background-color: #e3f7fd;
+}
+
+.editable-click {
+    color: inherit;
+    border-bottom: none;
+}
+.editable-wrap {
+    font-size: 14px;
+    width: 70%;
 }

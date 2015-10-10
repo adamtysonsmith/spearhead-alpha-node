@@ -1,4 +1,4 @@
-var projects  = angular.module('projects', ['ngResource', 'ngRoute', 'ngMaterial']);
+var projects  = angular.module('projects', ['ngResource', 'ngRoute', 'ngMaterial', 'xeditable']);
 var dashboard = angular.module('dashboard', ['ngResource', 'ngRoute', 'ngMaterial']);
 var public    = angular.module('public', ['ngMaterial']);
 
@@ -116,4 +116,21 @@ dashboard.config(function($routeProvider){
 			templateUrl : '/ng-views/dashboard',
 			controller  : 'dashboardController'
 		});
+});
+
+
+///////////////////////////////////////////////
+// Xeditable Theme Config
+///////////////////////////////////////////////
+projects.run(function(editableOptions, editableThemes) {
+  // set `default` theme
+  editableOptions.theme = 'default';
+    
+  // overwrite submit button template
+  editableThemes['default'].submitTpl = '<md-button class="md-icon-button"><md-icon md-svg-icon="img/ic_done_black_48px.svg"></md-icon></md-button>';
+    
+  editableThemes['default'].cancelTpl = '<md-button class="md-icon-button" ng-click="$form.$cancel()"><md-icon md-svg-icon="img/ic_clear_black_48px.svg"></md-icon></md-button>';
+    
+  editableThemes['default'].controlsTpl = '<md-input-container class="editable-controls" ng-class="{\'md-input-invalid\': $error}"></md-input-container>';
+
 });

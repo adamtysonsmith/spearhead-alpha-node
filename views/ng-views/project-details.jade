@@ -42,5 +42,5 @@ div(layout="row" layout-margin layout-padding)
             div.note-card(ng-repeat="note in activeNotes")
                 div.note-hover
                 p.note-date {{note.timestamp | date:'medium'}}
-                p.note-content {{note.content}}
+                p.note-content(editable-textarea="note.content") {{note.content}}
                 md-icon.note-delete(md-svg-src="img/ic_clear_red_48px.svg" ng-click="deleteNote($index)")
