@@ -1,5 +1,5 @@
 .project-details-title {
-    margin: 0;
+    margin: 5px;
 }
 .pipeline {
     width: 100%;
@@ -43,6 +43,7 @@
     cursor: pointer;
     top: 25px;
     right: 20px;
+    z-index: 15;
 }
 .task-delete:hover {
     display: block;
@@ -57,6 +58,7 @@
     left: 50%;
     width: 50%;
     height: 100%;
+    z-index: 10;
 }
 .task-hover:hover ~.task-delete {
     display: block;
@@ -65,9 +67,6 @@
     visibility: hidden;
 }
 
-.notes-container {
-    margin-top: 10px;
-}
 .note-card {
     position: relative;
     background-color: white;
@@ -79,8 +78,8 @@
     position: absolute;
     top: 0;
     left: 70%;
-    width: 25%;
-    height: 100%;
+    width: 30%;
+    height: 83px;
 }
 .note-date {
     font-size: 14px;
@@ -114,4 +113,38 @@
 .editable-wrap {
     font-size: 14px;
     width: 70%;
+}
+.editable-controls {
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+.editable-controls > input {
+    width: 100%;
+    margin-left: 10px;
+}
+.editable-buttons {
+    height: 0;
+    margin-top: -10px;
+}
+.editable-has-buttons.editable-input {
+    width: 100%;
+}
+.editable-wrap .editable-controls {
+    z-index: 20;
+}
+
+.dialog-stage {
+    width: 300px;
+    margin: 20px; 
+}
+.dialog-stage-row {
+    margin-bottom: 5px; 
+}
+.dialog-stage-checkbox {
+    margin-left: 18px;
+    margin-top: 6px;
+}
+.dialog-stage-input {
+    padding: 0; 
 }

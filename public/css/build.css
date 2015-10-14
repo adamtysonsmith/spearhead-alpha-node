@@ -226,7 +226,7 @@ md-toolbar {
 }*/
 
 .project-details-title {
-    margin: 0;
+    margin: 5px;
 }
 .pipeline {
     width: 100%;
@@ -270,6 +270,7 @@ md-toolbar {
     cursor: pointer;
     top: 25px;
     right: 20px;
+    z-index: 15;
 }
 .task-delete:hover {
     display: block;
@@ -284,6 +285,7 @@ md-toolbar {
     left: 50%;
     width: 50%;
     height: 100%;
+    z-index: 10;
 }
 .task-hover:hover ~.task-delete {
     display: block;
@@ -292,9 +294,6 @@ md-toolbar {
     visibility: hidden;
 }
 
-.notes-container {
-    margin-top: 10px;
-}
 .note-card {
     position: relative;
     background-color: white;
@@ -306,8 +305,8 @@ md-toolbar {
     position: absolute;
     top: 0;
     left: 70%;
-    width: 25%;
-    height: 100%;
+    width: 30%;
+    height: 83px;
 }
 .note-date {
     font-size: 14px;
@@ -342,6 +341,39 @@ md-toolbar {
     font-size: 14px;
     width: 70%;
 }
+.editable-controls {
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+.editable-controls > input {
+    width: 100%;
+    margin-left: 10px;
+}
+.editable-buttons {
+    height: 0;
+    margin-top: -10px;
+}
+.editable-has-buttons.editable-input {
+    width: 100%;
+}
+.editable-wrap .editable-controls {
+    z-index: 20;
+}
+
+.dialog-stage {
+    width: 300px;
+    margin: 20px; 
+}
+.dialog-stage-row {
+    margin-bottom: 5px; 
+}
+.dialog-stage-checkbox {
+    margin-left: 18px; 
+}
+.dialog-stage-input {
+    padding: 0; 
+}
 .projects-title {
     margin: 0;
 }
@@ -371,3 +403,239 @@ project-timeline .svg-container {
 md-datepicker {
     background-color: transparent;
 }
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.11.0
+ */
+sp-checkbox.md-THEME_NAME-theme .md-ripple {
+  color: '{{accent-600}}'; }
+sp-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {
+  color: '{{background-600}}'; }
+sp-checkbox.md-THEME_NAME-theme.md-checked.md-focused .md-container:before {
+  background-color: '{{accent-color-0.26}}'; }
+sp-checkbox.md-THEME_NAME-theme .md-icon {
+  border-color: '{{foreground-2}}'; }
+sp-checkbox.md-THEME_NAME-theme.md-checked .md-icon {
+  background-color: '{{accent-color-0.87}}'; }
+sp-checkbox.md-THEME_NAME-theme.md-checked .md-icon:after {
+  border-color: '{{background-200}}'; }
+sp-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {
+  color: '{{primary-600}}'; }
+sp-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {
+  color: '{{background-600}}'; }
+sp-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-icon {
+  border-color: '{{foreground-2}}'; }
+sp-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon {
+  background-color: '{{primary-color-0.87}}'; }
+sp-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked.md-focused .md-container:before {
+  background-color: '{{primary-color-0.26}}'; }
+sp-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon:after {
+  border-color: '{{background-200}}'; }
+sp-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {
+  color: '{{warn-600}}'; }
+sp-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-icon {
+  border-color: '{{foreground-2}}'; }
+sp-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon {
+  background-color: '{{warn-color-0.87}}'; }
+sp-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked.md-focused:not([disabled]) .md-container:before {
+  background-color: '{{warn-color-0.26}}'; }
+sp-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon:after {
+  border-color: '{{background-200}}'; }
+sp-checkbox.md-THEME_NAME-theme[disabled] .md-icon {
+  border-color: '{{foreground-3}}'; }
+sp-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon {
+  background-color: '{{foreground-3}}'; }
+sp-checkbox.md-THEME_NAME-theme[disabled] .md-label {
+  color: '{{foreground-3}}'; }
+
+
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.11.0
+ */
+sp-checkbox {
+  box-sizing: border-box;
+  display: block;
+  margin: 8px;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  padding-left: 18px;
+  padding-right: 0;
+  position: relative;
+  line-height: 26px;
+  min-width: 18px;
+  min-height: 18px; }
+  html[dir=rtl] sp-checkbox {
+    padding-left: 0;
+    unicode-bidi: embed; }
+  body[dir=rtl] sp-checkbox {
+    padding-left: 0;
+    unicode-bidi: embed; }
+  sp-checkbox bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  sp-checkbox bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
+  html[dir=rtl] sp-checkbox {
+    padding-right: 18px;
+    unicode-bidi: embed; }
+  body[dir=rtl] sp-checkbox {
+    padding-right: 18px;
+    unicode-bidi: embed; }
+  sp-checkbox bdo[dir=rtl] {
+    direction: rtl;
+    unicode-bidi: bidi-override; }
+  sp-checkbox bdo[dir=ltr] {
+    direction: ltr;
+    unicode-bidi: bidi-override; }
+  sp-checkbox.md-focused:not([disabled]) .md-container:before {
+    left: -8px;
+    top: -8px;
+    right: -8px;
+    bottom: -8px; }
+  sp-checkbox.md-focused:not([disabled]):not(.md-checked) .md-container:before {
+    background-color: rgba(0, 0, 0, 0.12); }
+  sp-checkbox .md-container {
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+    box-sizing: border-box;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    left: 0;
+    right: auto; }
+    html[dir=rtl] sp-checkbox .md-container {
+      left: auto;
+      unicode-bidi: embed; }
+    body[dir=rtl] sp-checkbox .md-container {
+      left: auto;
+      unicode-bidi: embed; }
+    sp-checkbox .md-container bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    sp-checkbox .md-container bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    html[dir=rtl] sp-checkbox .md-container {
+      right: 0;
+      unicode-bidi: embed; }
+    body[dir=rtl] sp-checkbox .md-container {
+      right: 0;
+      unicode-bidi: embed; }
+    sp-checkbox .md-container bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    sp-checkbox .md-container bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    sp-checkbox .md-container:before {
+      box-sizing: border-box;
+      background-color: transparent;
+      border-radius: 50%;
+      content: '';
+      position: absolute;
+      display: block;
+      height: auto;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      transition: all 0.5s;
+      width: auto; }
+    sp-checkbox .md-container:after {
+      box-sizing: border-box;
+      content: '';
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      bottom: -10px;
+      left: -10px; }
+    sp-checkbox .md-container .md-ripple-container {
+      position: absolute;
+      display: block;
+      width: auto;
+      height: auto;
+      left: -15px;
+      top: -15px;
+      right: -15px;
+      bottom: -15px; }
+  sp-checkbox.md-align-top-left > div.md-container {
+    top: 12px; }
+  sp-checkbox .md-icon {
+    box-sizing: border-box;
+    transition: 240ms;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 18px;
+    height: 18px;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 2px; }
+  sp-checkbox.md-checked .md-icon {
+    border: none; }
+  sp-checkbox[disabled] {
+    cursor: no-drop; }
+  sp-checkbox.md-checked .md-icon:after {
+    box-sizing: border-box;
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    display: table;
+    width: 6px;
+    height: 12px;
+    border-width: 2px;
+    border-style: solid;
+    border-top: 0;
+    border-left: 0;
+    content: ''; }
+  sp-checkbox .md-label {
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    white-space: normal;
+    -webkit-user-select: text;
+       -moz-user-select: text;
+        -ms-user-select: text;
+            user-select: text;
+    margin-left: 10px;
+    margin-right: 0; }
+    html[dir=rtl] sp-checkbox .md-label {
+      margin-left: 0;
+      unicode-bidi: embed; }
+    body[dir=rtl] sp-checkbox .md-label {
+      margin-left: 0;
+      unicode-bidi: embed; }
+    sp-checkbox .md-label bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    sp-checkbox .md-label bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }
+    html[dir=rtl] sp-checkbox .md-label {
+      margin-right: 10px;
+      unicode-bidi: embed; }
+    body[dir=rtl] sp-checkbox .md-label {
+      margin-right: 10px;
+      unicode-bidi: embed; }
+    sp-checkbox .md-label bdo[dir=rtl] {
+      direction: rtl;
+      unicode-bidi: bidi-override; }
+    sp-checkbox .md-label bdo[dir=ltr] {
+      direction: ltr;
+      unicode-bidi: bidi-override; }

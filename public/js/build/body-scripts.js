@@ -10064,13 +10064,13 @@ projects.directive('stagePipeline', function(){
         scope: true
     }
 }); // End Pipeline Directive
-projects.controller('projectDetailsController', function($scope, $timeout, projectFactory, $routeParams){
+projects.controller('projectDetailsController', function($scope, $timeout, projectFactory, $routeParams, $mdDialog){
     // For Debugging in console
     window.SCOPE = function(){
         return angular.element('ng-view').scope();
     }
     $scope.scopeName = 'Project Details Controller';
-    
+
     projectFactory.project.get({ _id: $routeParams.id }, function(returnData){
         $scope.project = returnData;
     });
@@ -10184,25 +10184,42 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         }, 100);
     }
     
-    $scope.checkTask = function(index){
+    $scope.checkTask = function(index, event){
         var stageId = $scope.project.stages[$scope.stageIndex]._id;
         var taskId = $scope.project.stages[$scope.stageIndex].tasks[index]._id;
         var isCompleted = $scope.project.stages[$scope.stageIndex].tasks[index].isCompleted;
         
-        var setCheckbox = function(){
-            var checkbox = new projectFactory.checkbox({checked: isCompleted});
+        console.log('Is completed?', isCompleted);
+        
+        var setCheckbox = function(bool){
+            var checkbox = new projectFactory.checkbox({checked: bool});
             checkbox.$save({ id: $routeParams.id, stageid: stageId, taskid: taskId }, function(returnData){
+                console.log('Return of the bool ', returnData.isCompleted)
                 $scope.project.stages[$scope.stageIndex].tasks[index].isCompleted = returnData.isCompleted;
             });
         }
         
+        console.log('The event', event);
+        var parentClassString = event.target.parentElement.className;
+        var classes = parentClassString.split(' ');
+        var classRegex = new RegExp('md-checked');
+        
+        // If md-checked exists, filter it out, otherwise add it
+        if(classRegex.test(parentClassString)){
+            classes = classes.filter(function(c){
+                return c !== 'md-checked';
+            });
+        } else {
+            classes.push('md-checked');
+        }
+        
+        event.target.parentElement.className = classes.join(' ');
+        
         // Save the opposite of the current checkbox state in DB
         if(isCompleted === true) {
-            isCompleted = false;
-            setCheckbox();
+            setCheckbox(false);
         } else if (isCompleted === false) {
-            isCompleted = true;
-            setCheckbox();
+            setCheckbox(true);
         } else {
             console.log('Error saving checkbox, boolean is invalid.')
         }
@@ -10262,6 +10279,39 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         
         projectFactory.note.delete({ id: $routeParams.id, stageid: stageId, taskid: taskId, noteid: noteId }, function(returnData){
             $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex].notes.splice(index, 1);
+        });
+    }
+    
+    //////////////////////////////////
+    // Edit Stage Dialog
+    //////////////////////////////////
+    
+    // Angular will not let you simply access $scope.project
+    // it will be undefined if you log it here
+    var getStages = function(){
+        return $scope.project.stages;
+    }
+    
+    // Edit Stages Dialog
+    $scope.StageDialogController = function($scope, $mdDialog){
+        $scope.close = function(){
+            $mdDialog.cancel();
+        }
+        $scope.save = function(){
+            // DO SOME SHIT
+            console.log('Working dude')
+            $mdDialog.hide();
+        }
+        $scope.stages = getStages();
+    }
+    
+    $scope.editStageDialog = function(ev){
+        $mdDialog.show({
+            controller: $scope.StageDialogController,
+            templateUrl: '/ng-views/edit-stages',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true
         });
     }
     
@@ -10352,6 +10402,175 @@ projects.controller('projectsController', function($scope, $filter, projectFacto
     }
     
 }); // End Projects Controller
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.11.0
+ */
+(function( window, angular, undefined ){
+"use strict";
+
+/**
+ * @ngdoc module
+ * @name material.components.checkbox
+ * @description Checkbox module!
+ */
+angular
+  .module('material.components.checkbox', ['material.core'])
+  .directive('spCheckbox', MdCheckboxDirective);
+
+/**
+ * @ngdoc directive
+ * @name mdCheckbox
+ * @module material.components.checkbox
+ * @restrict E
+ *
+ * @description
+ * The checkbox directive is used like the normal [angular checkbox](https://docs.angularjs.org/api/ng/input/input%5Bcheckbox%5D).
+ *
+ * As per the [material design spec](http://www.google.com/design/spec/style/color.html#color-ui-color-application)
+ * the checkbox is in the accent color by default. The primary color palette may be used with
+ * the `md-primary` class.
+ *
+ * @param {string} ng-model Assignable angular expression to data-bind to.
+ * @param {string=} name Property name of the form under which the control is published.
+ * @param {expression=} ng-true-value The value to which the expression should be set when selected.
+ * @param {expression=} ng-false-value The value to which the expression should be set when not selected.
+ * @param {string=} ng-change Angular expression to be executed when input changes due to user interaction with the input element.
+ * @param {boolean=} md-no-ink Use of attribute indicates use of ripple ink effects
+ * @param {string=} aria-label Adds label to checkbox for accessibility.
+ * Defaults to checkbox's text. If no default text is found, a warning will be logged.
+ *
+ * @usage
+ * <hljs lang="html">
+ * <md-checkbox ng-model="isChecked" aria-label="Finished?">
+ *   Finished ?
+ * </md-checkbox>
+ *
+ * <md-checkbox md-no-ink ng-model="hasInk" aria-label="No Ink Effects">
+ *   No Ink Effects
+ * </md-checkbox>
+ *
+ * <md-checkbox ng-disabled="true" ng-model="isDisabled" aria-label="Disabled">
+ *   Disabled
+ * </md-checkbox>
+ *
+ * </hljs>
+ *
+ */
+function MdCheckboxDirective(inputDirective, $mdAria, $mdConstant, $mdTheming, $mdUtil, $timeout) {
+  inputDirective = inputDirective[0];
+  var CHECKED_CSS = 'md-checked';
+
+  return {
+    restrict: 'E',
+    transclude: true,
+    require: '?ngModel',
+    priority:210, // Run before ngAria
+    template: 
+      '<div class="md-container" ng-click="checkTask($index, $event)" md-ink-ripple md-ink-ripple-checkbox>' +
+        '<div class="md-icon"></div>' +
+      '</div>' +
+      '<div ng-transclude class="md-label" editable-text="task.content"></div>',
+    compile: compile
+  };
+
+  // **********************************************************
+  // Private Methods
+  // **********************************************************
+
+  function compile (tElement, tAttrs) {
+
+    tAttrs.type = 'checkbox';
+    tAttrs.tabindex = tAttrs.tabindex || '0';
+    tElement.attr('role', tAttrs.type);
+
+    return function postLink(scope, element, attr, ngModelCtrl) {
+      ngModelCtrl = ngModelCtrl || $mdUtil.fakeNgModel();
+      $mdTheming(element);
+
+      if (attr.ngChecked) {
+        scope.$watch(
+            scope.$eval.bind(scope, attr.ngChecked),
+            ngModelCtrl.$setViewValue.bind(ngModelCtrl)
+        );
+      }
+      $$watchExpr('ngDisabled', 'tabindex', {
+        true: '-1',
+        false: attr.tabindex
+      });
+      $mdAria.expectWithText(element, 'aria-label');
+
+      // Reuse the original input[type=checkbox] directive from Angular core.
+      // This is a bit hacky as we need our own event listener and own render
+      // function.
+      inputDirective.link.pre(scope, {
+        on: angular.noop,
+        0: {}
+      }, attr, [ngModelCtrl]);
+
+      scope.mouseActive = false;
+
+      element
+        // .on('click', listener)
+        //.on('keypress', keypressHandler)
+        .on('mousedown', function() {
+          scope.mouseActive = true;
+          $timeout(function(){
+            scope.mouseActive = false;
+          }, 100);
+        })
+        .on('focus', function() {
+          if(scope.mouseActive === false) { element.addClass('md-focused'); }
+        })
+        .on('blur', function() { element.removeClass('md-focused'); });
+
+      ngModelCtrl.$render = render;
+
+      function $$watchExpr(expr, htmlAttr, valueOpts) {
+        if (attr[expr]) {
+          scope.$watch(attr[expr], function(val) {
+            if (valueOpts[val]) {
+              element.attr(htmlAttr, valueOpts[val]);
+            }
+          });
+        }
+      }
+
+//      function keypressHandler(ev) {
+//        var keyCode = ev.which || ev.keyCode;
+//        if (keyCode === $mdConstant.KEY_CODE.SPACE || keyCode === $mdConstant.KEY_CODE.ENTER) {
+//          ev.preventDefault();
+//          if (!element.hasClass('md-focused')) { element.addClass('md-focused'); }
+//          listener(ev);
+//        }
+//      }
+      function listener(ev) {
+        if (element[0].hasAttribute('disabled')) return;
+
+        scope.$apply(function() {
+          // Toggle the checkbox value...
+          var viewValue = attr.ngChecked ? attr.checked : !ngModelCtrl.$viewValue;
+
+          ngModelCtrl.$setViewValue( viewValue, ev && ev.type);
+          ngModelCtrl.$render();
+        });
+      }
+
+      function render() {
+        if(ngModelCtrl.$viewValue) {
+          element.addClass(CHECKED_CSS);
+        } else {
+          element.removeClass(CHECKED_CSS);
+        }
+      }
+    };
+  }
+}
+MdCheckboxDirective.$inject = ["inputDirective", "$mdAria", "$mdConstant", "$mdTheming", "$mdUtil", "$timeout"];
+
+})(window, window.angular);
 // Project Waterfall Navigation
 projects.directive('projectTimeline', function(projectFactory){
     

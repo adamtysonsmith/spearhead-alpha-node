@@ -1,0 +1,17 @@
+md-dialog(aria-label="edit-stages")
+    md-toolbar
+        div.md-toolbar-tools
+          h2 Edit Stages
+          span(flex)
+          
+    form.dialog-stage
+        p Delete
+        div.dialog-stage-row(ng-repeat="stage in stages" layout="row")
+            div(flex="25")
+                input.dialog-stage-checkbox(type="checkbox")
+            md-input-container.dialog-stage-input(flex)
+                input(value="{{stage.name}}")
+
+    div.md-actions(layout="row")
+        md-button(ng-click="close()") Cancel
+        md-button(ng-click="save()") Save

@@ -1,10 +1,10 @@
-projects.controller('projectDetailsController', function($scope, $timeout, projectFactory, $routeParams){
+projects.controller('projectDetailsController', function($scope, $timeout, projectFactory, $routeParams, $mdDialog){
     // For Debugging in console
     window.SCOPE = function(){
         return angular.element('ng-view').scope();
     }
     $scope.scopeName = 'Project Details Controller';
-    
+
     projectFactory.project.get({ _id: $routeParams.id }, function(returnData){
         $scope.project = returnData;
     });
@@ -118,25 +118,42 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         }, 100);
     }
     
-    $scope.checkTask = function(index){
+    $scope.checkTask = function(index, event){
         var stageId = $scope.project.stages[$scope.stageIndex]._id;
         var taskId = $scope.project.stages[$scope.stageIndex].tasks[index]._id;
         var isCompleted = $scope.project.stages[$scope.stageIndex].tasks[index].isCompleted;
         
-        var setCheckbox = function(){
-            var checkbox = new projectFactory.checkbox({checked: isCompleted});
+        console.log('Is completed?', isCompleted);
+        
+        var setCheckbox = function(bool){
+            var checkbox = new projectFactory.checkbox({checked: bool});
             checkbox.$save({ id: $routeParams.id, stageid: stageId, taskid: taskId }, function(returnData){
+                console.log('Return of the bool ', returnData.isCompleted)
                 $scope.project.stages[$scope.stageIndex].tasks[index].isCompleted = returnData.isCompleted;
             });
         }
         
+        console.log('The event', event);
+        var parentClassString = event.target.parentElement.className;
+        var classes = parentClassString.split(' ');
+        var classRegex = new RegExp('md-checked');
+        
+        // If md-checked exists, filter it out, otherwise add it
+        if(classRegex.test(parentClassString)){
+            classes = classes.filter(function(c){
+                return c !== 'md-checked';
+            });
+        } else {
+            classes.push('md-checked');
+        }
+        
+        event.target.parentElement.className = classes.join(' ');
+        
         // Save the opposite of the current checkbox state in DB
         if(isCompleted === true) {
-            isCompleted = false;
-            setCheckbox();
+            setCheckbox(false);
         } else if (isCompleted === false) {
-            isCompleted = true;
-            setCheckbox();
+            setCheckbox(true);
         } else {
             console.log('Error saving checkbox, boolean is invalid.')
         }
@@ -196,6 +213,39 @@ projects.controller('projectDetailsController', function($scope, $timeout, proje
         
         projectFactory.note.delete({ id: $routeParams.id, stageid: stageId, taskid: taskId, noteid: noteId }, function(returnData){
             $scope.project.stages[$scope.stageIndex].tasks[$scope.taskIndex].notes.splice(index, 1);
+        });
+    }
+    
+    //////////////////////////////////
+    // Edit Stage Dialog
+    //////////////////////////////////
+    
+    // Angular will not let you simply access $scope.project
+    // it will be undefined if you log it here
+    var getStages = function(){
+        return $scope.project.stages;
+    }
+    
+    // Edit Stages Dialog
+    $scope.StageDialogController = function($scope, $mdDialog){
+        $scope.close = function(){
+            $mdDialog.cancel();
+        }
+        $scope.save = function(){
+            // DO SOME SHIT
+            console.log('Working dude')
+            $mdDialog.hide();
+        }
+        $scope.stages = getStages();
+    }
+    
+    $scope.editStageDialog = function(ev){
+        $mdDialog.show({
+            controller: $scope.StageDialogController,
+            templateUrl: '/ng-views/edit-stages',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true
         });
     }
     

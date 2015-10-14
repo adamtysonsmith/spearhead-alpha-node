@@ -1,7 +1,8 @@
 div(layout="row" layout-margin layout-padding)
     div
         h1.md-display-1.project-details-title {{project.name}}
-        md-button.md-raised.md-accent(ng-click="showStageInput()") + Add Stage
+        md-button.md-raised.md-accent.md-hue-4(ng-click="showStageInput()") Add Stage
+        md-button.md-raised.md-accent.md-hue-1(ng-click="editStageDialog()") Edit Stages
         md-input-container(ng-show="stageInput")
             label Add a Stage
             input#add-stage(ng-model="newStage.name" ng-keyup="addStageKeyup($event.keyCode)" ng-blur="addStageBlur()")
@@ -26,7 +27,7 @@ div(layout="row" layout-margin layout-padding)
         div.tasks-container
             div(ng-repeat="task in activeTasks" ng-click="setActiveNotes($index)" ng-class="{'active-task': $index == taskIndex}").task
                 div.task-content
-                    md-checkbox(ng-click="checkTask($index)" ng-model="task.isCompleted") {{task.content}}
+                    sp-checkbox(ng-model="task.isCompleted") {{task.content}}
                     div.task-hover
                     md-icon.task-delete(md-svg-src="img/ic_clear_red_48px.svg" ng-click="deleteTask($index)")
                     span.task-duration {{task.duration}} hrs
