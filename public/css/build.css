@@ -369,7 +369,8 @@ md-toolbar {
     margin-bottom: 5px; 
 }
 .dialog-stage-checkbox {
-    margin-left: 18px; 
+    margin-left: 18px;
+    margin-top: 6px;
 }
 .dialog-stage-input {
     padding: 0; 
